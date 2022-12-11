@@ -13,3 +13,10 @@ How to setup for development or viewing in Unity:
 11. Replace all files with new ones
 12. Remove temporary folder (now should be empty)
 13. Open Unity Hub and see that the project is now setup
+
+
+How to play built game:
+1. Enter 'Build' folder
+2. Run 'GameProject.exe'
+3. The game does not yet have exit button, so when finished you have to close the process manually
+4. On Windows, either press Windows key on keyboard, or Alt+Tab and then right click the game and click close
