@@ -92,7 +92,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: leg_up_l/leg_up_l
+    path: Leg_Up_L/leg_up_l
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -171,7 +171,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -250,7 +250,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l/foot_l/foot_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l/Foot_L/foot_l
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -320,7 +320,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: leg_up_r/leg_up_r
+    path: Leg_Up_R/leg_up_r
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -390,7 +390,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -460,7 +460,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r/foot_r/foot_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r/Foot_R/foot_r
   m_PositionCurves: []
   m_ScaleCurves: []
   m_FloatCurves: []
@@ -473,42 +473,42 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3131146420
+      path: 1747057259
       attribute: 4
       script: {fileID: 0}
       typeID: 4
       customType: 4
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 719686884
+      path: 1333758946
       attribute: 4
       script: {fileID: 0}
       typeID: 4
       customType: 4
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2244862292
+      path: 3978286366
       attribute: 4
       script: {fileID: 0}
       typeID: 4
       customType: 4
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 2043219084
+      path: 2873718355
       attribute: 4
       script: {fileID: 0}
       typeID: 4
       customType: 4
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 1972971557
+      path: 268644131
       attribute: 4
       script: {fileID: 0}
       typeID: 4
       customType: 4
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 1352525736
+      path: 944755682
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -615,7 +615,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: leg_up_l/leg_up_l
+    path: Leg_Up_L/leg_up_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -697,7 +697,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: leg_up_l/leg_up_l
+    path: Leg_Up_L/leg_up_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -779,7 +779,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: leg_up_l/leg_up_l
+    path: Leg_Up_L/leg_up_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -861,7 +861,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -943,7 +943,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1025,7 +1025,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1107,7 +1107,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l/foot_l/foot_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l/Foot_L/foot_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1189,7 +1189,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l/foot_l/foot_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l/Foot_L/foot_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1271,7 +1271,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l/foot_l/foot_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l/Foot_L/foot_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1344,7 +1344,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: leg_up_r/leg_up_r
+    path: Leg_Up_R/leg_up_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1417,7 +1417,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: leg_up_r/leg_up_r
+    path: Leg_Up_R/leg_up_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1490,7 +1490,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: leg_up_r/leg_up_r
+    path: Leg_Up_R/leg_up_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1563,7 +1563,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1636,7 +1636,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1709,7 +1709,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1782,7 +1782,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r/foot_r/foot_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r/Foot_R/foot_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1855,7 +1855,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r/foot_r/foot_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r/Foot_R/foot_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1928,7 +1928,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r/foot_r/foot_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r/Foot_R/foot_r
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves:
@@ -1939,7 +1939,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l/foot_l/foot_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1949,7 +1949,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l/foot_l/foot_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1959,7 +1959,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l/foot_l/foot_l
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1969,7 +1969,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: leg_up_l/leg_up_l
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1979,7 +1979,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: leg_up_l/leg_up_l
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1989,7 +1989,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: leg_up_l/leg_up_l
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1999,7 +1999,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r
+    path: Leg_Up_R/leg_up_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2009,7 +2009,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r
+    path: Leg_Up_R/leg_up_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2019,7 +2019,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r
+    path: Leg_Up_R/leg_up_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2029,7 +2029,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l
+    path: Leg_Up_L/leg_up_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2039,7 +2039,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l
+    path: Leg_Up_L/leg_up_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2049,7 +2049,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: leg_up_l/leg_up_l/leg_low_l/leg_low_l
+    path: Leg_Up_L/leg_up_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2059,7 +2059,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: leg_up_r/leg_up_r
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l/Foot_L/foot_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2069,7 +2069,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: leg_up_r/leg_up_r
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l/Foot_L/foot_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2079,7 +2079,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: leg_up_r/leg_up_r
+    path: Leg_Up_L/leg_up_l/Leg_Low_L/leg_low_l/Foot_L/foot_l
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2089,7 +2089,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r/foot_r/foot_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r/Foot_R/foot_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2099,7 +2099,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r/foot_r/foot_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r/Foot_R/foot_r
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -2109,7 +2109,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: leg_up_r/leg_up_r/leg_low_r/leg_low_r/foot_r/foot_r
+    path: Leg_Up_R/leg_up_r/Leg_Low_R/leg_low_r/Foot_R/foot_r
     classID: 4
     script: {fileID: 0}
   m_HasGenericRootTransform: 0

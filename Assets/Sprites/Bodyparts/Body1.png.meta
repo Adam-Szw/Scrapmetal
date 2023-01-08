@@ -125,12 +125,21 @@ TextureImporter:
         width: 64
         height: 60
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: head
+        guid: a44d53af8f3e7eb4cb097e5a9b658ceb
+        position: {x: 32.26027, y: 2.5905151, z: 0}
+        rotation: {x: 0, y: 0, z: 0.71093917, w: 0.7032535}
+        length: 56.015488
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: a7270c15b843bc74cb1e1b55f7e29ba4
       internalID: -161554310
       vertices:
@@ -163,7 +172,7 @@ TextureImporter:
       - {x: 23.202, y: 0.034999847}
       - {x: 31.786, y: 0.00399971}
       - {x: 40.369, y: 0.0009994507}
-      indices: 000000000300000001000000000000000400000003000000000000001c00000004000000010000000300000002000000040000001c00000005000000050000000c00000006000000050000000d0000000c000000050000001b0000000d000000050000001c0000001b000000060000000b00000007000000060000000c0000000b000000070000000a00000008000000070000000b0000000a000000080000000a000000090000000d000000140000000e0000000d0000001b000000140000000e000000130000000f0000000e00000014000000130000000f00000012000000100000000f0000001300000012000000100000001200000011000000140000001a00000015000000140000001b0000001a000000150000001a00000016000000160000001800000017000000160000001900000018000000160000001a00000019000000
+      indices: 000000000300000001000000160000001800000017000000150000001a00000016000000140000001b0000001a000000140000001a000000150000001000000012000000110000000f00000013000000120000000f00000012000000100000000e00000014000000130000000e000000130000000f0000000d0000001b000000140000000d000000140000000e000000160000001900000018000000080000000a00000009000000070000000a00000008000000060000000c0000000b000000060000000b00000007000000050000001c0000001b000000050000001b0000000d000000050000000d0000000c000000050000000c00000006000000040000001c00000005000000010000000300000002000000000000001c00000004000000000000000400000003000000070000000b0000000a000000160000001a00000019000000
       edges:
       - {x: 0, y: 1}
       - {x: 0, y: 28}
@@ -436,12 +445,21 @@ TextureImporter:
         width: 27
         height: 65
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: arm_up_r
+        guid: 067983860ac46ab4a90481523fb91672
+        position: {x: 12.691097, y: 63.135803, z: 0}
+        rotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+        length: 61.714104
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: 2cd05578b354f1c4492da1dc71301f10
       internalID: 1713021618
       vertices:
@@ -471,7 +489,7 @@ TextureImporter:
       - {x: 0.47299957, y: 3.5289993}
       - {x: 6.092, y: 0.49599838}
       - {x: 12.885, y: 0.14500046}
-      indices: 000000000300000001000000000000001900000003000000010000000300000002000000030000001900000004000000040000001500000005000000040000001900000015000000050000001400000006000000050000001500000014000000060000001300000007000000060000001400000013000000070000001200000008000000070000001300000012000000080000001100000009000000080000001200000011000000090000000c0000000a00000009000000100000000c0000000900000011000000100000000a0000000c0000000b0000000c000000100000000d0000000d0000000f0000000e0000000d000000100000000f000000150000001900000016000000160000001800000017000000160000001900000018000000
+      indices: 0000000003000000010000001500000019000000160000000d000000100000000f0000000d0000000f0000000e0000000c000000100000000d0000000a0000000c0000000b00000009000000110000001000000009000000100000000c000000090000000c0000000a000000080000001200000011000000080000001100000009000000070000001300000012000000070000001200000008000000060000001400000013000000060000001300000007000000050000001500000014000000050000001400000006000000040000001900000015000000040000001500000005000000030000001900000004000000010000000300000002000000000000001900000003000000160000001800000017000000160000001900000018000000
       edges:
       - {x: 0, y: 1}
       - {x: 0, y: 25}
@@ -717,13 +735,13 @@ TextureImporter:
         width: 59
         height: 95
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones:
-      - name: bone_1
+      - name: torso
         guid: 4b2c519d7a61c4740b15d695149966fc
         position: {x: 30.739716, y: 2.6955414, z: 0}
         rotation: {x: 0, y: 0, z: 0.70945984, w: 0.7047459}
@@ -763,7 +781,7 @@ TextureImporter:
       - {x: 22.297, y: 0}
       - {x: 34.17, y: 0}
       - {x: 45.043, y: 0}
-      indices: 000000001a00000001000000000000001b0000001a000000010000000300000002000000010000001a00000003000000030000001800000004000000030000001a00000018000000040000001300000005000000040000001400000013000000040000001800000014000000050000001200000006000000050000001300000012000000060000001100000007000000060000001200000011000000070000000b00000008000000070000000c0000000b00000007000000110000000c000000080000000a00000009000000080000000b0000000a0000000c000000110000000d0000000d000000100000000e0000000d00000011000000100000000e000000100000000f000000140000001800000015000000150000001700000016000000150000001800000017000000180000001a00000019000000
+      indices: 000000001a000000010000001500000017000000160000001400000018000000150000000e000000100000000f0000000d00000011000000100000000d000000100000000e0000000c000000110000000d000000080000000b0000000a000000080000000a0000000900000007000000110000000c000000070000000c0000000b000000070000000b00000008000000060000001200000011000000060000001100000007000000050000001300000012000000050000001200000006000000040000001800000014000000040000001400000013000000040000001300000005000000030000001a00000018000000030000001800000004000000010000001a00000003000000010000000300000002000000000000001b0000001a000000150000001800000017000000180000001a00000019000000
       edges:
       - {x: 0, y: 1}
       - {x: 0, y: 27}
@@ -1027,12 +1045,21 @@ TextureImporter:
         width: 26
         height: 65
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: arm_up_l
+        guid: 42b80235699d02f4dbc87fe1958b1640
+        position: {x: 12.796036, y: 62.499176, z: 0}
+        rotation: {x: 0, y: 0, z: -0.7107052, w: 0.70348996}
+        length: 59.66824
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: 45589249525650249866fc3769b3ede6
       internalID: 2094161922
       vertices:
@@ -1308,12 +1335,21 @@ TextureImporter:
         width: 22
         height: 60
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: arm_low_r
+        guid: 99957c79744ecd843a3f25c7b805f359
+        position: {x: 10.063744, y: 57.635605, z: 0}
+        rotation: {x: 0, y: 0, z: -0.70480144, w: 0.70940465}
+        length: 55.759777
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: c717c82d01ed8ad489bbcf440302a0bd
       internalID: 1870513812
       vertices:
@@ -1579,7 +1615,7 @@ TextureImporter:
         width: 51
         height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1594,132 +1630,6 @@ TextureImporter:
         color:
           serializedVersion: 2
           rgba: 4278190335
-      - name: leg_up_r
-        guid: 562cae476040b884ab79cb3435707b52
-        position: {x: 6.3079453, y: -16.302467, z: 0}
-        rotation: {x: 0, y: 0, z: -0.7022473, w: 0.7119331}
-        length: 72.94472
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4278255615
-      - name: leg_up_l
-        guid: 0010ef769fba11940a93cbdc97b5e411
-        position: {x: 54.267105, y: -14.304169, z: 0}
-        rotation: {x: 0, y: 0, z: -0.7119552, w: 0.70222497}
-        length: 72.6117
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4278255360
-      - name: foot_r
-        guid: 19935d7b36122d749bb2bdb393d1d420
-        position: {x: -12.198963, y: -108.11731, z: 0}
-        rotation: {x: 0, y: 0, z: 0, w: 1}
-        length: 36.77799
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4294967040
-      - name: bone_5
-        guid: 47acf5b9e268fb640a8b8235787ba788
-        position: {x: 35.29387, y: -109.56526, z: 0}
-        rotation: {x: 0, y: 0, z: -0.012095437, w: 0.99992687}
-        length: 35.919735
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4294901760
-      - name: leg_low_r
-        guid: e940a601be49ed9449c88f9af24bfe38
-        position: {x: -42.131355, y: -44.951164, z: 0}
-        rotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-        length: 76.76508
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4294902015
-      - name: leg_low_l
-        guid: 3ca1e873ec4c82645a6a9e66b71fee19
-        position: {x: 92.405396, y: -46.92965, z: 0}
-        rotation: {x: 0, y: 0, z: -0.7052435, w: 0.7089651}
-        length: 75.18335
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4278223103
-      - name: arm_low_r
-        guid: 78792e2e967220e4b827ba6e3533d006
-        position: {x: -41.212727, y: 76.52664, z: 0}
-        rotation: {x: 0, y: 0, z: -0.713505, w: 0.7006501}
-        length: 54.962273
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4278255488
-      - name: hand_r
-        guid: d4c35af1e6d4b2549b9ce5b1fae06cea
-        position: {x: -42.211876, y: 11.58197, z: 0}
-        rotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-        length: 14.987234
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4286643968
-      - name: arm_low_l
-        guid: 4e709cbd8250707498b45923a7f1a2ca
-        position: {x: 88.34358, y: 73.86224, z: 0}
-        rotation: {x: 0, y: 0, z: -0.70922077, w: 0.70498645}
-        length: 55.620274
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4294934528
-      - name: hand_l
-        guid: f512ee4a17942b54b826d95232c265b6
-        position: {x: 87.34444, y: 3.255722, z: 0}
-        rotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-        length: 14.654181
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4294901888
-      - name: arm_up_l
-        guid: edcfffc7b9d97054ca0aa5a080d0f2dc
-        position: {x: 86.02124, y: 151.29788, z: 0}
-        rotation: {x: 0, y: 0, z: -0.70023173, w: 0.71391565}
-        length: 61.344406
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4286578943
-      - name: arm_up_r
-        guid: 7cb9f88c6f1033545bd845274ab14cd5
-        position: {x: -40.997288, y: 154.46347, z: 0}
-        rotation: {x: 0, y: 0, z: -0.7116539, w: 0.7025303}
-        length: 61.33803
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4278255615
-      - name: torso
-        guid: c8c6598e9fd5b094eaa210b05756d281
-        position: {x: 27.458176, y: 53.560898, z: 0}
-        rotation: {x: 0, y: 0, z: 0.70399874, w: 0.7102012}
-        length: 90.22224
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4278255360
-      - name: head
-        guid: cd3c2c04443729143b0f550c4ade4b4f
-        position: {x: 23.871635, y: 171.33847, z: 0}
-        rotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-        length: 55.696342
-        parentId: -1
-        color:
-          serializedVersion: 2
-          rgba: 4294967040
       spriteID: 98dab8aac978c774c8ff6956bcb6bae8
       internalID: 177483598
       vertices:
@@ -1749,7 +1659,7 @@ TextureImporter:
       - {x: 13.917, y: 0.38099957}
       - {x: 19.54, y: 0.05300045}
       - {x: 25.227, y: 0.0069999695}
-      indices: 000000000b00000001000000000000000c0000000b00000000000000190000000c000000010000000300000002000000010000000b00000003000000030000000600000004000000030000000a00000006000000030000000b0000000a000000040000000600000005000000060000000900000007000000060000000a000000090000000700000009000000080000000c000000190000000d0000000d000000180000000e0000000d00000019000000180000000e000000150000000f0000000e00000016000000150000000e00000017000000160000000e00000018000000170000000f00000012000000100000000f00000013000000120000000f0000001500000013000000100000001200000011000000130000001500000014000000
+      indices: 000000000b000000010000000f00000015000000130000000f00000013000000120000000f00000012000000100000000e00000018000000170000000e00000017000000160000000e00000016000000150000000e000000150000000f0000000d00000019000000180000000d000000180000000e0000000c000000190000000d000000070000000900000008000000060000000a00000009000000060000000900000007000000040000000600000005000000030000000b0000000a000000030000000a00000006000000030000000600000004000000010000000b0000000300000001000000030000000200000000000000190000000c000000000000000c0000000b000000100000001200000011000000130000001500000014000000
       edges:
       - {x: 0, y: 1}
       - {x: 0, y: 25}
@@ -1995,12 +1905,21 @@ TextureImporter:
         width: 21
         height: 60
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: arm_low_l
+        guid: ec7a0ddc8020d6244a3930c541549998
+        position: {x: 10.587433, y: 56.812927, z: 0}
+        rotation: {x: 0, y: 0, z: -0.7083193, w: 0.7058922}
+        length: 53.21206
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: 3bb386263ca7b464abf1ac1ba532d909
       internalID: -712652868
       vertices:
@@ -2266,12 +2185,21 @@ TextureImporter:
         width: 17
         height: 18
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: hand_r
+        guid: 3277e9b16ab431147977360a9a9e2503
+        position: {x: 8.770691, y: 17.340363, z: 0}
+        rotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+        length: 16.805258
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: 81ef6a6461f07a043b5a20863c2e8b72
       internalID: -88060958
       vertices:
@@ -2422,17 +2350,26 @@ TextureImporter:
       name: Body1_8
       rect:
         serializedVersion: 2
-        x: 154
-        y: 112
+        x: 153
+        y: 113
         width: 17
-        height: 18
+        height: 19
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: hand_l
+        guid: 114128f050794c04eb1a9447249490cf
+        position: {x: 7.796036, y: 17.162827, z: 0}
+        rotation: {x: 0, y: 0, z: -0.7064434, w: 0.7077695}
+        length: 16.5663
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: 09a5297c3c2aeef49ae700c850bf51b9
       internalID: 1208901315
       vertices:
@@ -2588,12 +2525,21 @@ TextureImporter:
         width: 23
         height: 79
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: leg_low_r
+        guid: c4e54675b0c2b4f4aa1388299409eb5b
+        position: {x: 10.567123, y: 78.91309, z: 0}
+        rotation: {x: 0, y: 0, z: -0.705484, w: 0.7087259}
+        length: 77.303894
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: 29ac04e13e8a59e4a9aeb2d9bd9fa206
       internalID: 2034122104
       vertices:
@@ -2849,12 +2795,21 @@ TextureImporter:
         width: 27
         height: 75
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: leg_up_r
+        guid: 104d0c3f9166659499338107b23e327d
+        position: {x: 13.2886505, y: 73.644684, z: 0}
+        rotation: {x: 0, y: 0, z: -0.70931304, w: 0.70489365}
+        length: 70.71528
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: c860a1702963c0a45b003aae68710f10
       internalID: -206493791
       vertices:
@@ -3120,12 +3075,21 @@ TextureImporter:
         width: 26
         height: 75
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: leg_up_l
+        guid: 128f97b4215ad6e4882a3876801abdaa
+        position: {x: 12.252686, y: 73.41253, z: 0}
+        rotation: {x: 0, y: 0, z: -0.7027288, w: 0.7114579}
+        length: 71.603264
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: e2109123b2abb0b4d839cae3cc04b138
       internalID: -1139591544
       vertices:
@@ -3391,12 +3355,21 @@ TextureImporter:
         width: 22
         height: 79
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: leg_low_l
+        guid: 39ddca60740015a4bbbc3da815cdb364
+        position: {x: 10.140411, y: 78.147865, z: 0}
+        rotation: {x: 0, y: 0, z: -0.7045119, w: 0.7096922}
+        length: 76.529755
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: 04450eabc64e92443b2bc2c4fb60f787
       internalID: -1900927876
       vertices:
@@ -3662,12 +3635,21 @@ TextureImporter:
         width: 38
         height: 18
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: foot_r
+        guid: 5f598c525db0c094897c4090518246c8
+        position: {x: 0.5428581, y: 8.037844, z: 0}
+        rotation: {x: 0, y: 0, z: -0.027313216, w: 0.99962693}
+        length: 35.934723
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: f99774db83a02174fafd8a6e56b9cdcf
       internalID: -1052266267
       vertices:
@@ -3893,12 +3875,21 @@ TextureImporter:
         width: 38
         height: 18
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
-      bones: []
+      bones:
+      - name: foot_l
+        guid: 22f6082fd2a1c4749aee7451f9fd2707
+        position: {x: 0.63681793, y: 8.355915, z: 0}
+        rotation: {x: 0, y: 0, z: -0.011538067, w: 0.9999334}
+        length: 36.45145
+        parentId: -1
+        color:
+          serializedVersion: 2
+          rgba: 4278190335
       spriteID: 44892dd5374adf7488cb2a862be4f76d
       internalID: -1712470779
       vertices:
