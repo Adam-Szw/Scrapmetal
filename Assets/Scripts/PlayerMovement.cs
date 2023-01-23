@@ -18,6 +18,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public GameObject torso;
     [SerializeField] public GameObject head;
 
+    [SerializeField] public GameObject armUpRight;
+    [SerializeField] public GameObject handBone;
+    [SerializeField] public GameObject weapon;
+    private GameObject spawnedWeapon;
+
     private Vector3 moveVector = new Vector3(0.0f, 0.0f, 0.0f);
 
     //direction of movement
@@ -28,8 +33,13 @@ public class PlayerMovement : MonoBehaviour
     private bool movingAgainstPointer = false;
     private bool movingBackwards = false;
 
+    //aiming stuff (temporary)
+    private bool weaponEquipped = false;
+    private bool aiming = false;
+
     private Transform torsoBoneTransform;
     private Transform headBoneTransform;
+    private Transform armUpRightTransform;
 
     private enum Direction
     {
@@ -38,8 +48,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        torsoBoneTransform = torso.transform.Find("torso");
-        headBoneTransform = head.transform.Find("head");
+        torsoBoneTransform = torso.transform;
+        headBoneTransform = head.transform;
+        armUpRightTransform = armUpRight.transform;
     }
 
     void Update()
@@ -53,8 +64,30 @@ public class PlayerMovement : MonoBehaviour
 
         //apply transformations
         FlipSprite();
-        BendBodypart(headBoneTransform, false, headBendMaxAngles, headBendCompletionTime, 180.0f);
-        BendBodypart(torsoBoneTransform, false, torsoBendMaxAngles, torsoBendCompletionTime, 180.0f);
+        BendBodypart(headBoneTransform, false, headBendMaxAngles, headBendCompletionTime, 180.0f, GetFacingVector());
+        BendBodypart(torsoBoneTransform, false, torsoBendMaxAngles, torsoBendCompletionTime, 0.0f, GetFacingVector());
+
+        //aiming stuff (temporary)
+        if (PlayerInput.two) 
+        {
+            if (handBone.transform.childCount == 0) spawnedWeapon = Instantiate(weapon, handBone.transform);
+            spawnedWeapon.GetComponent<SpriteRenderer>().sortingOrder = 13;
+            weaponEquipped = true;
+        }
+        if (PlayerInput.one) 
+        {
+            if (handBone.transform.childCount > 0) Destroy(handBone.transform.GetChild(0).gameObject);
+            weaponEquipped = false;
+        }
+        if (PlayerInput.rightclick && weaponEquipped) aiming = true;
+        if (!PlayerInput.rightclick) aiming = false;
+        armsAnimator.SetBool("Aiming", aiming);
+        armsAnimator.SetBool("1-H-Weapon Equipped", weaponEquipped);
+        if (aiming) BendBodypart(armUpRightTransform, false, 90, 0.1f, 180.0f, GetFacingVector());
+        else
+        {
+            armUpRightTransform.localEulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
+        }
 
         //apply animation
         UpdateDirections(moveVector);
@@ -145,10 +178,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //applies rotation to bodypart based on parameters
-    private void BendBodypart(Transform bodypartTransform, bool instant, float maxBend, float bendCompleteTime, float baseAngle)
+    private void BendBodypart(Transform bodypartTransform, bool instant, float maxBend, float bendCompleteTime, float baseAngle, Vector2 facing)
     {
-        Vector2 facing = GetFacingVector();
-
         float targetAngle = Mathf.Sign(facing.x) * Vector2.SignedAngle(new Vector2(facing.x, 0.0f), facing);
         targetAngle *= maxBend / 90.0f;
         targetAngle += baseAngle;

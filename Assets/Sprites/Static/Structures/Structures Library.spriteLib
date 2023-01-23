@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library:
+  - m_Name: Front
+    m_Hash: 1060785650
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Bricks_1
+      m_Hash: 1382641502
+      m_Sprite: {fileID: -9274007, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -9274007, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+    - m_Name: MetalSheet_1
+      m_Hash: 1406226374
+      m_Sprite: {fileID: 695448121, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 695448121, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  - m_Name: Side
+    m_Hash: -2085374837
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Bricks_0
+      m_Hash: 627990472
+      m_Sprite: {fileID: 1971945608, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1971945608, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+    - m_Name: MetalSheet_0
+      m_Hash: 618037072
+      m_Sprite: {fileID: 314342347, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 314342347, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  - m_Name: Roof
+    m_Hash: 1165961005
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Bricks_3
+      m_Hash: -1134096782
+      m_Sprite: {fileID: -1397437554, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1397437554, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+    - m_Name: MetalSheet_2
+      m_Hash: -891806084
+      m_Sprite: {fileID: -2053442475, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -2053442475, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  - m_Name: Edge_Vertical
+    m_Hash: 1399470278
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Bricks_2
+      m_Hash: -882884892
+      m_Sprite: {fileID: -1298995947, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1298995947, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+    - m_Name: MetalSheet_3
+      m_Hash: -1109446934
+      m_Sprite: {fileID: -338222560, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -338222560, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  - m_Name: Edge_Horizontal
+    m_Hash: 1815955255
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Bricks_4
+      m_Hash: 570661841
+      m_Sprite: {fileID: 4188882, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 4188882, guid: ac0f9ddff65649e4c94fa0d5d45ebc3f, type: 3}
+    - m_Name: MetalSheet_4
+      m_Hash: 599505737
+      m_Sprite: {fileID: -1894173048, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1894173048, guid: c1e93a952adfb934c8c97fbf3adb50ee, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  m_PrimaryLibraryGUID: 

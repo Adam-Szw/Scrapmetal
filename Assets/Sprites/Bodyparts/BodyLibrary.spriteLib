@@ -328,4 +328,25 @@ MonoBehaviour:
       m_SpriteOverride: {fileID: 1930961348, guid: 16f0dc64999526641a927445021383c3, type: 3}
     m_FromMain: 0
     m_EntryOverrideCount: 3
+  - m_Name: Face
+    m_Hash: -1524181927
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Face1
+      m_Hash: -1848762317
+      m_Sprite: {fileID: 21300000, guid: c9a3d19ed85568f428942b16ad35bb5e, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: c9a3d19ed85568f428942b16ad35bb5e, type: 3}
+    - m_Name: Face2
+      m_Hash: 147288457
+      m_Sprite: {fileID: 21300000, guid: 5459c81e281541b4a893eb487537e9e3, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 5459c81e281541b4a893eb487537e9e3, type: 3}
+    - m_Name: Face3
+      m_Hash: 2143306015
+      m_Sprite: {fileID: 21300000, guid: 45949771a5256314eba3eae0f7dd7359, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 45949771a5256314eba3eae0f7dd7359, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
   m_PrimaryLibraryGUID: 
