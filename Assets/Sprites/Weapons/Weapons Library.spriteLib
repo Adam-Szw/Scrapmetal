@@ -19,9 +19,9 @@ MonoBehaviour:
     m_OverrideEntries:
     - m_Name: RivetGun_Weapon
       m_Hash: 1051659770
-      m_Sprite: {fileID: 403538233, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
+      m_Sprite: {fileID: 1445578271, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
       m_FromMain: 0
-      m_SpriteOverride: {fileID: 403538233, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
+      m_SpriteOverride: {fileID: 1445578271, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
     m_FromMain: 0
     m_EntryOverrideCount: 1
   - m_Name: Projectile
@@ -30,9 +30,9 @@ MonoBehaviour:
     m_OverrideEntries:
     - m_Name: RivetGun_Projectile
       m_Hash: -635407427
-      m_Sprite: {fileID: -439872079, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
+      m_Sprite: {fileID: 1389838604, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
       m_FromMain: 0
-      m_SpriteOverride: {fileID: -439872079, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
+      m_SpriteOverride: {fileID: 1389838604, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
     m_FromMain: 0
     m_EntryOverrideCount: 1
   m_PrimaryLibraryGUID: 
