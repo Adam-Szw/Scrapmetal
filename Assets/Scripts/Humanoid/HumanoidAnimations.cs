@@ -61,6 +61,8 @@ public class HumanoidAnimations : MonoBehaviour
 
     void Update()
     {
+        if (GlobalControl.paused) return;
+
         UpdateAnimators();
         if (alive) UpdateFacing();
         if (alive && stateHands == handsState.pistol)

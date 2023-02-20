@@ -30,6 +30,8 @@ public class WeaponBehaviour : MonoBehaviour
 
     void Update()
     {
+        if (GlobalControl.paused) return;
+
         // Update the animator
         animator.SetBool("Firing", firing);
 

@@ -26,6 +26,8 @@ public class HumanoidBehaviour : MonoBehaviour
 
     void Update()
     {
+        if (GlobalControl.paused) return;
+
         // todo - make this a state machine not update for performance
         animations.alive = alive;
     }
@@ -63,18 +65,21 @@ public class HumanoidBehaviour : MonoBehaviour
 
     public void ShootActiveWeaponOnce(Vector2 target)
     {
+        if (!weaponActive) return;
         weaponActive.GetComponent<WeaponBehaviour>().target = target;
         weaponActive.GetComponent<WeaponBehaviour>().ShootOnce();
     }
 
     public void ShootActiveWeaponOn(Vector2 target)
     {
+        if (!weaponActive) return;
         weaponActive.GetComponent<WeaponBehaviour>().target = target;
         weaponActive.GetComponent<WeaponBehaviour>().firing = true;
     }
 
     public void ShootActiveWeaponOff(Vector2 target)
     {
+        if (!weaponActive) return;
         weaponActive.GetComponent<WeaponBehaviour>().target = target;
         weaponActive.GetComponent<WeaponBehaviour>().firing = false;
     }

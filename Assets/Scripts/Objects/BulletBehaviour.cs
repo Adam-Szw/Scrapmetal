@@ -23,6 +23,8 @@ public class BulletBehaviour : MonoBehaviour
 
     void Update()
     {
+        if (GlobalControl.paused) return;
+
         rb.velocity = rb.velocity.normalized * Mathf.Max((rb.velocity.magnitude + acceleration * Time.deltaTime), 0.0f);
         lifeRemaining -= Time.deltaTime;
         if (lifeRemaining < 0.0f) Destroy(gameObject);

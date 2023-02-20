@@ -87,7 +87,9 @@ public class StructureBehaviour : MonoBehaviour
 
     void Update()
     {
-        if(maskEnabled)
+        if (GlobalControl.paused) return;
+
+        if (maskEnabled)
         {
             foreach(GameObject mask in masks)
             {

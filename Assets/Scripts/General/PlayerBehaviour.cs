@@ -21,6 +21,8 @@ public class PlayerBehaviour : MonoBehaviour
 
     void Update()
     {
+        if (GlobalControl.paused) return;
+
         // Placeholder for inventory system
         if (PlayerInput.two)
         {

@@ -17,6 +17,8 @@ public class EntityMovement : MonoBehaviour
 
     void Update()
     {
+        if (GlobalControl.paused) return;
+
         rb.velocity = velocityVector.normalized * speed;
     }
 
