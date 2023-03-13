@@ -262,6 +262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf228e229e5622e45b4795c15f39a136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadButton: {fileID: 1169451299710642854}
+  saveButton: {fileID: 1415051376138434095}
   exitButton: {fileID: 400961413394860701}
 --- !u!1 &3329289915986964991
 GameObject:

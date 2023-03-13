@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/* This script controls visibility inside and around buildings - displaying floors or transparency mask where the player is
+ */
 public class StructureBehaviour : MonoBehaviour
 {
-
-    public Vector2 currPlayerPos = Vector2.zero;
-
     [SerializeField] private GameObject tilemapOutsideGroundFloor;
     // All outside tilemaps should go here except first floor as it has special behaviour and is assigned above
     [SerializeField] private List<GameObject> tilemapsOutside;
     [SerializeField] private List<GameObject> tilemapsInside;
     [SerializeField] private List<GameObject> masks;
+
+    public Vector2 currPlayerPos = Vector2.zero;
 
     private bool maskEnabled = false;
 
@@ -89,6 +90,7 @@ public class StructureBehaviour : MonoBehaviour
     {
         if (GlobalControl.paused) return;
 
+        // Move all masks so the player is visible
         if (maskEnabled)
         {
             foreach(GameObject mask in masks)

@@ -5,20 +5,24 @@ using UnityEngine.UI;
 
 public class MainMenuControl : MonoBehaviour
 {
-
-    [SerializeField] private Button exitButton;
+    public Button loadButton;
+    public Button saveButton;
+    public Button exitButton;
 
     private void Start()
     {
         exitButton.onClick.AddListener(() =>
         {
-            ExitGame();
+            Application.Quit();
+        });
+        saveButton.onClick.AddListener(() =>
+        {
+            GlobalControl.Save();
+        });
+        loadButton.onClick.AddListener(() =>
+        {
+            GlobalControl.Load();
+            MenuControl.destroyInGameMenu();
         });
     }
-
-    public void ExitGame()
-    {
-        Application.Quit();
-    }
-
 }

@@ -2,20 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+/* Class responsible for controlling in-game view
+ */
+public class CameraControl
 {
-    [SerializeField] public Camera currentCamera;
-    [SerializeField] public GameObject player;
+    public Camera currentCamera;
+    public GameObject player;
 
-    [SerializeField] public float minSize;
-    [SerializeField] public float maxSize;
-    [SerializeField] public float growthStartMultiplier;
-    [SerializeField] public float growthMultiplier;
-
-    void Update()
-    {
-        if (!GlobalControl.paused) AdjustCameraToPlayer();
-    }
+    private float minSize = 5.0f;
+    private float maxSize = 20.0f;
+    private float growthStartMultiplier = 0.6f;
+    private float growthMultiplier = 0.4f;
 
     // Using this camera as a reference, determines world space location of mouse pointer
     public static Vector2 GetPointerWorldSpace()
@@ -25,7 +22,7 @@ public class CameraMovement : MonoBehaviour
         return mouseRelative;
     }
 
-    private void AdjustCameraToPlayer()
+    public void AdjustCameraToPlayer()
     {
         Vector2 playerPos = player.transform.position;
         Vector2 newPos = (GetPointerWorldSpace() + playerPos) / 2.0f;

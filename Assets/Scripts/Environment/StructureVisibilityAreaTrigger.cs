@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Simple trigger script that detects entities entering building obscured areas and redirects events to StructureBehaviour
+ */
 public class StructureVisibilityAreaTrigger : MonoBehaviour
 {
 

@@ -863,12 +863,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5684202536283468193}
-  - component: {fileID: 3975556168037707223}
-  - component: {fileID: 5772002873259962976}
   - component: {fileID: 1766864077643462106}
-  - component: {fileID: 320522476800143808}
-  - component: {fileID: 6182356784077483070}
-  - component: {fileID: 7435975885395704580}
   - component: {fileID: 8151393122861713825}
   - component: {fileID: 3004433874769377208}
   - component: {fileID: -9073485821513108089}
@@ -895,53 +890,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3975556168037707223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2300210682344453543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2a9ecae8d2e4ff4d9d0db09270af5bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0
-  velocityVector: {x: 0, y: 0, z: 0}
---- !u!114 &5772002873259962976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2300210682344453543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77b0fe534d7685942bb2b48c4f22b9ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  legsAnimator: {fileID: 6058271718108719297}
-  armsAnimator: {fileID: 4076324663335772679}
-  bodyAnimator: {fileID: 2264059683290443064}
-  pelvis: {fileID: 2914138203396556755}
-  torso: {fileID: 3878246483029779350}
-  head: {fileID: 1838833578748393518}
-  arm_up_r: {fileID: 6523037651886689722}
-  arm_low_r: {fileID: 2901399317575702113}
-  hand_r: {fileID: 501862233421118891}
-  arm_up_l: {fileID: 6306342167627222327}
-  arm_low_l: {fileID: 3406718124627160511}
-  hand_l: {fileID: 5840699099318710249}
-  leg_up_r: {fileID: 288073826780343471}
-  leg_low_r: {fileID: 8321192927689374517}
-  foot_r: {fileID: 4296908824122968285}
-  leg_up_l: {fileID: 8394862260246635858}
-  leg_low_l: {fileID: 5028299294053796239}
-  foot_l: {fileID: 1646795382715339785}
-  alive: 1
-  stateHands: 0
-  stateMovement: 0
 --- !u!114 &1766864077643462106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -954,60 +902,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5239badd15024fe49a3ae2d7748f16f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animations: {fileID: 5772002873259962976}
   weaponAttachmentBone: {fileID: 4415601639827162915}
   weaponAttachmentOffset: {x: 0, y: 0}
   weaponSortLayer: 14
-  alive: 1
   health: 100
---- !u!114 &320522476800143808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2300210682344453543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68db8a2bfe3bf1a478b0e9660bd13a15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6182356784077483070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2300210682344453543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b8ade688edfb154aad7ea99bef8d801, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movement: {fileID: 3975556168037707223}
-  animations: {fileID: 5772002873259962976}
-  behaviour: {fileID: 1766864077643462106}
-  playerSpeed: 5
-  playerSpeedBackward: 3
-  weaponSlot1: {fileID: 8289283381652960123, guid: fd89ba2e5c1d76640a15387c94582754, type: 3}
---- !u!114 &7435975885395704580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2300210682344453543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c22d9387bd00b241a9366d65977d426, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentCamera: {fileID: 0}
-  player: {fileID: 2300210682344453543}
-  minSize: 5
-  maxSize: 20
-  growthStartMultiplier: 0.6
-  growthMultiplier: 0.4
 --- !u!50 &8151393122861713825
 Rigidbody2D:
   serializedVersion: 4

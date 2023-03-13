@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* This class allows us to make custom bindings to the keys
+ */
 public class PlayerInput : MonoBehaviour
 {
     public static bool up = false;
@@ -34,4 +36,5 @@ public class PlayerInput : MonoBehaviour
 
         mousePos = Input.mousePosition;
     }
+
 }

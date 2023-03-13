@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3484931087228209276
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1216973000764266709}
+  m_Layer: 0
+  m_Name: Attachpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1216973000764266709
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3484931087228209276}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.679, y: 0.118, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2012167021715772540}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8289283381652960123
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,13 +41,12 @@ GameObject:
   m_Component:
   - component: {fileID: 2012167021715772540}
   - component: {fileID: 4849702362177183039}
-  - component: {fileID: 2982142686879280532}
+  - component: {fileID: 1205884775276131913}
   - component: {fileID: 4110181467373699064}
   - component: {fileID: 5739487053823058763}
-  - component: {fileID: 4279955145626903748}
-  - component: {fileID: 387141458175381986}
-  m_Layer: 6
-  m_Name: Rivet_Gun_Projectile
+  - component: {fileID: 762638198330839663}
+  m_Layer: 0
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +63,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1216973000764266709}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -78,7 +109,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1389838604, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
+  m_Sprite: {fileID: 1445578271, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -89,7 +120,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2982142686879280532
+--- !u!114 &1205884775276131913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,13 +129,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 8289283381652960123}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a621de1071510404e9c4d6a1c7cc9b81, type: 3}
+  m_Script: {fileID: 11500000, guid: 0feb16cd56e27f54f9714e20246074b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedInitial: 20
-  acceleration: -1
-  lifespan: 3
-  damage: 0
+  projectileType: 1
+  damage: 10
+  delay: 0
+  cooldown: 0.1
+  projectileLink: Prefabs/Bullet
+  projectileAttachment: {fileID: 3484931087228209276}
+  projectileSortLayer: 20
+  animator: {fileID: 762638198330839663}
+  shootStateName: Rivet_Gun_Shoot
+  maxAmmo: 100
+  currAmmo: 100
+  owner: {fileID: 0}
+  target: {x: 1, y: 0}
+  firing: 0
 --- !u!114 &4110181467373699064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,41 +174,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -5.6904454e+10
---- !u!50 &4279955145626903748
-Rigidbody2D:
+  m_SpriteKey: -1.00420696e-13
+--- !u!95 &762638198330839663
+Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8289283381652960123}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
---- !u!70 &387141458175381986
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8289283381652960123}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.0037888442, y: -4.5166537e-10}
-  m_Size: {x: 0.22040614, y: 0.04443717}
-  m_Direction: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3ccc2824f39aa7944a2e386b7a11385e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
