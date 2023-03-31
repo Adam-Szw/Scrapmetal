@@ -8346,13 +8346,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1081304795229195437, guid: b097b81b076c7224c848a20382595175, type: 3}
+      propertyPath: weaponSortLayer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1081304795229195437, guid: b097b81b076c7224c848a20382595175, type: 3}
+      propertyPath: weaponAttachmentBone
+      value: 
+      objectReference: {fileID: 1081304793671161806}
     - target: {fileID: 5235255288027431337, guid: b097b81b076c7224c848a20382595175, type: 3}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5235255288027431337, guid: b097b81b076c7224c848a20382595175, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 36.27
+      value: 2.37
       objectReference: {fileID: 0}
     - target: {fileID: 5235255288027431337, guid: b097b81b076c7224c848a20382595175, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8402,8 +8410,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 177483598, guid: b6b7e088a9cedb446938149193b4186a, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1694683315040565577, guid: b097b81b076c7224c848a20382595175, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b097b81b076c7224c848a20382595175, type: 3}
+--- !u!1 &1081304793671161806 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3622810208228068272, guid: b097b81b076c7224c848a20382595175, type: 3}
+  m_PrefabInstance: {fileID: 1081304793671161805}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2300210682929442553 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5623195859664910376, guid: b097b81b076c7224c848a20382595175, type: 3}

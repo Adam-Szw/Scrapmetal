@@ -12,15 +12,14 @@ using Scene = UnityEngine.SceneManagement.Scene;
  */
 public class GlobalControl : MonoBehaviour
 {
+    // Global variables
+    public static int projectileSortLayer = 20; // sorting layer for all projectiles in scene
+
+
     public GameObject player;
     public Camera currentCamera;
 
     public static CameraControl cameraControl;
-
-    public static string PLAYER_PATH = "Prefabs/Player";
-    public static string HUMANOID_PATH = "Prefabs/Humanoid";
-    public static string BULLET_PATH = "Prefabs/Bullet";
-    public static string WEAPON_PATH = "Prefabs/Weapon";
 
     public static bool paused { get; private set; }
 
@@ -93,6 +92,7 @@ public class GlobalControl : MonoBehaviour
         }
         if (scene != null)
         {
+            cameraControl.Load(scene.cameraData);
             // Destroy entities in current scene
             DestroyEntities(sceneCurr);
             // Load entities using save file
@@ -102,9 +102,9 @@ public class GlobalControl : MonoBehaviour
 
     }
 
-    private static Tuple<PlayerData, HumanoidData> GetPlayerData(string sceneName)
+    private static PlayerData GetPlayerData(string sceneName)
     {
-        Tuple<PlayerData, HumanoidData> playerData = null;
+        PlayerData playerData = null;
         // Find the player object in top layer of the scene
         List<GameObject> objects = SceneManager.GetSceneByName(sceneName).GetRootGameObjects().ToList();
         foreach (GameObject obj in objects)
@@ -121,6 +121,7 @@ public class GlobalControl : MonoBehaviour
     {
         SceneData sceneData = new SceneData();
         sceneData.name = name;
+        sceneData.cameraData = cameraControl.Save();
         Scene scene = SceneManager.GetSceneByName(name);
         List<GameObject> objects = scene.GetRootGameObjects().ToList();
         // Go over all objects present in top layer of the scene, searching for various saveable entities
@@ -131,7 +132,7 @@ public class GlobalControl : MonoBehaviour
             PlayerBehaviour pB = obj.GetComponent<PlayerBehaviour>();
             if (hB && !pB) sceneData.humanoids.Add(hB.Save());
             // Save all bullets
-            BulletBehaviour bB = obj.GetComponent<BulletBehaviour>();
+            ProjectileBehaviour bB = obj.GetComponent<ProjectileBehaviour>();
             if (bB) sceneData.bullets.Add(bB.Save());
 
         }
@@ -149,27 +150,25 @@ public class GlobalControl : MonoBehaviour
             HumanoidBehaviour hB = obj.GetComponent<HumanoidBehaviour>();
             if (hB) Destroy(obj);
             // Destroy bullets
-            BulletBehaviour bB = obj.GetComponent<BulletBehaviour>();
+            ProjectileBehaviour bB = obj.GetComponent<ProjectileBehaviour>();
             if (bB) Destroy(obj);
         }
     }
 
     /* Load entities in current scene state using save file
      */
-    private static void LoadEntities(SceneData data, Tuple<PlayerData, HumanoidData> playerData)
+    private static void LoadEntities(SceneData data, PlayerData playerData)
     {
-        GameObject player = Instantiate(Resources.Load<GameObject>(PLAYER_PATH));
+        GameObject player = Instantiate(Resources.Load<GameObject>(PlayerBehaviour.PLAYER_PATH));
         player.GetComponent<PlayerBehaviour>().Load(playerData);
         cameraControl.player = player;
         foreach (HumanoidData hD in data.humanoids)
         {
-            GameObject obj = Instantiate(Resources.Load<GameObject>(HUMANOID_PATH));
-            obj.GetComponent<HumanoidBehaviour>().Load(hD);
+            HumanoidBehaviour.SpawnEntity(hD);
         }
         foreach (BulletData bB in data.bullets)
         {
-            GameObject obj = Instantiate(Resources.Load<GameObject>(BULLET_PATH));
-            obj.GetComponent<BulletBehaviour>().Load(bB);
+            ProjectileBehaviour.SpawnEntity(bB);
         }
     }
 }

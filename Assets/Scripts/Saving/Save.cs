@@ -11,6 +11,6 @@ using System.Threading.Tasks;
 public class Save
 {
     public string currentScene;
-    public Tuple<PlayerData, HumanoidData> playerData;
+    public PlayerData playerData;
     public List<SceneData> scenes = new List<SceneData>();
 }

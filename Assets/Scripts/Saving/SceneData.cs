@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 public class SceneData
 {
     public string name;
+    public CameraData cameraData;
     public List<HumanoidData> humanoids = new List<HumanoidData>();
     public List<BulletData> bullets = new List<BulletData>();
 }

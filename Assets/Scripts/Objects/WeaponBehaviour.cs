@@ -1,40 +1,50 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static WeaponBehaviour;
 
-public class WeaponBehaviour : MonoBehaviour
+public class WeaponBehaviour : ItemBehaviour
 {
-    [SerializeField] private ProjectileType projectileType;
-    public float damage;
-    public float delay;
-    public float cooldown;
-    public string projectileLink;              // prefab for the projectile
-    public GameObject projectileAttachment;    // attachment bone of weapon where the bullet will be spawned
-    public int projectileSortLayer;            // sorting layer index that will be given to new projectile
-    public Animator animator;
-    public string shootStateName;              // name of animation clip that will be played when weapon is fired
+    public static new string PREFAB_PATH = "Prefabs/Weapon";
+
+    public ProjectileType projectileType;
+    public Vector2 target = Vector2.zero;   // Targeting location
+    public GameObject targetLockOn;         // Used only in missiles
+
     public int maxAmmo;
     public int currAmmo;
+    public float cooldown;
 
-    public GameObject owner;
-    public Vector2 target = Vector2.zero;
-    public bool firing = false;
-
+    private bool firing = false;
     private float cooldownCurrent = 0.0f;
+    private Animator animator;
+    private GameObject projectilePrefab;
+    private GameObject projectileAttachment;
 
-    enum ProjectileType
+    public enum ProjectileType
     {
         melee, bullet, missile
     }
 
-    void Update()
+    protected new void Awake()
     {
+        base.Awake();
+        projectileAttachment = HelpFunc.RecursiveFindChild(this.gameObject, "Attachpoint");
+        animator = GetComponent<Animator>();
+        if(projectileType == ProjectileType.bullet) projectilePrefab = Resources.Load<GameObject>(ProjectileBehaviour.PREFAB_PATH);
+    }
+
+    protected new void Update()
+    {
+        base.Update();
         if (GlobalControl.paused) return;
 
         // Update the animator
         animator.SetBool("Firing", firing);
 
+        // Calculate cooldown
         cooldownCurrent = Mathf.Max(0.0f, cooldownCurrent - Time.deltaTime);
     }
 
@@ -47,23 +57,21 @@ public class WeaponBehaviour : MonoBehaviour
         Vector2 direction = target - (Vector2) transform.position;
         direction.Normalize();
         Quaternion rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-        GameObject proj = Instantiate(Resources.Load<GameObject>(projectileLink), projectileAttachment.transform.position, rotation);
-        proj.GetComponent<SpriteRenderer>().sortingOrder = projectileSortLayer;
+        GameObject proj = Instantiate(projectilePrefab, projectileAttachment.transform.position, rotation);
+        proj.GetComponent<SpriteRenderer>().sortingOrder = GlobalControl.projectileSortLayer;
 
         // Apply speed and direction based on type of projectile
         if(projectileType == ProjectileType.bullet)
         {
-            proj.GetComponent<BulletBehaviour>().ownerID = this.gameObject.GetInstanceID();
-            proj.GetComponent<BulletBehaviour>().SetVelocityVector(direction);
-            proj.GetComponent<BulletBehaviour>().SetSpeed(proj.GetComponent<BulletBehaviour>().speedInitial);
-            // Transfer weapon damage to the ammo
-            proj.GetComponent<BulletBehaviour>().damage = damage;
+            proj.GetComponent<ProjectileBehaviour>().ownerID = this.gameObject.GetInstanceID();
+            proj.GetComponent<ProjectileBehaviour>().SetVelocity(direction);
+            proj.GetComponent<ProjectileBehaviour>().SetSpeed(proj.GetComponent<ProjectileBehaviour>().speedInitial);
         }
 
         // Ammo, cooldown and animation
         currAmmo--;
         cooldownCurrent = cooldown;
-        animator.Play(shootStateName);
+        animator.Play("Shoot");
 
     }
 
@@ -75,11 +83,42 @@ public class WeaponBehaviour : MonoBehaviour
     public WeaponData Save()
     {
         WeaponData data = new WeaponData();
+        data.projectileType = this.projectileType;
+        data.damage = this.damage;
+        data.delay = this.delay ;
+        data.cooldown = this.cooldown;
+        data.maxAmmo = this.maxAmmo;
+        data.target = HelpFunc.VectorToArray(this.target);
+        data.firing = this.firing;
+        data.currAmmo = this.currAmmo;
+        data.cooldownCurrent = this.cooldownCurrent;
         return data;
     }
 
     public void Load(WeaponData data)
     {
-
+        this.projectileType = data.projectileType;
+        this.damage = data.damage;
+        this.delay = data.delay;
+        this.cooldown = data.cooldown;
+        this.maxAmmo = data.maxAmmo;
+        this.target = HelpFunc.DataToVec2(data.target);
+        this.firing = data.firing;
+        this.currAmmo = data.currAmmo;
+        this.cooldownCurrent = data.cooldownCurrent;
     }
+}
+
+[Serializable]
+public class WeaponData
+{
+    public ProjectileType projectileType;
+    public float damage;
+    public float delay;
+    public float cooldown;
+    public int maxAmmo;
+    public float[] target;
+    public bool firing;
+    public int currAmmo;
+    public float cooldownCurrent = 0.0f;
 }

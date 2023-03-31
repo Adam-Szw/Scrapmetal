@@ -5,11 +5,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.U2D.Animation;
+using UnityEngine.UIElements;
 using static HumanoidAnimations;
 using ColorUtility = UnityEngine.ColorUtility;
 
-public class HumanoidBehaviour : EntityBehaviour
+public class HumanoidBehaviour : CreatureBehaviour
 {
+
+    public static string PREFAB_PATH = "Prefabs/Humanoid";
+
     [SerializeField] private GameObject weaponAttachmentBone;
     [SerializeField] private Vector2 weaponAttachmentOffset;
     [SerializeField] private int weaponSortLayer;
@@ -24,32 +28,31 @@ public class HumanoidBehaviour : EntityBehaviour
     new protected void Awake()
     {
         base.Awake();
-        Animator legsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Legs").GetComponent<Animator>();
-        Animator armsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Arms").GetComponent<Animator>();
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
-        animations = new HumanoidAnimations(this.gameObject, legsAnimator, armsAnimator, bodyAnimator, transform);
+        Animator armsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Arms").GetComponent<Animator>();
+        Animator legsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Legs").GetComponent<Animator>();
+        animations = new HumanoidAnimations(transform, new List<Animator>() { bodyAnimator, armsAnimator, legsAnimator }, new List<string>(BODYPARTS));
     }
 
-    protected void Update()
+    new protected void Update()
     {
+        base.Update();
         if (GlobalControl.paused) return;
-        if (alive) animations.UpdateRotations();
-        UpdateRigidBody();
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    protected override void FlinchFallback()
     {
-        // If hit by a bullet
-        if (!(other.gameObject.GetComponent<BulletBehaviour>() == null))
-        {
-            BulletBehaviour bulletBehaviour = other.gameObject.GetComponent<BulletBehaviour>();
-            // Do nothing if hit yourself
-            if (bulletBehaviour.ownerID == this.gameObject.GetInstanceID()) return;
-            health -= bulletBehaviour.damage;
-            if (health <= 0) SetAlive(false);
-            Destroy(other.gameObject);
-            if (alive) animations.PlayFlinch();
-        }
+        if (GetAlive()) animations.PlayFlinch();
+    }
+
+    protected override void DeathFallback()
+    {
+        animations.SetAlive(GetAlive());
+    }
+
+    protected override void AnimationUpdateFallback()
+    {
+        animations.UpdateRotations();
     }
 
     public void SetWeaponActive(GameObject weapon)
@@ -62,7 +65,7 @@ public class HumanoidBehaviour : EntityBehaviour
         weaponActive = Instantiate(weapon, weaponAttachmentBone.transform.position + (Vector3) weaponAttachmentOffset,
             new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), weaponAttachmentBone.transform);
         weaponActive.GetComponent<SpriteRenderer>().sortingOrder = weaponSortLayer;
-        weaponActive.GetComponent<WeaponBehaviour>().owner = gameObject;
+        weaponActive.GetComponent<WeaponBehaviour>().ownerID = this.gameObject.GetInstanceID();
 
     }
 
@@ -73,62 +76,6 @@ public class HumanoidBehaviour : EntityBehaviour
         weaponActive.GetComponent<WeaponBehaviour>().ShootOnce();
     }
 
-    public void ShootActiveWeaponOn(Vector2 target)
-    {
-        if (!weaponActive) return;
-        weaponActive.GetComponent<WeaponBehaviour>().target = target;
-        weaponActive.GetComponent<WeaponBehaviour>().firing = true;
-    }
-
-    public void ShootActiveWeaponOff(Vector2 target)
-    {
-        if (!weaponActive) return;
-        weaponActive.GetComponent<WeaponBehaviour>().target = target;
-        weaponActive.GetComponent<WeaponBehaviour>().firing = false;
-    }
-
-    public void SetAlive(bool alive)
-    {
-        this.alive = alive;
-        animations.SetAlive(alive);
-        if (!alive) DisableColliders(transform);
-        if (!alive) SetSpeed(0.0f);
-    }
-
-    public bool GetAlive() { return alive; }
-
-    // Returns data from which this humanoid can be replicated
-    new public HumanoidData Save()
-    {
-        HumanoidData data = new HumanoidData(base.Save());
-        if (weaponActive) data.weaponActive = weaponActive.GetComponent<WeaponBehaviour>().Save();
-        else data.weaponActive = null;
-        data.bodypartData = SaveBodypartData();
-        data.animationData = animations.Save();
-        return data;
-    }
-
-    public void Load(HumanoidData data)
-    {
-        base.Load(data);
-        // Refresh alive for humanoid script
-        SetAlive(alive);
-
-        // rework this
-        if(data.weaponActive != null)
-        {
-            weaponActive = Instantiate(Resources.Load<GameObject>(GlobalControl.WEAPON_PATH),
-                weaponAttachmentBone.transform.position + (Vector3)weaponAttachmentOffset,
-                new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), weaponAttachmentBone.transform);
-            weaponActive.GetComponent<SpriteRenderer>().sortingOrder = weaponSortLayer;
-            weaponActive.GetComponent<WeaponBehaviour>().owner = gameObject;
-            weaponActive.GetComponent<WeaponBehaviour>().Load(data.weaponActive);
-        }
-        LoadBodyPartData(data.bodypartData);
-        animations.Load(data.animationData);
-    }
-
-    // This stuff should be moved to its own class
     private List<string> SaveBodypartData()
     {
         List<string> data = new List<string>();
@@ -158,21 +105,56 @@ public class HumanoidBehaviour : EntityBehaviour
         }
     }
 
-    // Recursively disables all colliders in the object
-    private void DisableColliders(Transform parent)
+    // Returns data from which this humanoid can be replicated
+    new public HumanoidData Save()
     {
-        CapsuleCollider2D capsuleCollider = parent.GetComponent<CapsuleCollider2D>();
-        if (capsuleCollider != null) capsuleCollider.enabled = false;
-        BoxCollider2D boxCollider = parent.GetComponent<BoxCollider2D>();
-        if (boxCollider != null) boxCollider.enabled = false;
-        foreach (Transform child in parent)
+        HumanoidData data = new HumanoidData(base.Save());
+        if (weaponActive) data.weaponActive = weaponActive.GetComponent<WeaponBehaviour>().Save();
+        else data.weaponActive = null;
+        data.bodypartData = SaveBodypartData();
+        data.animationData = animations.Save();
+        return data;
+    }
+
+    public void Load(HumanoidData data)
+    {
+        base.Load(data);
+        SetAlive(GetAlive());
+
+        // rework this
+        if (data.weaponActive != null)
         {
-            capsuleCollider = child.GetComponent<CapsuleCollider2D>();
-            if (capsuleCollider != null) capsuleCollider.enabled = false;
-            boxCollider = child.GetComponent<BoxCollider2D>();
-            if (boxCollider != null) boxCollider.enabled = false;
-            DisableColliders(child);
+            weaponActive = Instantiate(Resources.Load<GameObject>(WeaponBehaviour.PREFAB_PATH),
+                weaponAttachmentBone.transform.position + (Vector3)weaponAttachmentOffset,
+                new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), weaponAttachmentBone.transform);
+            weaponActive.GetComponent<WeaponBehaviour>().Load(data.weaponActive);
+            weaponActive.GetComponent<SpriteRenderer>().sortingOrder = weaponSortLayer;
         }
+        LoadBodyPartData(data.bodypartData);
+        animations.Load(data.animationData);
+    }
+
+    public static void SpawnEntity(HumanoidData data)
+    {
+        GameObject obj = Instantiate(Resources.Load<GameObject>(HumanoidBehaviour.PREFAB_PATH));
+        obj.GetComponent<HumanoidBehaviour>().Load(data);
     }
 
 }
+
+[Serializable]
+public class HumanoidData : CreatureData
+{
+    public HumanoidData() { }
+
+    public HumanoidData(CreatureData data) : base(data)
+    {
+        this.alive = data.alive;
+        this.health = data.health;
+    }
+
+    public WeaponData weaponActive;
+    public List<string> bodypartData;
+    public HumanoidAnimationData animationData;
+}
+

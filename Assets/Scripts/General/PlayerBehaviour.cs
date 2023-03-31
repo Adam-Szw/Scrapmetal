@@ -5,15 +5,16 @@ using UnityEngine;
 
 /* Everything that is unique to the player and not other humanoid NPCs goes here
  */
-public class PlayerBehaviour : MonoBehaviour
+public class PlayerBehaviour : HumanoidBehaviour
 {
+
+    public static string PLAYER_PATH = "Prefabs/Player";
+
     [SerializeField] private float playerSpeed;
     [SerializeField] private float playerSpeedBackward;
 
     // temporary - to be replaced by inventory system
     public GameObject weaponSlot1;
-
-    private HumanoidBehaviour humanoidBehaviour;
 
     // Values on last frame
     private bool upPressed = false;
@@ -24,47 +25,40 @@ public class PlayerBehaviour : MonoBehaviour
     // Current movement direction vector deducted from inputs
     Vector2 moveVector = Vector3.zero;
 
-    void Awake()
+    new void Update()
     {
-        humanoidBehaviour = this.gameObject.GetComponent<HumanoidBehaviour>();
-    }
-
-    void Update()
-    {
-        if (GlobalControl.paused) return;
+        base.Update();
 
         // Trigger update of animations, rigidbody settings etc. if new input provided
         if (KeyStateChanged()) UpdateState();
 
         // Aiming needs to be done every frame
-        humanoidBehaviour.animations.SetVectors(moveVector, GetFacingVector(), CameraControl.GetPointerWorldSpace());
+        animations.SetVectors(moveVector, GetFacingVector(), CameraControl.GetPointerWorldSpace());
 
         // Placeholder for inventory system
         if (PlayerInput.two)
         {
-            humanoidBehaviour.SetWeaponActive(weaponSlot1);
-            humanoidBehaviour.animations.SetStateHands(HumanoidAnimations.handsState.pistol);
+            SetWeaponActive(weaponSlot1);
+            animations.SetStateHands(HumanoidAnimations.handsState.pistol);
         }
 
         if (PlayerInput.leftclick)
         {
-            humanoidBehaviour.ShootActiveWeaponOnce(CameraControl.GetPointerWorldSpace());
+            ShootActiveWeaponOnce(CameraControl.GetPointerWorldSpace());
         }
     }
 
     // Returns data containing all information about player in-game object
-    public Tuple<PlayerData, HumanoidData> Save()
+    public new PlayerData Save()
     {
-        PlayerData dataP = new PlayerData();
-        HumanoidData dataH = humanoidBehaviour.Save();
-        return new Tuple<PlayerData, HumanoidData>(dataP, dataH);
+        PlayerData data = new PlayerData(base.Save());
+        return data;
     }
 
     // Load player using saved data
-    public void Load(Tuple<PlayerData, HumanoidData> data)
+    public void Load(PlayerData data)
     {
-        humanoidBehaviour.Load(data.Item2);
-        // todo: data
+        base.Load(data);
     }
 
     // Updates behaviour and animations of humanoid that are part of state machine
@@ -72,7 +66,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         // Calculate target movement direction
         moveVector = Vector2.zero;
-        if (humanoidBehaviour.GetAlive())
+        if (GetAlive())
         {
             if (PlayerInput.up) moveVector += new Vector2(0.0f, 1.0f);
             if (PlayerInput.down) moveVector += new Vector2(0.0f, -1.0f);
@@ -82,14 +76,14 @@ public class PlayerBehaviour : MonoBehaviour
         }
 
         // Make player character move based on inputs
-        humanoidBehaviour.SetVelocityVector(moveVector);
-        humanoidBehaviour.SetSpeed(0.0f);
-        if (humanoidBehaviour.GetAlive()) humanoidBehaviour.SetSpeed(humanoidBehaviour.animations.IsMovingAgainstFacing() ? playerSpeedBackward : playerSpeed);
+        SetVelocity(moveVector);
+        SetSpeed(0.0f);
+        if (GetAlive()) SetSpeed(animations.IsMovingAgainstFacing() ? playerSpeedBackward : playerSpeed);
 
         // Update animations based on inputs
-        if (moveVector.magnitude > 0.0f) humanoidBehaviour.animations.SetStateMovement(
-                humanoidBehaviour.animations.IsMovingAgainstFacing() ? HumanoidAnimations.movementState.walk : HumanoidAnimations.movementState.run);
-        else humanoidBehaviour.animations.SetStateMovement(HumanoidAnimations.movementState.idle);
+        if (moveVector.magnitude > 0.0f) animations.SetStateMovement(
+                animations.IsMovingAgainstFacing() ? HumanoidAnimations.movementState.walk : HumanoidAnimations.movementState.run);
+        else animations.SetStateMovement(HumanoidAnimations.movementState.idle);
     }
 
     // Detects if state of keyboard has changed since last call
@@ -113,6 +107,20 @@ public class PlayerBehaviour : MonoBehaviour
         Vector2 targetVector = CameraControl.GetPointerWorldSpace() - new Vector2(transform.position.x, transform.position.y);
         targetVector.Normalize();
         return targetVector;
+    }
+
+}
+
+[Serializable]
+public class PlayerData : HumanoidData
+{
+    public PlayerData() { }
+
+    public PlayerData(HumanoidData data) : base(data)
+    {
+        this.weaponActive = data.weaponActive;
+        this.bodypartData = data.bodypartData;
+        this.animationData = data.animationData;
     }
 
 }

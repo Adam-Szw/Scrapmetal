@@ -2186,7 +2186,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5235255288027431337}
-  - component: {fileID: 1694683315040565577}
   - component: {fileID: 9087701235740181810}
   - component: {fileID: 2787856037319244587}
   - component: {fileID: 942677617951832340}
@@ -2214,22 +2213,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1694683315040565577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5623195859664910376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5239badd15024fe49a3ae2d7748f16f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponAttachmentBone: {fileID: 3622810208228068272}
-  weaponAttachmentOffset: {x: 0, y: 0}
-  weaponSortLayer: 14
-  health: 100
 --- !u!50 &9087701235740181810
 Rigidbody2D:
   serializedVersion: 4
@@ -2290,6 +2273,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b8ade688edfb154aad7ea99bef8d801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponAttachmentBone: {fileID: 3622810208228068272}
+  weaponAttachmentOffset: {x: 0, y: 0}
+  weaponSortLayer: 14
   playerSpeed: 5
   playerSpeedBackward: 3
   weaponSlot1: {fileID: 8289283381652960123, guid: fd89ba2e5c1d76640a15387c94582754, type: 3}

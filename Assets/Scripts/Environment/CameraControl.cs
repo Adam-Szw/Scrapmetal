@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 /* Class responsible for controlling in-game view
  */
@@ -32,4 +34,40 @@ public class CameraControl
         currentCamera.orthographicSize = Mathf.Max(minSize, Mathf.Min(posRelative.magnitude * growthMultiplier
             + growthStartMultiplier * minSize, maxSize));
     }
+
+    public CameraData Save()
+    {
+        CameraData data = new CameraData();
+        data.position = HelpFunc.VectorToArray(currentCamera.transform.localPosition);
+        data.rotation = HelpFunc.QuaternionToArray(currentCamera.transform.localRotation);
+        data.scale = HelpFunc.VectorToArray(currentCamera.transform.localScale);
+        data.minSize = this.minSize;
+        data.maxSize = this.maxSize;
+        data.growthStartMultiplier = this.growthStartMultiplier;
+        data.growthMultiplier = this.growthMultiplier;
+        return data;
+    }
+
+    public void Load(CameraData data)
+    {
+        this.currentCamera.transform.localPosition = HelpFunc.DataToVec3(data.position);
+        this.currentCamera.transform.localRotation = HelpFunc.DataToQuaternion(data.rotation);
+        this.currentCamera.transform.localScale = HelpFunc.DataToVec3(data.scale);
+        this.minSize = data.minSize;
+        this.maxSize = data.maxSize;
+        this.growthStartMultiplier = data.growthStartMultiplier;
+        this.growthMultiplier = data.growthMultiplier;
+    }
+}
+
+[Serializable]
+public class CameraData
+{
+    public float[] position;
+    public float[] rotation;
+    public float[] scale;
+    public float minSize;
+    public float maxSize;
+    public float growthStartMultiplier;
+    public float growthMultiplier;
 }
