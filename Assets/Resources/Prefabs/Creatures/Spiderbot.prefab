@@ -2138,8 +2138,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6505316f06b04374e980dd2fd41bd793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: 0
   weaponAttachmentBone: {fileID: 8109489427493512261}
-  weaponAttachmentOffset: {x: 0, y: 0}
+  target: {fileID: 0}
 --- !u!50 &2978790146387656399
 Rigidbody2D:
   serializedVersion: 4
@@ -4525,7 +4526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 834952381366333250}
   m_Layer: 6
-  m_Name: Turret_Projectile_Attachment
+  m_Name: Weapon_Attachment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

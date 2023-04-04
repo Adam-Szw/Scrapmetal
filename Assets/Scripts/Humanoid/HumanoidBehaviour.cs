@@ -12,18 +12,19 @@ using ColorUtility = UnityEngine.ColorUtility;
 public class HumanoidBehaviour : CreatureBehaviour
 {
 
-    public static string PREFAB_PATH = "Prefabs/Humanoid";
+    public static new string PREFAB_PATH = "Prefabs/Creatures/Humanoid";
 
     [SerializeField] private GameObject weaponAttachmentBone;
     [SerializeField] private Vector2 weaponAttachmentOffset;
-    [SerializeField] private int weaponSortLayer;
+    [SerializeField] private int itemActiveSortLayer;
 
-    private GameObject weaponActive = null;
-
-    public HumanoidAnimations animations;
+    [HideInInspector] public HumanoidAnimations animations;
 
     public static string[] BODYPARTS = new string[] { "Pelvis", "Torso", "Head", "Arm_Up_R", "Arm_Low_R",
     "Hand_R", "Arm_Up_L", "Arm_Low_L", "Hand_L", "Leg_Up_R", "Leg_Low_R", "Foot_R", "Leg_Up_L", "Leg_Low_L", "Foot_L" };
+
+    private GameObject itemActive = null;
+    private bool hasWeapon = false;
 
     new protected void Awake()
     {
@@ -55,25 +56,37 @@ public class HumanoidBehaviour : CreatureBehaviour
         animations.UpdateRotations();
     }
 
-    public void SetWeaponActive(GameObject weapon)
+    // Spawns an item in selected bone for character. Null can be provided to indicate that no items should be selected.
+    public void SetItemActive(ObjectData item)
     {
-        if(weaponActive != null)
+        // Save to inventory before destroying
+        Destroy(itemActive);
+        hasWeapon = false;
+        itemActive = null;
+        if (item == null) return;
+        Vector3 position = weaponAttachmentBone.transform.position + (Vector3)weaponAttachmentOffset;
+        Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+        // Spawn the item in hand/bone
+        GameObject obj = ObjectBehaviour.Spawn(item.prefabPath, position, rotation, weaponAttachmentBone.transform);
+        // Load item's details but not its transform
+        if (item.GetType() == typeof(WeaponData))
         {
-            Destroy(weaponActive);
-            weaponActive = null;
+            obj.GetComponent<WeaponBehaviour>().Load((WeaponData)item, true);
+            hasWeapon = true;
         }
-        weaponActive = Instantiate(weapon, weaponAttachmentBone.transform.position + (Vector3) weaponAttachmentOffset,
-            new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), weaponAttachmentBone.transform);
-        weaponActive.GetComponent<SpriteRenderer>().sortingOrder = weaponSortLayer;
-        weaponActive.GetComponent<WeaponBehaviour>().ownerID = this.gameObject.GetInstanceID();
+        else obj.GetComponent<ObjectBehaviour>().Load(item);
+        obj.GetComponent<SpriteRenderer>().sortingOrder = itemActiveSortLayer;
+        obj.GetComponent<ObjectBehaviour>().ownerID = ID;
+        itemActive = obj;
 
     }
 
     public void ShootActiveWeaponOnce(Vector2 target)
     {
-        if (!weaponActive) return;
-        weaponActive.GetComponent<WeaponBehaviour>().target = target;
-        weaponActive.GetComponent<WeaponBehaviour>().ShootOnce();
+
+        if (!hasWeapon || !itemActive) return;
+        itemActive.GetComponent<WeaponBehaviour>().target = target;
+        itemActive.GetComponent<WeaponBehaviour>().Use();
     }
 
     private List<string> SaveBodypartData()
@@ -105,14 +118,24 @@ public class HumanoidBehaviour : CreatureBehaviour
         }
     }
 
-    // Returns data from which this humanoid can be replicated
+    public static GameObject Spawn(HumanoidData data)
+    {
+        GameObject obj = Instantiate(Resources.Load<GameObject>(PREFAB_PATH));
+        obj.GetComponent<HumanoidBehaviour>().Load(data);
+        return obj;
+    }
+
     new public HumanoidData Save()
     {
         HumanoidData data = new HumanoidData(base.Save());
-        if (weaponActive) data.weaponActive = weaponActive.GetComponent<WeaponBehaviour>().Save();
-        else data.weaponActive = null;
         data.bodypartData = SaveBodypartData();
         data.animationData = animations.Save();
+        if (itemActive != null)
+        {
+            if (hasWeapon) data.itemActive = itemActive.GetComponent<WeaponBehaviour>().Save();
+            else data.itemActive = itemActive.GetComponent<ObjectBehaviour>().Save();
+        }
+        else data.itemActive = null;
         return data;
     }
 
@@ -120,24 +143,9 @@ public class HumanoidBehaviour : CreatureBehaviour
     {
         base.Load(data);
         SetAlive(GetAlive());
-
-        // rework this
-        if (data.weaponActive != null)
-        {
-            weaponActive = Instantiate(Resources.Load<GameObject>(WeaponBehaviour.PREFAB_PATH),
-                weaponAttachmentBone.transform.position + (Vector3)weaponAttachmentOffset,
-                new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), weaponAttachmentBone.transform);
-            weaponActive.GetComponent<WeaponBehaviour>().Load(data.weaponActive);
-            weaponActive.GetComponent<SpriteRenderer>().sortingOrder = weaponSortLayer;
-        }
         LoadBodyPartData(data.bodypartData);
         animations.Load(data.animationData);
-    }
-
-    public static void SpawnEntity(HumanoidData data)
-    {
-        GameObject obj = Instantiate(Resources.Load<GameObject>(HumanoidBehaviour.PREFAB_PATH));
-        obj.GetComponent<HumanoidBehaviour>().Load(data);
+        SetItemActive(data.itemActive);
     }
 
 }
@@ -153,7 +161,7 @@ public class HumanoidData : CreatureData
         this.health = data.health;
     }
 
-    public WeaponData weaponActive;
+    public ObjectData itemActive;
     public List<string> bodypartData;
     public HumanoidAnimationData animationData;
 }

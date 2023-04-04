@@ -8,13 +8,10 @@ using UnityEngine;
 public class PlayerBehaviour : HumanoidBehaviour
 {
 
-    public static string PLAYER_PATH = "Prefabs/Player";
+    public static new string PREFAB_PATH = "Prefabs/Creatures/Player";
 
     [SerializeField] private float playerSpeed;
     [SerializeField] private float playerSpeedBackward;
-
-    // temporary - to be replaced by inventory system
-    public GameObject weaponSlot1;
 
     // Values on last frame
     private bool upPressed = false;
@@ -23,11 +20,12 @@ public class PlayerBehaviour : HumanoidBehaviour
     private bool rightPressed = false;
 
     // Current movement direction vector deducted from inputs
-    Vector2 moveVector = Vector3.zero;
+    Vector2 moveVector = Vector2.zero;
 
     new void Update()
     {
         base.Update();
+        if (GlobalControl.paused) return;
 
         // Trigger update of animations, rigidbody settings etc. if new input provided
         if (KeyStateChanged()) UpdateState();
@@ -38,7 +36,11 @@ public class PlayerBehaviour : HumanoidBehaviour
         // Placeholder for inventory system
         if (PlayerInput.two)
         {
-            SetWeaponActive(weaponSlot1);
+            //item rework
+            GameObject gun = EntityBehaviour.Spawn("Prefabs/Items/Weapons/Rivetgun", transform.position, transform.rotation);
+            WeaponData data = gun.GetComponent<WeaponBehaviour>().Save();
+            Destroy(gun);
+            SetItemActive(data);
             animations.SetStateHands(HumanoidAnimations.handsState.pistol);
         }
 
@@ -118,7 +120,7 @@ public class PlayerData : HumanoidData
 
     public PlayerData(HumanoidData data) : base(data)
     {
-        this.weaponActive = data.weaponActive;
+        this.itemActive = data.itemActive;
         this.bodypartData = data.bodypartData;
         this.animationData = data.animationData;
     }

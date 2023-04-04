@@ -12,5 +12,5 @@ public class SceneData
     public string name;
     public CameraData cameraData;
     public List<HumanoidData> humanoids = new List<HumanoidData>();
-    public List<BulletData> bullets = new List<BulletData>();
+    public List<ProjectileData> bullets = new List<ProjectileData>();
 }

@@ -33,6 +33,11 @@ MonoBehaviour:
       m_Sprite: {fileID: 1389838604, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
       m_FromMain: 0
       m_SpriteOverride: {fileID: 1389838604, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
+    - m_Name: Spiderbot_2
+      m_Hash: 1630325384
+      m_Sprite: {fileID: 2028234130, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 2028234130, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
     m_FromMain: 0
-    m_EntryOverrideCount: 1
+    m_EntryOverrideCount: 2
   m_PrimaryLibraryGUID: 

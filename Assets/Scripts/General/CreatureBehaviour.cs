@@ -10,6 +10,10 @@ public class CreatureBehaviour : EntityBehaviour
     private float health = 100.0f;
     private bool alive = true;
 
+    [HideInInspector] public InventoryManager inventoryManager;
+
+    public static string PREFAB_PATH;
+
     new protected void Update()
     {
         base.Update();
@@ -25,7 +29,7 @@ public class CreatureBehaviour : EntityBehaviour
         {
             ProjectileBehaviour bulletBehaviour = other.gameObject.GetComponent<ProjectileBehaviour>();
             // Do nothing if hit yourself
-            if (bulletBehaviour.ownerID == this.gameObject.GetInstanceID()) return;
+            if (bulletBehaviour.ownerID == ID) return;
             DealDamage(bulletBehaviour.damage);
             Destroy(other.gameObject);
             FlinchFallback();
@@ -81,7 +85,7 @@ public class CreatureData : EntityData
 
     public CreatureData(EntityData data)
     {
-        this.id = data.id;
+        this.ID = data.ID;
         this.location = data.location;
         this.rotation = data.rotation;
         this.scale = data.scale;

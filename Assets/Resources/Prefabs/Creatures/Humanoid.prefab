@@ -887,7 +887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponAttachmentBone: {fileID: 4415601639827162915}
   weaponAttachmentOffset: {x: 0, y: 0}
-  weaponSortLayer: 14
+  itemActiveSortLayer: 14
 --- !u!50 &8151393122861713825
 Rigidbody2D:
   serializedVersion: 4

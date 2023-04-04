@@ -150,7 +150,7 @@ public class GlobalControl : MonoBehaviour
             HumanoidBehaviour hB = obj.GetComponent<HumanoidBehaviour>();
             if (hB) Destroy(obj);
             // Destroy bullets
-            ProjectileBehaviour bB = obj.GetComponent<ProjectileBehaviour>();
+            ObjectBehaviour bB = obj.GetComponent<ObjectBehaviour>();
             if (bB) Destroy(obj);
         }
     }
@@ -159,16 +159,16 @@ public class GlobalControl : MonoBehaviour
      */
     private static void LoadEntities(SceneData data, PlayerData playerData)
     {
-        GameObject player = Instantiate(Resources.Load<GameObject>(PlayerBehaviour.PLAYER_PATH));
+        GameObject player = Instantiate(Resources.Load<GameObject>(PlayerBehaviour.PREFAB_PATH));
         player.GetComponent<PlayerBehaviour>().Load(playerData);
         cameraControl.player = player;
         foreach (HumanoidData hD in data.humanoids)
         {
-            HumanoidBehaviour.SpawnEntity(hD);
+            HumanoidBehaviour.Spawn(hD);
         }
-        foreach (BulletData bB in data.bullets)
+        foreach (ProjectileData bB in data.bullets)
         {
-            ProjectileBehaviour.SpawnEntity(bB);
+            ProjectileBehaviour.Spawn(bB);
         }
     }
 }

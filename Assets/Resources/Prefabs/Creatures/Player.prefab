@@ -2275,10 +2275,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponAttachmentBone: {fileID: 3622810208228068272}
   weaponAttachmentOffset: {x: 0, y: 0}
-  weaponSortLayer: 14
+  itemActiveSortLayer: 14
   playerSpeed: 5
   playerSpeedBackward: 3
-  weaponSlot1: {fileID: 8289283381652960123, guid: fd89ba2e5c1d76640a15387c94582754, type: 3}
 --- !u!1 &5973245029044482946
 GameObject:
   m_ObjectHideFlags: 0

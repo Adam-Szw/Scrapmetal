@@ -9,9 +9,13 @@ using UnityEngine.UIElements;
  */
 public class EntityBehaviour : MonoBehaviour
 {
+    public ulong ID = 0;
+
     private float speed = 0.0f;
-    private Vector3 velocityVector = Vector3.zero;
+    private Vector2 velocityVector = Vector2.zero;
     private Rigidbody2D rb;
+
+    private static ulong nextID = 1;
 
     protected void Update()
     {
@@ -22,6 +26,7 @@ public class EntityBehaviour : MonoBehaviour
     protected void Awake()
     {
         rb = this.gameObject.GetComponent<Rigidbody2D>();
+        ID = ++nextID;
     }
 
     public void SetSpeed(float speed)
@@ -38,7 +43,7 @@ public class EntityBehaviour : MonoBehaviour
         UpdateRigidBody();
     }
 
-    public Vector3 GetVelocity() { return velocityVector; }
+    public Vector2 GetVelocity() { return velocityVector; }
 
     public void SetRigidbody(Rigidbody2D rb)
     {
@@ -51,7 +56,20 @@ public class EntityBehaviour : MonoBehaviour
     // Update rigid-body with final vector
     public void UpdateRigidBody()
     {
+        if (!rb) return;
         rb.velocity = velocityVector.normalized * speed;
+    }
+
+    public static GameObject Spawn(string prefabPath, Vector3 position, Quaternion rotation, Transform parent)
+    {
+        GameObject obj = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation, parent);
+        return obj;
+    }
+
+    public static GameObject Spawn(string prefabPath, Vector3 position, Quaternion rotation)
+    {
+        GameObject obj = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+        return obj;
     }
 
 
@@ -75,12 +93,12 @@ public class EntityBehaviour : MonoBehaviour
     protected EntityData Save()
     {
         EntityData data = new EntityData();
-        data.id = this.GetInstanceID();
+        data.ID = ID;
         data.location = HelpFunc.VectorToArray(transform.localPosition);
         data.rotation = HelpFunc.QuaternionToArray(transform.localRotation);
         data.scale = HelpFunc.VectorToArray(transform.localScale);
         data.velocity = HelpFunc.VectorToArray(GetVelocity());
-        data.speed = this.speed;
+        data.speed = speed;
         return data;
     }
 
@@ -89,7 +107,8 @@ public class EntityBehaviour : MonoBehaviour
         transform.localPosition = HelpFunc.DataToVec3(data.location);
         transform.rotation = HelpFunc.DataToQuaternion(data.rotation);
         transform.localScale = HelpFunc.DataToVec3(data.scale);
-        SetVelocity(HelpFunc.DataToVec3(data.velocity));
+        SetVelocity(HelpFunc.DataToVec2(data.velocity));
+        ID = data.ID;
         speed = data.speed;
     }
 
@@ -99,7 +118,7 @@ public class EntityBehaviour : MonoBehaviour
 public class EntityData
 {
     // Basic information
-    public int id;
+    public ulong ID;
     public float[] location;
     public float[] rotation;
     public float[] scale;
