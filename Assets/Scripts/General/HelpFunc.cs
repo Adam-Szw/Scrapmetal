@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,6 +84,13 @@ class HelpFunc
         float targetAngle = (desiredAngle - currAngle + 360) % 360;
         if (targetAngle > 180) targetAngle -= 360;
         return targetAngle;
+    }
+
+    public static Vector2 EulerToVec2(float z)
+    {
+        float angle = z * Mathf.Deg2Rad;
+        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        return direction;
     }
 
 }

@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 8289283381652960123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2028234130, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
+  m_Sprite: {fileID: 1511170464, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -170,10 +170,10 @@ MonoBehaviour:
   ID: 0
   prefabPath: Prefabs/Projectiles/GuidedMissile
   ownerID: 0
-  speedInitial: 5
-  acceleration: 0.1
-  lifespan: 1.5
-  lifeRemaining: 1.5
+  speedInitial: 1
+  acceleration: 25
+  lifespan: 4
+  lifeRemaining: 4
   damage: 1
   guidanceStep: 60
   guidanceTargetID: 0

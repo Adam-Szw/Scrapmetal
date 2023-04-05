@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static WeaponBehaviour;
+using Random = UnityEngine.Random;
 
 public class WeaponBehaviour : ObjectBehaviour
 {
@@ -13,9 +15,11 @@ public class WeaponBehaviour : ObjectBehaviour
     public int maxAmmo;
     public int currAmmo;
     public float cooldown;
+    public float spread = 0;
+    public float snapMaxAngle = 0;
 
-    public ulong guidanceTargetID = 0;
-    public GameObject guidanceTarget = null;
+    [HideInInspector] public ulong guidanceTargetID = 0;
+    [HideInInspector] public GameObject guidanceTarget = null;
 
     private bool firing = false;
     private float cooldownCurrent = 0.0f;
@@ -43,24 +47,24 @@ public class WeaponBehaviour : ObjectBehaviour
 
     public override void Use()
     {
+        // Ammo and cooldown checks
         if (currAmmo <= 0) return;
         if (cooldownCurrent > 0.0f) return;
+
         // Acquire guidance target
         if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindGameObjectByBehaviourID(guidanceTargetID);
-        // Get world-space direction for the bullet
-        //Vector2 direction = transform.lossyScale.x * transform.right;
-        Vector2 direction = target - (Vector2)transform.position;
-        direction.Normalize();
-        Quaternion rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-        GameObject proj = Instantiate(projectilePrefab, projectileAttachment.transform.position, rotation);
+        else guidanceTarget = null;
+        if (guidanceTarget) target = guidanceTarget.transform.position;
+
+        // Spawn projectile
+        GameObject proj = Instantiate(projectilePrefab, projectileAttachment.transform.position, GetFireAngle());
         proj.GetComponent<SpriteRenderer>().sortingOrder = GlobalControl.projectileSortLayer;
+
         // Transfer properties
-        proj.GetComponent<ProjectileBehaviour>().ownerID = ownerID;
-        proj.GetComponent<ProjectileBehaviour>().guidanceTargetID = guidanceTargetID;
-        proj.GetComponent<ProjectileBehaviour>().guidanceTarget = guidanceTarget;
-        // Apply speed and direction
-        proj.GetComponent<ProjectileBehaviour>().SetVelocity(direction);
-        proj.GetComponent<ProjectileBehaviour>().SetSpeed(proj.GetComponent<ProjectileBehaviour>().speedInitial);
+        ProjectileBehaviour projBehaviour = proj.GetComponent<ProjectileBehaviour>();
+        projBehaviour.ownerID = ownerID;
+        projBehaviour.guidanceTargetID = guidanceTargetID;
+        projBehaviour.guidanceTarget = guidanceTarget;
 
         // Ammo, cooldown and animation
         currAmmo--;
@@ -72,6 +76,28 @@ public class WeaponBehaviour : ObjectBehaviour
     public void Reload()
     {
         currAmmo = maxAmmo;
+    }
+
+    private Quaternion GetFireAngle()
+    {
+        // Calculate snap
+        Vector2 targetVec = target - (Vector2)projectileAttachment.transform.position;
+        Vector2 weaponVec = HelpFunc.EulerToVec2(transform.eulerAngles.z);
+        float targetAngle = HelpFunc.Vec2ToAngle(targetVec);
+        float weaponAngle = HelpFunc.Vec2ToAngle(weaponVec);
+        weaponAngle += transform.lossyScale.x > 0 ? 0.0f : -180.0f;
+        weaponAngle = HelpFunc.NormalizeAngle(weaponAngle);
+        float snapAngleMin = weaponAngle - snapMaxAngle;
+        float snapAngleMax = weaponAngle + snapMaxAngle - snapAngleMin;
+        float tempTargetAngle = targetAngle - snapAngleMin;
+        float finalAngle = Mathf.Clamp(tempTargetAngle, 0, snapAngleMax) + snapAngleMin;
+
+        // Calculate spread
+        float angleSpreadMin = finalAngle - spread;
+        float angleSpreadMax = finalAngle + spread;
+        finalAngle = angleSpreadMin + Random.value * (angleSpreadMax - angleSpreadMin);
+
+        return Quaternion.Euler(0f, 0f, finalAngle);
     }
 
     public new WeaponData Save()

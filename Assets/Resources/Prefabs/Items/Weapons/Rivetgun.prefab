@@ -190,6 +190,10 @@ MonoBehaviour:
   maxAmmo: 100
   currAmmo: 100
   cooldown: 0.1
+  spread: 5
+  snapMaxAngle: 15
+  guidanceTargetID: 0
+  guidanceTarget: {fileID: 0}
 --- !u!50 &7695863947780370617
 Rigidbody2D:
   serializedVersion: 4

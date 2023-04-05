@@ -29,14 +29,12 @@ public class SpiderbotBehaviour : CreatureBehaviour
         GameObject weapon = WeaponBehaviour.Spawn("Prefabs/Items/Weapons/MissileLauncherSpiderbot", position, rotation, weaponAttachmentBone.transform);
         weaponBehaviour = weapon.GetComponent<WeaponBehaviour>();
         weaponBehaviour.ownerID = ID;
-        weaponBehaviour.guidanceTargetID = 2;
     }
 
     new protected void Update()
     {
         base.Update();
         if (GlobalControl.paused) return;
-        weaponBehaviour.Use();
     }
 
     protected override void FlinchFallback()

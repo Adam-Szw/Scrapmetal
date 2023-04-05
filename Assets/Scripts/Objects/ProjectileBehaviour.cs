@@ -27,6 +27,13 @@ public class ProjectileBehaviour : ObjectBehaviour
     [HideInInspector] public ulong guidanceTargetID = 0;
     [HideInInspector] public GameObject guidanceTarget = null;
 
+    new protected void Awake()
+    {
+        base.Awake();
+        SetVelocity(HelpFunc.EulerToVec2(transform.eulerAngles.z));
+        SetSpeed(speedInitial);
+    }
+
     new protected void Update()
     {
         base.Update();
@@ -36,10 +43,7 @@ public class ProjectileBehaviour : ObjectBehaviour
         // Acquire target if ID is given but target not found
         else if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindGameObjectByBehaviourID(guidanceTargetID);
         // Update velocity vector to match rotation
-        float angle = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
-        float x = Mathf.Cos(angle);
-        float y = Mathf.Sin(angle);
-        SetVelocity(new Vector2(x, y));
+        SetVelocity(HelpFunc.EulerToVec2(transform.rotation.eulerAngles.z));
         // Update speed
         SetSpeed(Mathf.Max(GetSpeed() + acceleration * Time.deltaTime, 0.0f));
         // Update lifetime
