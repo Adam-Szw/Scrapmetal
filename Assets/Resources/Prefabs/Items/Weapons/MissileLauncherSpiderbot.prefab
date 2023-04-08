@@ -81,9 +81,10 @@ MonoBehaviour:
   ownerID: 0
   target: {x: 0, y: 0}
   projectilePrefab: {fileID: 8289283381652960123, guid: 39965df7c7fb6a9449a84c11555f4ca3, type: 3}
-  weaponAccuracyBias: 0.5
   maxAmmo: 100
   currAmmo: 100
   cooldown: 1
+  spread: 0
+  snapMaxAngle: 60
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}

@@ -23,7 +23,7 @@ public class SpiderbotBehaviour : CreatureBehaviour
     {
         base.Awake();
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
-        animations = new SpiderbotAnimations(transform, new List<Animator>() { bodyAnimator }, new List<string>(BODYPARTS));
+        animations = new SpiderbotAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, "Turret_Parent");
         animations.movementDeterminesFlip = true;
         Vector3 position = weaponAttachmentBone.transform.position;
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
@@ -41,6 +41,11 @@ public class SpiderbotBehaviour : CreatureBehaviour
     protected override CreatureAnimations GetAnimations()
     {
         return animations;
+    }
+
+    protected override List<WeaponBehaviour> GetWeapons()
+    {
+        return new List<WeaponBehaviour>(){ weaponBehaviour };
     }
 
     new public SpiderbotData Save()

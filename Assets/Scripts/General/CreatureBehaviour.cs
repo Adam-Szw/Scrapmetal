@@ -7,7 +7,7 @@ using UnityEngine;
  */
 public class CreatureBehaviour : EntityBehaviour
 {
-    public enum aiFaction
+    public enum FactionAllegiance
     {
         player,
         neutral,    // Uninteractive background creatures i.e. a rabbit, never fight back
@@ -17,7 +17,7 @@ public class CreatureBehaviour : EntityBehaviour
         berserk,    // Attacks everything including in own faction
         enemy       // Enemy faction, attack player only but not NPCs etc.
     }
-    public aiFaction faction = aiFaction.neutral;
+    public FactionAllegiance faction = FactionAllegiance.neutral;
     public GameObject visionBlocker;
 
     public float moveSpeed = 0.0f;
@@ -61,7 +61,7 @@ public class CreatureBehaviour : EntityBehaviour
     {
         this.alive = alive;
         if (!alive) DisableColliders(transform);
-        if (!alive) SetSpeed(0.0f);
+        if (!alive) base.SetSpeed(0.0f);
         if (!alive) GetAnimations().SetAlive(GetAlive());
     }
 
@@ -74,20 +74,58 @@ public class CreatureBehaviour : EntityBehaviour
         GetAnimations().SetSpeed(speed);
     }
 
-    public new void SetVelocity(Vector3 velocityVector)
+    public new void SetMoveVector(Vector2 moveVector)
     {
         if (!alive) return;
-        if (!stunned) base.SetVelocity(velocityVector);
-        GetAnimations().SetMovementVector(velocityVector.normalized);
+        if (!stunned) base.SetMoveVector(moveVector);
+        GetAnimations().SetMovementVector(moveVector.normalized);
     }
 
-    public virtual void SetAttackTarget(GameObject target) { }
+    public void SetFacingVector(Vector2 facingVector)
+    {
+        if (!alive) return;
+        GetAnimations().SetFacingVector(facingVector);
+    }
 
-    public virtual bool AnyWeaponOnTarget() { return false; }
+    public void SetAimingVector(Vector2 aimLocation)
+    {
+        if (!alive) return;
+        GetAnimations().SetAimingVector(aimLocation);
+    }
 
-    public virtual void Attack() { }
+    public void SetAttackTarget(GameObject target)
+    {
+        if (!alive) return;
+        foreach (WeaponBehaviour w in GetWeapons())
+        {
+            w.guidanceTarget = target;
+            w.guidanceTargetID = 0;
+            w.target = target.transform.position;
+        }
+    }
+
+    public bool AnyWeaponOnTarget() 
+    {
+        if (!alive) return false;
+        foreach (WeaponBehaviour w in GetWeapons())
+        {
+            if (w.IsOnTarget()) return true;
+        }
+        return false;
+    }
+
+    public void Attack() 
+    {
+        if (!alive) return;
+        foreach (WeaponBehaviour w in GetWeapons())
+        {
+            if (w.IsOnTarget()) w.Use();
+        }
+    }
 
     protected virtual CreatureAnimations GetAnimations() { return null; }
+
+    protected virtual List<WeaponBehaviour> GetWeapons() { return null; }
 
     protected new CreatureData Save()
     {

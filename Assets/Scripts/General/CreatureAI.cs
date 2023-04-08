@@ -10,26 +10,25 @@ public class CreatureAI : MonoBehaviour
 {
     public CreatureBehaviour behaviour;
 
-    public Vector2? locationGoal = null;
-    public float detectionDistance = 0.0f;
-    public float attackDistance = 0.0f;
-    public float preferredFightDistance = 0.0f;
-    public float warningTime = 0.0f;
-    public float cautionTime = 0.0f;
-    public float searchTime = 0.0f;
-    public float idleTime = 0.0f;
-    public List<Vector2> idleRoutine = new List<Vector2>();
-    public aiState state = aiState.idle;
+    [SerializeField] private Vector2? locationGoal = null;
+    [SerializeField] private float detectionDistance = 0.0f;
+    [SerializeField] private float attackDistance = 0.0f;
+    [SerializeField] private float preferredFightDistance = 0.0f;
+    [SerializeField] private float cautionTime = 0.0f;
+    [SerializeField] private float searchTime = 0.0f;
+    [SerializeField] private float idleTime = 0.0f;
+    [SerializeField] private List<Vector2> idleRoutine = new List<Vector2>();
+    [SerializeField] private float LOCATION_MAX_OFFSET = 0.1f;
+    [SerializeField] private float DISTANCE_MAX_OFFSET = 2.0f;
 
     // Handled by detection system
     [HideInInspector] public ulong targetID = 0;
     private GameObject target = null;
     private Vector2? targetLastPos = null;
 
+    private aiState state = aiState.idle;
     private int routineIndex = 0;
     private float countdown = 0.0f;
-
-    private static float LOCATION_MAX_OFFSET = 0.1f;
 
     /* hold - stand in place
      * idle - play idle cycle (for example patrol an area)
@@ -46,9 +45,16 @@ public class CreatureAI : MonoBehaviour
     public void Update()
     {
         if (GlobalControl.paused) return;
+        // Disable yourself if dead
+        if (!behaviour.GetAlive())
+        {
+            enabled = false;
+            return;
+        }
         DetectEnemies();
         UpdateAIState();
         UpdateMovement();
+        UpdateFacing();
     }
 
     public void ObtainTargetLocation()
@@ -65,12 +71,32 @@ public class CreatureAI : MonoBehaviour
         {
             Vector2 desiredDirection = locationGoal.Value - (Vector2)transform.position;
             behaviour.SetSpeed(behaviour.moveSpeed);
-            behaviour.SetVelocity(desiredDirection);
+            behaviour.SetMoveVector(desiredDirection);
         }
         else
         {
             behaviour.SetSpeed(0);
-            behaviour.SetVelocity(Vector2.zero);
+            if (targetID == 0) behaviour.SetMoveVector(Vector2.zero);
+            else
+            {
+                Vector2 desiredDirection = targetLastPos.Value - (Vector2)transform.position;
+                behaviour.SetMoveVector(desiredDirection);
+            }
+        }
+    }
+
+    private void UpdateFacing()
+    {
+        if (targetID == 0)
+        {
+            behaviour.SetFacingVector(Vector2.right);
+            behaviour.SetAimingVector((Vector2)transform.position + Vector2.right);
+        }
+        else
+        {
+            Vector2 desiredDirection = targetLastPos.Value - (Vector2)transform.position;
+            behaviour.SetFacingVector(desiredDirection);
+            behaviour.SetAimingVector(targetLastPos.Value);
         }
     }
 
@@ -98,7 +124,7 @@ public class CreatureAI : MonoBehaviour
                     if (targetID != 0)
                     {
                         state = aiState.caution;
-                        if (targetID != 0) countdown = warningTime;
+                        if (targetID != 0) countdown = cautionTime;
                         locationGoal = null;
                     }
                     // update timer
@@ -163,7 +189,7 @@ public class CreatureAI : MonoBehaviour
                     ObtainTargetLocation();
                     locationGoal = targetLastPos;
                     // check if range is achieved to begin attacking
-                    Vector2 currLocation = behaviour.transform.position;
+                    Vector2 currLocation = transform.position;
                     if (HelpFunc.PositionInRange(currLocation, targetLastPos.Value, attackDistance))
                     {
                         // in engage range, attack
@@ -187,8 +213,11 @@ public class CreatureAI : MonoBehaviour
                     behaviour.SetAttackTarget(target);
                     if (behaviour.AnyWeaponOnTarget()) behaviour.Attack();
                     // path to preferred distance
-                    Vector2 currLocation = behaviour.transform.position;
-                    locationGoal = HelpFunc.GetPointAtDistance(currLocation, targetLastPos.Value, preferredFightDistance);
+                    Vector2 currLocation = transform.position;
+                    float currDistance = (targetLastPos.Value - currLocation).magnitude;
+                    if(currDistance > preferredFightDistance + DISTANCE_MAX_OFFSET ||
+                        currDistance < preferredFightDistance - DISTANCE_MAX_OFFSET) 
+                        locationGoal = HelpFunc.GetPointAtDistance(currLocation, targetLastPos.Value, preferredFightDistance);
                     break;
                 }
             default:
@@ -267,13 +296,13 @@ public class CreatureAI : MonoBehaviour
     }
 
     // Conditions for when we detect and begin aggression as AI
-    private bool DetectAggro(aiFaction factionMe, aiFaction factionOther)
+    private bool DetectAggro(FactionAllegiance factionMe, FactionAllegiance factionOther)
     {
-        if (factionMe == aiFaction.berserk) return true;
-        if (factionMe == aiFaction.hostile && factionOther != aiFaction.hostile) return true;
-        if (factionMe == aiFaction.NPC && factionOther == aiFaction.hostile) return true;
-        if (factionMe == aiFaction.NPCaggro && factionOther == aiFaction.player) return true;
-        if (factionMe == aiFaction.enemy && factionOther == aiFaction.player) return true;
+        if (factionMe == FactionAllegiance.berserk) return true;
+        if (factionMe == FactionAllegiance.hostile && factionOther != FactionAllegiance.hostile) return true;
+        if (factionMe == FactionAllegiance.NPC && factionOther == FactionAllegiance.hostile) return true;
+        if (factionMe == FactionAllegiance.NPCaggro && factionOther == FactionAllegiance.player) return true;
+        if (factionMe == FactionAllegiance.enemy && factionOther == FactionAllegiance.player) return true;
         return false;
     }
 

@@ -13,17 +13,13 @@ public class PlayerBehaviour : HumanoidBehaviour
     [SerializeField] private float playerSpeed;
     [SerializeField] private float playerSpeedBackward;
 
-    // Current movement direction vector deducted from inputs
-    Vector2 moveVector = Vector2.zero;
-
     new void Update()
     {
         base.Update();
         if (GlobalControl.paused) return;
 
         // Aiming needs to be done every frame
-        animations.SetFacingVector(GetFacingVector());
-        animations.SetAimLocation(PlayerInput.mousePos);
+        animations.SetAimingVector(PlayerInput.mousePos);
 
         // Trigger update of animations, rigidbody settings etc. if new input provided
         if (PlayerInput.InputChanged()) UpdateState();
@@ -61,8 +57,11 @@ public class PlayerBehaviour : HumanoidBehaviour
     // Updates behaviour and animations of humanoid that are part of state machine
     private void UpdateState()
     {
+        // Update facing
+        animations.SetFacingVector(GetFacingVector());
+
         // Calculate target movement direction
-        moveVector = Vector2.zero;
+        Vector2 moveVector = Vector2.zero;
         if (GetAlive())
         {
             if (PlayerInput.up) moveVector += new Vector2(0.0f, 1.0f);
@@ -70,10 +69,11 @@ public class PlayerBehaviour : HumanoidBehaviour
             if (PlayerInput.left) moveVector += new Vector2(-1.0f, 0.0f);
             if (PlayerInput.right) moveVector += new Vector2(1.0f, 0.0f);
             moveVector.Normalize();
+
         }
 
         // Make player character move based on inputs
-        SetVelocity(moveVector);
+        SetMoveVector(moveVector);
         if (moveVector.magnitude > 0) SetSpeed(animations.IsMovingAgainstFacing() ? playerSpeedBackward : playerSpeed);
         else SetSpeed(0.0f);
     }

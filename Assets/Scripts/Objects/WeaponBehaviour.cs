@@ -21,7 +21,6 @@ public class WeaponBehaviour : ObjectBehaviour
     [HideInInspector] public ulong guidanceTargetID = 0;
     [HideInInspector] public GameObject guidanceTarget = null;
 
-    private bool firing = false;
     private float cooldownCurrent = 0.0f;
     private Animator animator;
     private GameObject projectileAttachment;
@@ -38,26 +37,21 @@ public class WeaponBehaviour : ObjectBehaviour
         base.Update();
         if (GlobalControl.paused) return;
 
-        // Update the animator
-        if (animator) animator.SetBool("Firing", firing);
-
         // Calculate cooldown
         cooldownCurrent = Mathf.Max(0.0f, cooldownCurrent - Time.deltaTime);
     }
 
     public override void Use()
     {
+        AcquireTargetLocation();
+
         // Ammo and cooldown checks
         if (currAmmo <= 0) return;
         if (cooldownCurrent > 0.0f) return;
 
-        // Acquire guidance target
-        if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindGameObjectByBehaviourID(guidanceTargetID);
-        else guidanceTarget = null;
-        if (guidanceTarget) target = guidanceTarget.transform.position;
-
         // Spawn projectile
-        GameObject proj = Instantiate(projectilePrefab, projectileAttachment.transform.position, GetFireAngle());
+        float shootAngle = GetSnapAngle();
+        GameObject proj = Instantiate(projectilePrefab, projectileAttachment.transform.position, Quaternion.Euler(0f, 0f, shootAngle));
         proj.GetComponent<SpriteRenderer>().sortingOrder = GlobalControl.projectileSortLayer;
 
         // Transfer properties
@@ -80,15 +74,30 @@ public class WeaponBehaviour : ObjectBehaviour
 
     public bool IsOnTarget()
     {
-        float angle = GetFireAngle().eulerAngles.z;
+        float angle = GetSnapAngle();
         Vector2 targetVec = target - (Vector2)projectileAttachment.transform.position;
         float desiredAngle = HelpFunc.Vec2ToAngle(targetVec);
         return angle == desiredAngle;
     }
 
-    private Quaternion GetFireAngle()
+    private void AcquireTargetLocation()
+    {
+        // Save target ID if target already provided
+        if (guidanceTarget != null && guidanceTargetID == 0)
+        {
+            EntityBehaviour b = guidanceTarget.GetComponent<EntityBehaviour>();
+            guidanceTargetID = b.ID;
+        }
+        // Find target if only ID provided
+        if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindGameObjectByBehaviourID(guidanceTargetID);
+        else guidanceTarget = null;
+        if (guidanceTarget != null) target = guidanceTarget.transform.position;
+    }
+
+    private float GetSnapAngle()
     {
         // Calculate snap
+        AcquireTargetLocation();
         Vector2 targetVec = target - (Vector2)projectileAttachment.transform.position;
         Vector2 weaponVec = HelpFunc.EulerToVec2(transform.eulerAngles.z);
         float targetAngle = HelpFunc.Vec2ToAngle(targetVec);
@@ -96,16 +105,16 @@ public class WeaponBehaviour : ObjectBehaviour
         weaponAngle += transform.lossyScale.x > 0 ? 0.0f : -180.0f;
         weaponAngle = HelpFunc.NormalizeAngle(weaponAngle);
         float snapAngleMin = weaponAngle - snapMaxAngle;
-        float snapAngleMax = weaponAngle + snapMaxAngle - snapAngleMin;
-        float tempTargetAngle = targetAngle - snapAngleMin;
-        float finalAngle = Mathf.Clamp(tempTargetAngle, 0, snapAngleMax) + snapAngleMin;
+        float snapAngleMax = HelpFunc.NormalizeAngle(weaponAngle + snapMaxAngle - snapAngleMin);
+        float tempTargetAngle = HelpFunc.NormalizeAngle(targetAngle - snapAngleMin);
+        float finalAngle = HelpFunc.NormalizeAngle(Mathf.Clamp(tempTargetAngle, 0, snapAngleMax) + snapAngleMin);
 
         // Calculate spread
         float angleSpreadMin = finalAngle - spread;
         float angleSpreadMax = finalAngle + spread;
         finalAngle = angleSpreadMin + Random.value * (angleSpreadMax - angleSpreadMin);
 
-        return Quaternion.Euler(0f, 0f, finalAngle);
+        return finalAngle;
     }
 
     public new WeaponData Save()
@@ -114,7 +123,6 @@ public class WeaponBehaviour : ObjectBehaviour
         data.cooldown = this.cooldown;
         data.maxAmmo = this.maxAmmo;
         data.target = HelpFunc.VectorToArray(this.target);
-        data.firing = this.firing;
         data.currAmmo = this.currAmmo;
         data.cooldownCurrent = this.cooldownCurrent;
         return data;
@@ -126,7 +134,6 @@ public class WeaponBehaviour : ObjectBehaviour
         this.cooldown = data.cooldown;
         this.maxAmmo = data.maxAmmo;
         this.target = HelpFunc.DataToVec2(data.target);
-        this.firing = data.firing;
         this.currAmmo = data.currAmmo;
         this.cooldownCurrent = data.cooldownCurrent;
     }

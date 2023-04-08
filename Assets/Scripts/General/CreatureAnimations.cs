@@ -12,8 +12,10 @@ public class CreatureAnimations
 {
     // If false then whether or not the sprite should be flipped comes down to facing vector rather than movement one
     public bool movementDeterminesFlip = false;
-    // Check if creature has run animation (the default when moving is walk)
+    // Check if creature has run animation
     public bool useRunAnimation = false;
+    // Check if creature has walk backwards animation
+    public bool useWalkBackwardAnimation = false;
     // When the animation should switch to run if we are using it
     public float speedRunThreshold = 0.0f;
     // When should the run animation reach maximum multiplier
@@ -43,6 +45,7 @@ public class CreatureAnimations
     protected movementState stateMovement = movementState.idle;
     protected Vector2 facingVector = Vector2.zero;
     protected Vector2 movementVector = Vector2.zero;
+    protected Vector2 aimingVector = Vector2.zero;
     protected float speed = 0.0f;
 
     // Useful flags for calculations. Readonly for outside of this class
@@ -56,12 +59,14 @@ public class CreatureAnimations
     private Direction facingVerticalDirection = Direction.neutral;
     private bool movingBackward = false;        // these 2 are not the same. backwards refers only to horizontal
     private bool movingAgainstFacing = false;   // misalignment of running and facing direction
+    private Joint aimingReferenceBone;
 
-    public CreatureAnimations(Transform transform, List<Animator> animators, List<string> bodypartNames)
+    public CreatureAnimations(Transform transform, List<Animator> animators, string[] bodypartNames, string aimingBoneName)
     {
         this.transform = transform;
         this.animators = animators;
         ListJoints(bodypartNames);
+        aimingReferenceBone = GetJointByName(aimingBoneName).Value;
     }
 
     public void SetMovementVector(Vector2 movementVector)
@@ -78,6 +83,11 @@ public class CreatureAnimations
         VectorUpdate();
     }
 
+    public void SetAimingVector(Vector2 aimLocation)
+    {
+        aimingVector = (aimLocation - (Vector2)aimingReferenceBone.obj.transform.position).normalized;
+    }
+
     public void SetSpeed(float speed)
     {
         if (!alive) return;
@@ -89,6 +99,8 @@ public class CreatureAnimations
 
     public Vector2 GetMovementVector() { return movementVector; }
 
+    public Vector2 GetAimingVector() { return aimingVector; }
+
     public movementState GetStateMovement() { return stateMovement; }
 
     public bool IsMovingBackwards() { return movingBackward; }
@@ -96,7 +108,7 @@ public class CreatureAnimations
     public bool IsMovingAgainstFacing() { return movingAgainstFacing; }
 
     // Update state and cause animation update
-    public void SetStateMovement(movementState state)
+    protected void SetStateMovement(movementState state)
     {
         stateMovement = state;
         UpdateAnimators();
@@ -187,7 +199,7 @@ public class CreatureAnimations
         {
             SetStateMovement(movementState.run);
         }
-        else if (speed > 0.0f && IsMovingAgainstFacing())
+        else if (speed > 0.0f && IsMovingAgainstFacing() && useWalkBackwardAnimation)
         {
             SetStateMovement(movementState.walkBackward);
         }
@@ -202,7 +214,7 @@ public class CreatureAnimations
     }
 
     // This will update the list of joints available to the script
-    private void ListJoints(List<string> bodypartNames)
+    private void ListJoints(string[] bodypartNames)
     {
         joints = new List<Joint>();
         foreach (string bodypartName in bodypartNames)

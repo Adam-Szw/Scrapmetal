@@ -2163,12 +2163,12 @@ MonoBehaviour:
   detectionDistance: 14
   attackDistance: 10
   preferredFightDistance: 8
-  warningTime: 1
   cautionTime: 2
   searchTime: 3
   idleTime: 2
   idleRoutine: []
-  state: 1
+  LOCATION_MAX_OFFSET: 0.1
+  DISTANCE_MAX_OFFSET: 4
   targetID: 0
 --- !u!50 &2978790146387656399
 Rigidbody2D:
@@ -5206,14 +5206,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.5659916, y: 0.23018408}
-      - {x: 0.16512507, y: 0.23762286}
-      - {x: -0.0058954954, y: 0.089460075}
-      - {x: -0.00564754, y: -0.1916306}
-      - {x: 0.18216953, y: -0.31441945}
-      - {x: 1.5528482, y: -0.32181114}
-      - {x: 1.8627272, y: -0.19729781}
-      - {x: 1.8547999, y: 0.09428635}
+    - - {x: 1.5461683, y: 0.31691068}
+      - {x: 0.15025753, y: 0.29213673}
+      - {x: -0.013329148, y: 0.17866462}
+      - {x: -0.00564754, y: -0.11729348}
+      - {x: 0.15986845, y: -0.24008237}
+      - {x: 1.555326, y: -0.25490773}
+      - {x: 1.8577714, y: -0.100659564}
+      - {x: 1.852322, y: 0.17853509}
 --- !u!1 &9146165987118534949
 GameObject:
   m_ObjectHideFlags: 0

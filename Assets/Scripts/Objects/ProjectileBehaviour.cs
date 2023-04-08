@@ -30,7 +30,7 @@ public class ProjectileBehaviour : ObjectBehaviour
     new protected void Awake()
     {
         base.Awake();
-        SetVelocity(HelpFunc.EulerToVec2(transform.eulerAngles.z));
+        SetMoveVector(HelpFunc.EulerToVec2(transform.eulerAngles.z));
         SetSpeed(speedInitial);
     }
 
@@ -43,7 +43,7 @@ public class ProjectileBehaviour : ObjectBehaviour
         // Acquire target if ID is given but target not found
         else if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindGameObjectByBehaviourID(guidanceTargetID);
         // Update velocity vector to match rotation
-        SetVelocity(HelpFunc.EulerToVec2(transform.rotation.eulerAngles.z));
+        SetMoveVector(HelpFunc.EulerToVec2(transform.rotation.eulerAngles.z));
         // Update speed
         SetSpeed(Mathf.Max(GetSpeed() + acceleration * Time.deltaTime, 0.0f));
         // Update lifetime

@@ -9,14 +9,14 @@ public class SpiderbotAnimations : CreatureAnimations
 {
 
     private Animator bodyAnimator;
-    private Vector2 aimingVector = Vector2.zero;
 
     private Joint sensor;
     private Joint turret;
 
     /* Animators should come in order: body, arms, legs
      */
-    public SpiderbotAnimations(Transform transform, List<Animator> animators, List<string> jointNames) : base(transform, animators, jointNames)
+    public SpiderbotAnimations(Transform transform, List<Animator> animators, string[] jointNames, string aimingBoneName) :
+        base(transform, animators, jointNames, aimingBoneName)
     {
         bodyAnimator = animators[0];
         sensor = GetJointByName("Sensor_Parent").GetValueOrDefault();
@@ -31,17 +31,6 @@ public class SpiderbotAnimations : CreatureAnimations
         // Same for sensor
         if (sensor.obj) UpdateSensorAngle();
     }
-
-
-    public void SetVectors(Vector2 movementVector, Vector2 facingVector, Vector2 aimingLocation)
-    {
-        if (!alive) return;
-        base.SetMovementVector(movementVector);
-        base.SetFacingVector(facingVector);
-        aimingVector = (aimingLocation - (Vector2)sensor.obj.transform.position).normalized;
-    }
-
-    public Vector2 GetAimingVector() { return aimingVector; }
 
     // Plays flinching animation once
     public override void PlayFlinch()
@@ -68,7 +57,7 @@ public class SpiderbotAnimations : CreatureAnimations
 
         float angleFraction = Vector2.SignedAngle(new Vector2(facingVector.x, 0.0f), facingVector) / 90.0f;
         angleFraction *= Mathf.Sign(facingVector.x);
-        RotateJoint(turret, SENSOR_BEND_MAX_ANGLE * angleFraction, SENSOR_BEND_STEP);
+        RotateJoint(sensor, SENSOR_BEND_MAX_ANGLE * angleFraction, SENSOR_BEND_STEP);
     }
 
     public new SpiderbotAnimationData Save()
