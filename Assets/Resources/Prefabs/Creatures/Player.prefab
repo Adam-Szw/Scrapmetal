@@ -32,6 +32,54 @@ Transform:
   m_Father: {fileID: 3048979798881750378}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &210201610836947895
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8203277667658230733}
+  - component: {fileID: 3437121178832151834}
+  m_Layer: 3
+  m_Name: Vision Block
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8203277667658230733
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210201610836947895}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.426, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5235255288027431337}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &3437121178832151834
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210201610836947895}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.80000037, y: 0.45600325}
+  m_Direction: 1
 --- !u!1 &228299536436506212
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,6 +2258,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3788059938214572723}
+  - {fileID: 8203277667658230733}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2273,6 +2322,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b8ade688edfb154aad7ea99bef8d801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: 0
+  faction: 0
+  visionBlocker: {fileID: 210201610836947895}
   weaponAttachmentBone: {fileID: 3622810208228068272}
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 14

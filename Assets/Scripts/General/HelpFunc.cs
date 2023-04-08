@@ -34,6 +34,20 @@ class HelpFunc
         return null;
     }
 
+    public static GameObject FindPlayerInScene()
+    {
+        List<GameObject> objects = SceneManager.GetActiveScene().GetRootGameObjects().ToList();
+        foreach (GameObject o in objects)
+        {
+            PlayerBehaviour behaviour = o.GetComponent<PlayerBehaviour>();
+            if (behaviour)
+            {
+                return o;
+            }
+        }
+        return null;
+    }
+
     public static float[] VectorToArray(Vector3 vec)
     {
         return new float[3] { vec.x, vec.y, vec.z };
@@ -91,6 +105,35 @@ class HelpFunc
         float angle = z * Mathf.Deg2Rad;
         Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         return direction;
+    }
+
+    public static Vector2 GetPointAtDistance(Vector2 start, Vector2 target, float distance)
+    {
+        Vector2 directionVector = start - target;
+        directionVector.Normalize();
+        directionVector *= distance;
+        Vector2 point = target + directionVector;
+        return point;
+    }
+
+    public static bool PositionInRange(Vector2 start, Vector2 target, float range)
+    {
+        Vector2 directionVector = target - start;
+        float distanceCurr = directionVector.magnitude;
+        return distanceCurr <= range;
+    }
+
+    public static List<GameObject> GetCreaturesInRadius(Vector2 location, float radius)
+    {
+        List<GameObject> objects = new List<GameObject>();
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(location, radius);
+        foreach (Collider2D collider in colliders)
+        {
+            Transform parent = collider.transform.root;
+            CreatureBehaviour behaviour = parent.gameObject.GetComponent<CreatureBehaviour>();
+            if (behaviour != null && !objects.Contains(parent.gameObject)) objects.Add(parent.gameObject);
+        }
+        return objects;
     }
 
 }

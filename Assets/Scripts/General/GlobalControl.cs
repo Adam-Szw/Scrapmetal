@@ -15,9 +15,8 @@ public class GlobalControl : MonoBehaviour
     // Global variables
     public static int projectileSortLayer = 20; // sorting layer for all projectiles in scene
 
-
-    public GameObject player;
-    public Camera currentCamera;
+    public static GameObject player;
+    public static Camera currentCamera;
 
     public static CameraControl cameraControl;
 
@@ -25,9 +24,10 @@ public class GlobalControl : MonoBehaviour
 
     void Awake()
     {
+        currentCamera = Camera.main;
         cameraControl = new CameraControl();
-        cameraControl.player = player;
         cameraControl.currentCamera = currentCamera;
+        player = HelpFunc.FindPlayerInScene();
     }
 
     void Start()
@@ -161,7 +161,6 @@ public class GlobalControl : MonoBehaviour
     {
         GameObject player = Instantiate(Resources.Load<GameObject>(PlayerBehaviour.PREFAB_PATH));
         player.GetComponent<PlayerBehaviour>().Load(playerData);
-        cameraControl.player = player;
         foreach (HumanoidData hD in data.humanoids)
         {
             HumanoidBehaviour.Spawn(hD);

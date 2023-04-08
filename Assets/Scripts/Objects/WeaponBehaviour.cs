@@ -78,6 +78,14 @@ public class WeaponBehaviour : ObjectBehaviour
         currAmmo = maxAmmo;
     }
 
+    public bool IsOnTarget()
+    {
+        float angle = GetFireAngle().eulerAngles.z;
+        Vector2 targetVec = target - (Vector2)projectileAttachment.transform.position;
+        float desiredAngle = HelpFunc.Vec2ToAngle(targetVec);
+        return angle == desiredAngle;
+    }
+
     private Quaternion GetFireAngle()
     {
         // Calculate snap

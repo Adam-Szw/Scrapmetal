@@ -870,6 +870,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4292058584842960416}
+  - {fileID: 4763064321980068845}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -885,6 +886,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5239badd15024fe49a3ae2d7748f16f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: 0
+  faction: 1
+  visionBlocker: {fileID: 6294325627878312984}
   weaponAttachmentBone: {fileID: 4415601639827162915}
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 14
@@ -2419,6 +2423,54 @@ CapsuleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0.38741744, y: 0.0010915098}
   m_Size: {x: 0.7754973, y: 0.22024715}
+  m_Direction: 1
+--- !u!1 &6294325627878312984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4763064321980068845}
+  - component: {fileID: 4704810854798798710}
+  m_Layer: 3
+  m_Name: Vision Block
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4763064321980068845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6294325627878312984}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.426, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5684202536283468193}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &4704810854798798710
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6294325627878312984}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.80000037, y: 0.45600325}
   m_Direction: 1
 --- !u!1 &6306342167627222327
 GameObject:

@@ -24,6 +24,7 @@ public class SpiderbotBehaviour : CreatureBehaviour
         base.Awake();
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
         animations = new SpiderbotAnimations(transform, new List<Animator>() { bodyAnimator }, new List<string>(BODYPARTS));
+        animations.movementDeterminesFlip = true;
         Vector3 position = weaponAttachmentBone.transform.position;
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
         GameObject weapon = WeaponBehaviour.Spawn("Prefabs/Items/Weapons/MissileLauncherSpiderbot", position, rotation, weaponAttachmentBone.transform);
@@ -37,19 +38,9 @@ public class SpiderbotBehaviour : CreatureBehaviour
         if (GlobalControl.paused) return;
     }
 
-    protected override void FlinchFallback()
+    protected override CreatureAnimations GetAnimations()
     {
-        if (GetAlive()) animations.PlayFlinch();
-    }
-
-    protected override void DeathFallback()
-    {
-        animations.SetAlive(GetAlive());
-    }
-
-    protected override void AnimationUpdateFallback()
-    {
-        animations.UpdateRotations();
+        return animations;
     }
 
     new public SpiderbotData Save()

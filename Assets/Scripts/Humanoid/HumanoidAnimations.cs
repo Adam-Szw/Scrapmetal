@@ -33,6 +33,9 @@ public class HumanoidAnimations : CreatureAnimations
      */
     public HumanoidAnimations(Transform transform, List<Animator> animators, List<string> jointNames) : base(transform, animators, jointNames)
     {
+        useRunAnimation = true;
+        speedRunThreshold = 4.0f;
+        speedMaxAnimationSpeed = 8.0f;
         bodyAnimator = animators[0];
         armsAnimator = animators[1];
         legsAnimator = animators[2];
@@ -65,14 +68,9 @@ public class HumanoidAnimations : CreatureAnimations
 
     public handsState GetStateHands() { return stateHands; }
 
-    /* Sets various vectors that control humanoid's animations, such as aiming location which will make the 
-     * character look at that point. This will trigger animations to adjust to the new vectors
-     */
-    public void SetVectors(Vector2 movementVector, Vector2 facingVector, Vector2 aimingLocation)
+    public void SetAimLocation(Vector2 location)
     {
-        base.SetVectors(movementVector, facingVector);
-        if (!alive) return;
-        aimingVector = (aimingLocation - (Vector2)hand_r.obj.transform.position).normalized;
+        aimingVector = (location - (Vector2)hand_r.obj.transform.position).normalized;
     }
 
     public Vector2 GetAimingVector() { return aimingVector; }

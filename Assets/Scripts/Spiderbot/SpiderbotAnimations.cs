@@ -33,13 +33,11 @@ public class SpiderbotAnimations : CreatureAnimations
     }
 
 
-    /* Sets various vectors that control humanoid's animations, such as aiming location which will make the 
-     * character look at that point. This will trigger animations to adjust to the new vectors
-     */
     public void SetVectors(Vector2 movementVector, Vector2 facingVector, Vector2 aimingLocation)
     {
-        base.SetVectors(movementVector, facingVector);
         if (!alive) return;
+        base.SetMovementVector(movementVector);
+        base.SetFacingVector(facingVector);
         aimingVector = (aimingLocation - (Vector2)sensor.obj.transform.position).normalized;
     }
 

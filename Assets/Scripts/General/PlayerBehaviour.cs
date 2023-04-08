@@ -13,12 +13,6 @@ public class PlayerBehaviour : HumanoidBehaviour
     [SerializeField] private float playerSpeed;
     [SerializeField] private float playerSpeedBackward;
 
-    // Values on last frame
-    private bool upPressed = false;
-    private bool downPressed = false;
-    private bool leftPressed = false;
-    private bool rightPressed = false;
-
     // Current movement direction vector deducted from inputs
     Vector2 moveVector = Vector2.zero;
 
@@ -27,11 +21,12 @@ public class PlayerBehaviour : HumanoidBehaviour
         base.Update();
         if (GlobalControl.paused) return;
 
-        // Trigger update of animations, rigidbody settings etc. if new input provided
-        if (KeyStateChanged()) UpdateState();
-
         // Aiming needs to be done every frame
-        animations.SetVectors(moveVector, GetFacingVector(), CameraControl.GetPointerWorldSpace());
+        animations.SetFacingVector(GetFacingVector());
+        animations.SetAimLocation(PlayerInput.mousePos);
+
+        // Trigger update of animations, rigidbody settings etc. if new input provided
+        if (PlayerInput.InputChanged()) UpdateState();
 
         // Placeholder for inventory system
         if (PlayerInput.two)
@@ -46,7 +41,7 @@ public class PlayerBehaviour : HumanoidBehaviour
 
         if (PlayerInput.leftclick)
         {
-            ShootActiveWeaponOnce(CameraControl.GetPointerWorldSpace());
+            ShootActiveWeaponOnce(PlayerInput.mousePos);
         }
     }
 
@@ -79,34 +74,14 @@ public class PlayerBehaviour : HumanoidBehaviour
 
         // Make player character move based on inputs
         SetVelocity(moveVector);
-        SetSpeed(0.0f);
-        if (GetAlive()) SetSpeed(animations.IsMovingAgainstFacing() ? playerSpeedBackward : playerSpeed);
-
-        // Update animations based on inputs
-        if (moveVector.magnitude > 0.0f) animations.SetStateMovement(
-                animations.IsMovingAgainstFacing() ? HumanoidAnimations.movementState.walk : HumanoidAnimations.movementState.run);
-        else animations.SetStateMovement(HumanoidAnimations.movementState.idle);
-    }
-
-    // Detects if state of keyboard has changed since last call
-    private bool KeyStateChanged()
-    {
-        bool changed = false;
-        if (PlayerInput.up != upPressed) changed = true;
-        if (PlayerInput.down != downPressed) changed = true;
-        if (PlayerInput.left != leftPressed) changed = true;
-        if (PlayerInput.right != rightPressed) changed = true;
-        upPressed = PlayerInput.up;
-        downPressed = PlayerInput.down;
-        leftPressed = PlayerInput.left;
-        rightPressed = PlayerInput.right;
-        return changed;
+        if (moveVector.magnitude > 0) SetSpeed(animations.IsMovingAgainstFacing() ? playerSpeedBackward : playerSpeed);
+        else SetSpeed(0.0f);
     }
 
     // Returns normalized vector that points from position of character to the pointer location
     private Vector2 GetFacingVector()
     {
-        Vector2 targetVector = CameraControl.GetPointerWorldSpace() - new Vector2(transform.position.x, transform.position.y);
+        Vector2 targetVector = PlayerInput.mousePos - new Vector2(transform.position.x, transform.position.y);
         targetVector.Normalize();
         return targetVector;
     }

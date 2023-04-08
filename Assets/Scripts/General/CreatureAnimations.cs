@@ -10,6 +10,15 @@ using movementState = CreatureAnimations.movementState;
 
 public class CreatureAnimations
 {
+    // If false then whether or not the sprite should be flipped comes down to facing vector rather than movement one
+    public bool movementDeterminesFlip = false;
+    // Check if creature has run animation (the default when moving is walk)
+    public bool useRunAnimation = false;
+    // When the animation should switch to run if we are using it
+    public float speedRunThreshold = 0.0f;
+    // When should the run animation reach maximum multiplier
+    public float speedMaxAnimationSpeed = 0.0f;
+
     protected Transform transform;
     protected List<Animator> animators;
 
@@ -26,7 +35,7 @@ public class CreatureAnimations
     // All creatures use idle and walk by default. Some creatures (such as humanoids) can use run
     public enum movementState
     {
-        idle, walk, run
+        idle, walk, walkBackward, run, stunned
     }
 
     // Flags that control animations of child classes. They dont always have to be used.
@@ -34,6 +43,7 @@ public class CreatureAnimations
     protected movementState stateMovement = movementState.idle;
     protected Vector2 facingVector = Vector2.zero;
     protected Vector2 movementVector = Vector2.zero;
+    protected float speed = 0.0f;
 
     // Useful flags for calculations. Readonly for outside of this class
     private enum Direction
@@ -54,57 +64,32 @@ public class CreatureAnimations
         ListJoints(bodypartNames);
     }
 
-    public void SetVectors(Vector2 movementVector, Vector2 facingVector)
+    public void SetMovementVector(Vector2 movementVector)
     {
         if (!alive) return;
         this.movementVector = movementVector;
+        VectorUpdate();
+    }
+
+    public void SetFacingVector(Vector2 facingVector)
+    {
+        if (!alive) return;
         this.facingVector = facingVector;
-
-        // Update direction flags of movement and facing
-        UpdateDirections(movementVector, facingVector);
-
-        // Apply transformations based on facing direction
-        switch (facingHorizontalDirection)
-        {
-            case Direction.right:
-                FlipSprite(true);
-                break;
-            case Direction.left:
-                FlipSprite(false);
-                break;
-        }
+        VectorUpdate();
     }
 
-    // Rotate a script-controlled joint to a certain angle. Actual rotation in any given frame is split
-    // into steps calculated from completion time so call this every frame to complete the rotation
-    public void RotateJoint(Joint joint, float targetAngle, float step, bool local = true)
+    public void SetSpeed(float speed)
     {
-        if (!joint.obj) return;
-        Transform transform = joint.obj.transform;
-        Quaternion targetRotation = Quaternion.Euler(0.0f, 0.0f, targetAngle);
-        if (local) transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, Time.deltaTime * step);
-        else transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * step);
+        if (!alive) return;
+        this.speed = speed;
+        AnimationStateUpdate();
     }
-
-    // Resets script controlled joints to default (0 degrees) angle
-    public void ResetJoints()
-    {
-        foreach(Joint joint in joints) if (joint.obj) joint.obj.transform.localEulerAngles = Vector3.zero;
-    }
-
-    public void FlipSprite(bool right)
-    {
-        Vector3 scale = transform.localScale;
-        Vector3 newScale = scale;
-        newScale.x = Mathf.Abs(newScale.x) * (right ? 1.0f : -1.0f);
-        transform.localScale = newScale;
-    }
-
-    public movementState GetStateMovement() { return stateMovement; }
 
     public Vector2 GetFacingVector() { return facingVector; }
 
     public Vector2 GetMovementVector() { return movementVector; }
+
+    public movementState GetStateMovement() { return stateMovement; }
 
     public bool IsMovingBackwards() { return movingBackward; }
 
@@ -125,54 +110,59 @@ public class CreatureAnimations
         if (!alive) ResetJoints();
     }
 
+    // Call on child classes to play flinch animation. Not all animators have this animation so it needs to be implemented
     virtual public void PlayFlinch() { }
 
+    // Call on child classes to update custom joint rotations
     public virtual void UpdateRotations() { }
 
-    /* This is where animators are set based on whether or not the character holds weapons, is running etc.
-    * Should be called whenever changes are made to the animations state
-    */
+    // Update the animators with latest flags
     protected void UpdateAnimators()
     {
         foreach (Animator animator in animators) animator.SetBool("Alive", alive);
-        if (stateMovement == movementState.idle)
-            foreach (Animator animator in animators) animator.SetInteger("MovementState", 0);
-
-        if (stateMovement == movementState.walk)
-            foreach (Animator animator in animators) animator.SetInteger("MovementState", !IsMovingBackwards() ? 1 : 2);
-
-        if (stateMovement == movementState.run)
-            foreach (Animator animator in animators) animator.SetInteger("MovementState", 3);
+        foreach (Animator animator in animators) animator.SetInteger("MovementState", (int)stateMovement);
     }
 
-    protected Joint? GetJointByName(string name)
+    // Apply changes reliant on vectors change
+    private void VectorUpdate()
     {
-        foreach (Joint j in joints) if (j.name.Equals(name)) return j;
-        return null;
-    }
-
-    // This will update the list of joints available to the script
-    private void ListJoints(List<string> bodypartNames)
-    {
-        joints = new List<Joint>();
-        foreach (string bodypartName in bodypartNames)
+        DirectionUpdate();
+        if (!movementDeterminesFlip)
         {
-            string jointName = bodypartName + "_Parent";
-            Joint joint = new Joint();
-            joint.name = jointName;
-            joint.obj = HelpFunc.RecursiveFindChild(transform.gameObject, jointName);
-            joints.Add(joint);
+            switch (facingHorizontalDirection)
+            {
+                case Direction.right:
+                    FlipSprite(true);
+                    break;
+                case Direction.left:
+                    FlipSprite(false);
+                    break;
+            }
         }
+        else
+        {
+            switch (horizontalDirection)
+            {
+                case Direction.right:
+                    FlipSprite(true);
+                    break;
+                case Direction.left:
+                    FlipSprite(false);
+                    break;
+            }
+        }
+        AnimationStateUpdate();
     }
 
-    private void UpdateDirections(Vector3 velocityVector, Vector3 facingVector)
+    // Update direction flags. These flags help determine correct animations
+    private void DirectionUpdate()
     {
         horizontalDirection = Direction.neutral;
-        if (velocityVector.x > 0.0f) horizontalDirection = Direction.right;
-        if (velocityVector.x < 0.0f) horizontalDirection = Direction.left;
+        if (movementVector.x > 0.0f) horizontalDirection = Direction.right;
+        if (movementVector.x < 0.0f) horizontalDirection = Direction.left;
         verticalDirection = Direction.neutral;
-        if (velocityVector.y > 0.0f) verticalDirection = Direction.up;
-        if (velocityVector.y < 0.0f) verticalDirection = Direction.down;
+        if (movementVector.y > 0.0f) verticalDirection = Direction.up;
+        if (movementVector.y < 0.0f) verticalDirection = Direction.down;
         facingHorizontalDirection = Direction.neutral;
         if (facingVector.x > 0.0f) facingHorizontalDirection = Direction.right;
         if (facingVector.x < 0.0f) facingHorizontalDirection = Direction.left;
@@ -190,18 +180,60 @@ public class CreatureAnimations
         if (verticalDirection != Direction.neutral && verticalDirection != facingVerticalDirection) movingAgainstFacing = true;
     }
 
-    private List<Tuple<int, float>> GetState()
+    // Determine what movement state of animators should be applied
+    private void AnimationStateUpdate()
     {
-        List<Tuple<int, float>> ret = new List<Tuple<int, float>>();
-        foreach(Animator animator in animators)
+        if (speed > speedRunThreshold && useRunAnimation && !IsMovingAgainstFacing())
         {
-            int state = animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
-            float progress = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-            ret.Add(new Tuple<int, float>(state, progress));
+            SetStateMovement(movementState.run);
         }
-        return ret;
+        else if (speed > 0.0f && IsMovingAgainstFacing())
+        {
+            SetStateMovement(movementState.walkBackward);
+        }
+        else if (speed > 0.0f)
+        {
+            SetStateMovement(movementState.walk);
+        }
+        else
+        {
+            SetStateMovement(movementState.idle);
+        }
     }
 
+    // This will update the list of joints available to the script
+    private void ListJoints(List<string> bodypartNames)
+    {
+        joints = new List<Joint>();
+        foreach (string bodypartName in bodypartNames)
+        {
+            string jointName = bodypartName + "_Parent";
+            Joint joint = new Joint();
+            joint.name = jointName;
+            joint.obj = HelpFunc.RecursiveFindChild(transform.gameObject, jointName);
+            joints.Add(joint);
+        }
+    }
+
+    protected Joint? GetJointByName(string name)
+    {
+        foreach (Joint j in joints) if (j.name.Equals(name)) return j;
+        return null;
+    }
+
+    /* Rotate a script-controlled joint to a certain angle. Actual rotation in any given frame is split
+    *  into steps so call this every frame to complete the rotation
+    */
+    public void RotateJoint(Joint joint, float targetAngle, float step, bool local = true)
+    {
+        if (!joint.obj) return;
+        Transform transform = joint.obj.transform;
+        Quaternion targetRotation = Quaternion.Euler(0.0f, 0.0f, targetAngle);
+        if (local) transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, Time.deltaTime * step);
+        else transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * step);
+    }
+
+    // Obtain angles of all script controlled joints
     private List<float[]> GetJointsAngles()
     {
         List<float[]> jointsAngles = new List<float[]>();
@@ -210,6 +242,34 @@ public class CreatureAnimations
             jointsAngles.Add(HelpFunc.VectorToArray(joint.obj.transform.localEulerAngles));
         }
         return jointsAngles;
+    }
+
+    // Resets script controlled joints to default (0 degrees) angle
+    public void ResetJoints()
+    {
+        foreach (Joint joint in joints) if (joint.obj) joint.obj.transform.localEulerAngles = Vector3.zero;
+    }
+
+    // Flipts to the right if true, otherwise to the left
+    public void FlipSprite(bool right)
+    {
+        Vector3 scale = transform.localScale;
+        Vector3 newScale = scale;
+        newScale.x = Mathf.Abs(newScale.x) * (right ? 1.0f : -1.0f);
+        transform.localScale = newScale;
+    }
+
+    // Obtain state data of animators (current frame and its progress)
+    private List<Tuple<int, float>> GetState()
+    {
+        List<Tuple<int, float>> ret = new List<Tuple<int, float>>();
+        foreach (Animator animator in animators)
+        {
+            int state = animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
+            float progress = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            ret.Add(new Tuple<int, float>(state, progress));
+        }
+        return ret;
     }
 
     public CreatureAnimationData Save()
@@ -226,7 +286,8 @@ public class CreatureAnimations
     public void Load(CreatureAnimationData data)
     {
         SetStateMovement(data.stateMovement);
-        SetVectors(HelpFunc.DataToVec2(data.facingVector), HelpFunc.DataToVec2(data.movementVector));
+        SetMovementVector(HelpFunc.DataToVec2(data.facingVector));
+        SetFacingVector(HelpFunc.DataToVec2(data.movementVector));
         List<Tuple<int, float>> state = data.animatorsState;
         for(int i = 0; i < state.Count; i++)
         {

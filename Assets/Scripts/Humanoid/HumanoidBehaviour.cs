@@ -41,19 +41,9 @@ public class HumanoidBehaviour : CreatureBehaviour
         if (GlobalControl.paused) return;
     }
 
-    protected override void FlinchFallback()
+    protected override CreatureAnimations GetAnimations()
     {
-        if (GetAlive()) animations.PlayFlinch();
-    }
-
-    protected override void DeathFallback()
-    {
-        animations.SetAlive(GetAlive());
-    }
-
-    protected override void AnimationUpdateFallback()
-    {
-        animations.UpdateRotations();
+        return animations;
     }
 
     // Spawns an item in selected bone for character. Null can be provided to indicate that no items should be selected.

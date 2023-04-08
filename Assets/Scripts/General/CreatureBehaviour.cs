@@ -7,10 +7,25 @@ using UnityEngine;
  */
 public class CreatureBehaviour : EntityBehaviour
 {
+    public enum aiFaction
+    {
+        player,
+        neutral,    // Uninteractive background creatures i.e. a rabbit, never fight back
+        NPC,        // Non playable neutral characters (villagers etc.), fight hostile creatures
+        NPCaggro,   // NPCs that were triggered to be aggressive to player
+        hostile,    // Always hostile creatures (example: wild dog), attack everything on sight except each other
+        berserk,    // Attacks everything including in own faction
+        enemy       // Enemy faction, attack player only but not NPCs etc.
+    }
+    public aiFaction faction = aiFaction.neutral;
+    public GameObject visionBlocker;
+
+    public float moveSpeed = 0.0f;
     private float health = 100.0f;
     private bool alive = true;
 
     [HideInInspector] public InventoryManager inventoryManager;
+    [HideInInspector] public bool stunned = false;
 
     public static string PREFAB_PATH;
 
@@ -18,7 +33,7 @@ public class CreatureBehaviour : EntityBehaviour
     {
         base.Update();
         if (GlobalControl.paused) return;
-        if (alive) AnimationUpdateFallback();
+        if (alive) GetAnimations().UpdateRotations();
     }
 
     // Handle collision with projectiles
@@ -32,7 +47,7 @@ public class CreatureBehaviour : EntityBehaviour
             if (bulletBehaviour.ownerID == ID) return;
             DealDamage(bulletBehaviour.damage);
             Destroy(other.gameObject);
-            FlinchFallback();
+            if (GetAlive()) GetAnimations().PlayFlinch();
         }
     }
 
@@ -47,19 +62,32 @@ public class CreatureBehaviour : EntityBehaviour
         this.alive = alive;
         if (!alive) DisableColliders(transform);
         if (!alive) SetSpeed(0.0f);
-        if (!alive) DeathFallback();
+        if (!alive) GetAnimations().SetAlive(GetAlive());
     }
 
     public bool GetAlive() { return alive; }
 
-    // Creatures inheriting should update animations on death
-    protected virtual void DeathFallback() { }
+    public new void SetSpeed(float speed)
+    {
+        if (!alive) return;
+        if (!stunned) base.SetSpeed(speed);
+        GetAnimations().SetSpeed(speed);
+    }
 
-    // Creatures inheriting from this should play flinch animation upon taking damage
-    protected virtual void FlinchFallback() { }
+    public new void SetVelocity(Vector3 velocityVector)
+    {
+        if (!alive) return;
+        if (!stunned) base.SetVelocity(velocityVector);
+        GetAnimations().SetMovementVector(velocityVector.normalized);
+    }
 
-    // Inherited class should call joint animation update per frame
-    protected virtual void AnimationUpdateFallback() { }
+    public virtual void SetAttackTarget(GameObject target) { }
+
+    public virtual bool AnyWeaponOnTarget() { return false; }
+
+    public virtual void Attack() { }
+
+    protected virtual CreatureAnimations GetAnimations() { return null; }
 
     protected new CreatureData Save()
     {
