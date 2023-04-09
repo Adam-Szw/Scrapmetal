@@ -58,6 +58,16 @@ class HelpFunc
         return new float[2] { vec.x, vec.y };
     }
 
+    public static List<float[]> VectorListToArrayList(List<Vector2> vl)
+    {
+        List<float[]> ret = new List<float[]>();
+        foreach(Vector2 v in vl)
+        {
+            ret.Add(VectorToArray(v));
+        }
+        return ret;
+    }
+
     public static float[] QuaternionToArray(Quaternion q)
     {
         return new float[4] { q.x, q.y, q.z, q.w };
@@ -71,6 +81,16 @@ class HelpFunc
     public static Vector2 DataToVec2(float[] data)
     {
         return new Vector2(data[0], data[1]);
+    }
+
+    public static List<Vector2> DataToListVec2(List<float[]> data)
+    {
+        List<Vector2> d = new List<Vector2>();
+        foreach (float[] fa in data)
+        {
+            d.Add(DataToVec2(fa));
+        }
+        return d;
     }
 
     public static Quaternion DataToQuaternion(float[] data)

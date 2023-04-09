@@ -5,11 +5,8 @@ using UnityEngine;
 
 /* Everything that is unique to the player and not other humanoid NPCs goes here
  */
-public class PlayerBehaviour : HumanoidBehaviour
+public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnable<PlayerData>
 {
-
-    public static new string PREFAB_PATH = "Prefabs/Creatures/Player";
-
     [SerializeField] private float playerSpeed;
     [SerializeField] private float playerSpeedBackward;
 
@@ -19,7 +16,7 @@ public class PlayerBehaviour : HumanoidBehaviour
         if (GlobalControl.paused) return;
 
         // Aiming needs to be done every frame
-        animations.SetAimingVector(PlayerInput.mousePos);
+        SetAimingLocation(PlayerInput.mousePos);
 
         // Trigger update of animations, rigidbody settings etc. if new input provided
         if (PlayerInput.InputChanged()) UpdateState();
@@ -28,7 +25,7 @@ public class PlayerBehaviour : HumanoidBehaviour
         if (PlayerInput.two)
         {
             //item rework
-            GameObject gun = EntityBehaviour.Spawn("Prefabs/Items/Weapons/Rivetgun", transform.position, transform.rotation);
+            GameObject gun = WeaponBehaviour.Spawn("Prefabs/Items/Weapons/Rivetgun", transform.position, transform.rotation);
             WeaponData data = gun.GetComponent<WeaponBehaviour>().Save();
             Destroy(gun);
             SetItemActive(data);
@@ -37,21 +34,9 @@ public class PlayerBehaviour : HumanoidBehaviour
 
         if (PlayerInput.leftclick)
         {
-            ShootActiveWeaponOnce(PlayerInput.mousePos);
+            SetAttackTarget(PlayerInput.mousePos);
+            Attack();
         }
-    }
-
-    // Returns data containing all information about player in-game object
-    public new PlayerData Save()
-    {
-        PlayerData data = new PlayerData(base.Save());
-        return data;
-    }
-
-    // Load player using saved data
-    public void Load(PlayerData data)
-    {
-        base.Load(data);
     }
 
     // Updates behaviour and animations of humanoid that are part of state machine
@@ -86,6 +71,32 @@ public class PlayerBehaviour : HumanoidBehaviour
         return targetVector;
     }
 
+    public new PlayerData Save()
+    {
+        PlayerData data = new PlayerData(base.Save());
+        return data;
+    }
+
+    // Load player using saved data
+    public void Load(PlayerData data, bool loadTransform = true)
+    {
+        base.Load(data, loadTransform);
+        UpdateState();
+    }
+
+    public static GameObject Spawn(PlayerData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
+    {
+        GameObject obj = HumanoidBehaviour.Spawn(data, position, rotation, scale, parent);
+        obj.GetComponent<PlayerBehaviour>().Load(data, false);
+        return obj;
+    }
+
+    public static GameObject Spawn(PlayerData data, Transform parent = null)
+    {
+        GameObject obj = HumanoidBehaviour.Spawn(data, parent);
+        obj.GetComponent<PlayerBehaviour>().Load(data);
+        return obj;
+    }
 }
 
 [Serializable]

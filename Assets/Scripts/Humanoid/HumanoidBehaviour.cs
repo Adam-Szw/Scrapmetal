@@ -2,18 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UIElements;
 using static HumanoidAnimations;
+using static UnityEngine.GraphicsBuffer;
 using ColorUtility = UnityEngine.ColorUtility;
 
-public class HumanoidBehaviour : CreatureBehaviour
+public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spawnable<HumanoidData>
 {
-
-    public static new string PREFAB_PATH = "Prefabs/Creatures/Humanoid";
-
     [SerializeField] private GameObject weaponAttachmentBone;
     [SerializeField] private Vector2 weaponAttachmentOffset;
     [SerializeField] private int itemActiveSortLayer;
@@ -32,7 +31,8 @@ public class HumanoidBehaviour : CreatureBehaviour
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
         Animator armsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Arms").GetComponent<Animator>();
         Animator legsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Legs").GetComponent<Animator>();
-        animations = new HumanoidAnimations(transform, new List<Animator>() { bodyAnimator, armsAnimator, legsAnimator }, BODYPARTS, "Hand_R_Parent");
+        GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Hand_R_Parent");
+        animations = new HumanoidAnimations(transform, new List<Animator>() { bodyAnimator, armsAnimator, legsAnimator }, BODYPARTS, aimBone);
     }
 
     new protected void Update()
@@ -63,6 +63,7 @@ public class HumanoidBehaviour : CreatureBehaviour
         {
             obj.GetComponent<WeaponBehaviour>().Load((WeaponData)item, true);
             hasWeapon = true;
+            animations.aimingReferenceBone = HelpFunc.RecursiveFindChild(obj, "Attachpoint");
         }
         else obj.GetComponent<ObjectBehaviour>().Load(item);
         obj.GetComponent<SpriteRenderer>().sortingOrder = itemActiveSortLayer;
@@ -71,12 +72,11 @@ public class HumanoidBehaviour : CreatureBehaviour
 
     }
 
-    public void ShootActiveWeaponOnce(Vector2 target)
+    protected override List<WeaponBehaviour> GetWeapons()
     {
-
-        if (!hasWeapon || !itemActive) return;
-        itemActive.GetComponent<WeaponBehaviour>().target = target;
-        itemActive.GetComponent<WeaponBehaviour>().Use();
+        List<WeaponBehaviour> weapons = new List<WeaponBehaviour>();
+        if (hasWeapon) weapons.Add(itemActive.GetComponent<WeaponBehaviour>());
+        return weapons;
     }
 
     private List<string> SaveBodypartData()
@@ -108,13 +108,6 @@ public class HumanoidBehaviour : CreatureBehaviour
         }
     }
 
-    public static GameObject Spawn(HumanoidData data)
-    {
-        GameObject obj = Instantiate(Resources.Load<GameObject>(PREFAB_PATH));
-        obj.GetComponent<HumanoidBehaviour>().Load(data);
-        return obj;
-    }
-
     new public HumanoidData Save()
     {
         HumanoidData data = new HumanoidData(base.Save());
@@ -129,15 +122,28 @@ public class HumanoidBehaviour : CreatureBehaviour
         return data;
     }
 
-    public void Load(HumanoidData data)
+    public void Load(HumanoidData data, bool loadTransform = true)
     {
-        base.Load(data);
+        base.Load(data, loadTransform);
         SetAlive(GetAlive());
         LoadBodyPartData(data.bodypartData);
         animations.Load(data.animationData);
         SetItemActive(data.itemActive);
     }
 
+    public static GameObject Spawn(HumanoidData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
+    {
+        GameObject obj = CreatureBehaviour.Spawn(data, position, rotation, scale, parent);
+        obj.GetComponent<HumanoidBehaviour>().Load(data, false);
+        return obj;
+    }
+
+    public static GameObject Spawn(HumanoidData data, Transform parent = null)
+    {
+        GameObject obj = CreatureBehaviour.Spawn(data, parent);
+        obj.GetComponent<HumanoidBehaviour>().Load(data);
+        return obj;
+    }
 }
 
 [Serializable]
@@ -147,7 +153,11 @@ public class HumanoidData : CreatureData
 
     public HumanoidData(CreatureData data) : base(data)
     {
+        this.faction = data.faction;
+        this.aiData = data.aiData;
+        this.moveSpeed = data.moveSpeed;
         this.alive = data.alive;
+        this.maxHealth = data.maxHealth;
         this.health = data.health;
     }
 

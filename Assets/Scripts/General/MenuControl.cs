@@ -7,7 +7,7 @@ using UnityEngine;
 public class MenuControl : MonoBehaviour
 {
 
-    private static string MENU_INGAME_PATH = "Prefabs/Menu_Ingame";
+    private static string PREFAB_PATH = "Prefabs/UI/Menu_Ingame";
     private static GameObject inGameMenu = null;
 
     void Update()
@@ -23,7 +23,7 @@ public class MenuControl : MonoBehaviour
     public static void showInGameMenu()
     {
         GlobalControl.PauseGame();
-        inGameMenu = Instantiate(Resources.Load<GameObject>(MENU_INGAME_PATH));
+        inGameMenu = Instantiate(Resources.Load<GameObject>(PREFAB_PATH));
     }
 
     public static void destroyInGameMenu()

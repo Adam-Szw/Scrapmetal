@@ -11,6 +11,12 @@ public class SceneData
 {
     public string name;
     public CameraData cameraData;
-    public List<HumanoidData> humanoids = new List<HumanoidData>();
-    public List<ProjectileData> bullets = new List<ProjectileData>();
+    public List<EntityData> entities;
+
+    public SceneData(string name, CameraData cameraData, List<EntityData> entities)
+    {
+        this.name = name;
+        this.cameraData = cameraData;
+        this.entities = entities;
+    }
 }

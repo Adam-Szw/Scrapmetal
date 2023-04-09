@@ -76,7 +76,7 @@ public class PlayerInput : MonoBehaviour
     private static int GetMouseQuadrant()
     {
         int quadrant;
-        Vector2 playerPos = GlobalControl.player.transform.position;
+        Vector2 playerPos = GlobalControl.GetPlayer().transform.position;
         if (mousePos.y > playerPos.y)
         {
             if (mousePos.x > playerPos.x) quadrant = 0;

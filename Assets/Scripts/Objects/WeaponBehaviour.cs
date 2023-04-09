@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 using static WeaponBehaviour;
 using Random = UnityEngine.Random;
 
-public class WeaponBehaviour : ObjectBehaviour
+public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<WeaponData>
 {
     public Vector2 target = Vector2.zero;   // Targeting location
     public GameObject projectilePrefab;
@@ -128,14 +128,28 @@ public class WeaponBehaviour : ObjectBehaviour
         return data;
     }
 
-    public void Load(WeaponData data, bool dontLoadBody = false)
+    public void Load(WeaponData data, bool loadTransform = true)
     {
-        base.Load(data, dontLoadBody);
+        base.Load(data, loadTransform);
         this.cooldown = data.cooldown;
         this.maxAmmo = data.maxAmmo;
         this.target = HelpFunc.DataToVec2(data.target);
         this.currAmmo = data.currAmmo;
         this.cooldownCurrent = data.cooldownCurrent;
+    }
+
+    public static GameObject Spawn(WeaponData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
+    {
+        GameObject obj = ObjectBehaviour.Spawn(data, position, rotation, scale, parent);
+        obj.GetComponent<WeaponBehaviour>().Load(data, false);
+        return obj;
+    }
+
+    public static GameObject Spawn(WeaponData data, Transform parent = null)
+    {
+        GameObject obj = ObjectBehaviour.Spawn(data, parent);
+        obj.GetComponent<WeaponBehaviour>().Load(data);
+        return obj;
     }
 }
 

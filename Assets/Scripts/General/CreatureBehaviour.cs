@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static CreatureBehaviour;
+using static UnityEngine.GraphicsBuffer;
 
 /* This class controls information for characters and enemies in the game
  */
-public class CreatureBehaviour : EntityBehaviour
+public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawnable<CreatureData>
 {
     public enum FactionAllegiance
     {
@@ -19,15 +22,14 @@ public class CreatureBehaviour : EntityBehaviour
     }
     public FactionAllegiance faction = FactionAllegiance.neutral;
     public GameObject visionBlocker;
+    public CreatureAI aiControl = null;
 
     public float moveSpeed = 0.0f;
-    private float health = 100.0f;
-    private bool alive = true;
+    [SerializeField] private float maxHealth = 100.0f;
+    [SerializeField] private float health = 100.0f;
+    [SerializeField] private bool alive = true;
 
     [HideInInspector] public InventoryManager inventoryManager;
-    [HideInInspector] public bool stunned = false;
-
-    public static string PREFAB_PATH;
 
     new protected void Update()
     {
@@ -60,9 +62,9 @@ public class CreatureBehaviour : EntityBehaviour
     public void SetAlive(bool alive)
     {
         this.alive = alive;
+        GetAnimations().SetAlive(alive);
         if (!alive) DisableColliders(transform);
         if (!alive) base.SetSpeed(0.0f);
-        if (!alive) GetAnimations().SetAlive(GetAlive());
     }
 
     public bool GetAlive() { return alive; }
@@ -70,14 +72,14 @@ public class CreatureBehaviour : EntityBehaviour
     public new void SetSpeed(float speed)
     {
         if (!alive) return;
-        if (!stunned) base.SetSpeed(speed);
+        base.SetSpeed(speed);
         GetAnimations().SetSpeed(speed);
     }
 
     public new void SetMoveVector(Vector2 moveVector)
     {
         if (!alive) return;
-        if (!stunned) base.SetMoveVector(moveVector);
+        base.SetMoveVector(moveVector);
         GetAnimations().SetMovementVector(moveVector.normalized);
     }
 
@@ -87,10 +89,19 @@ public class CreatureBehaviour : EntityBehaviour
         GetAnimations().SetFacingVector(facingVector);
     }
 
-    public void SetAimingVector(Vector2 aimLocation)
+    public void SetAimingLocation(Vector2 aimingLocation)
     {
         if (!alive) return;
-        GetAnimations().SetAimingVector(aimLocation);
+        GetAnimations().SetAimingLocation(aimingLocation);
+    }
+
+    public void SetAttackTarget(Vector2 location)
+    {
+        if (!alive) return;
+        foreach (WeaponBehaviour w in GetWeapons())
+        {
+            w.target = location;
+        }
     }
 
     public void SetAttackTarget(GameObject target)
@@ -104,7 +115,7 @@ public class CreatureBehaviour : EntityBehaviour
         }
     }
 
-    public bool AnyWeaponOnTarget() 
+    public bool AnyWeaponOnTarget()
     {
         if (!alive) return false;
         foreach (WeaponBehaviour w in GetWeapons())
@@ -114,12 +125,12 @@ public class CreatureBehaviour : EntityBehaviour
         return false;
     }
 
-    public void Attack() 
+    public void Attack()
     {
         if (!alive) return;
         foreach (WeaponBehaviour w in GetWeapons())
         {
-            if (w.IsOnTarget()) w.Use();
+            w.Use();
         }
     }
 
@@ -127,21 +138,42 @@ public class CreatureBehaviour : EntityBehaviour
 
     protected virtual List<WeaponBehaviour> GetWeapons() { return null; }
 
-    protected new CreatureData Save()
+    public new CreatureData Save()
     {
         CreatureData data = new CreatureData(base.Save());
-        data.alive = this.alive;
-        data.health = this.health;
+        data.faction = faction;
+        data.aiData = aiControl ? aiControl.Save() : null;
+        data.moveSpeed = moveSpeed;
+        data.alive = alive;
+        data.maxHealth = maxHealth;
+        data.health = health;
         return data;
     }
 
-    protected void Load(CreatureData data)
+    public void Load(CreatureData data, bool loadTransform = true)
     {
-        base.Load(data);
-        alive = data.alive;
+        base.Load(data, loadTransform);
+        faction = data.faction;
+        if ((data.aiData != null) && aiControl) aiControl.Load(data.aiData);
+        moveSpeed = data.moveSpeed;
+        SetAlive(data.alive);
+        maxHealth = data.maxHealth;
         health = data.health;
     }
 
+    public static GameObject Spawn(CreatureData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
+    {
+        GameObject obj = EntityBehaviour.Spawn(data, position, rotation, scale, parent);
+        obj.GetComponent<CreatureBehaviour>().Load(data, false);
+        return obj;
+    }
+
+    public static GameObject Spawn(CreatureData data, Transform parent = null)
+    {
+        GameObject obj = EntityBehaviour.Spawn(data, parent);
+        obj.GetComponent<CreatureBehaviour>().Load(data);
+        return obj;
+    }
 }
 
 [Serializable]
@@ -152,6 +184,7 @@ public class CreatureData : EntityData
     public CreatureData(EntityData data)
     {
         this.ID = data.ID;
+        this.prefabPath = data.prefabPath;
         this.location = data.location;
         this.rotation = data.rotation;
         this.scale = data.scale;
@@ -159,6 +192,10 @@ public class CreatureData : EntityData
         this.speed = data.speed;
     }
 
+    public FactionAllegiance faction;
+    public CreatureAIData aiData;
+    public float moveSpeed;
+    public float maxHealth;
     public bool alive;
     public float health;
 }

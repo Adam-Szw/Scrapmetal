@@ -17,7 +17,7 @@ public class CameraControl
 
     public void AdjustCameraToPlayer()
     {
-        Vector2 playerPos = GlobalControl.player.transform.position;
+        Vector2 playerPos = GlobalControl.GetPlayer().transform.position;
         Vector2 newPos = (PlayerInput.GetMousePositionRelative() + playerPos) / 2.0f;
         currentCamera.transform.position = new Vector3(newPos.x, newPos.y, -10.0f);
 

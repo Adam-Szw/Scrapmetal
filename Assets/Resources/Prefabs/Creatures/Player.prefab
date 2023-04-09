@@ -2323,8 +2323,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
+  prefabPath: Prefabs/Creatures/Player
   faction: 0
   visionBlocker: {fileID: 210201610836947895}
+  moveSpeed: 0
   weaponAttachmentBone: {fileID: 3622810208228068272}
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 14

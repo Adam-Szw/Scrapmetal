@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static CreatureAI;
 using static CreatureBehaviour;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class CreatureAI : MonoBehaviour
+public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
 {
     public CreatureBehaviour behaviour;
 
@@ -90,13 +91,13 @@ public class CreatureAI : MonoBehaviour
         if (targetID == 0)
         {
             behaviour.SetFacingVector(Vector2.right);
-            behaviour.SetAimingVector((Vector2)transform.position + Vector2.right);
+            behaviour.SetAimingLocation((Vector2)transform.position + Vector2.right);
         }
         else
         {
             Vector2 desiredDirection = targetLastPos.Value - (Vector2)transform.position;
             behaviour.SetFacingVector(desiredDirection);
-            behaviour.SetAimingVector(targetLastPos.Value);
+            behaviour.SetAimingLocation(targetLastPos.Value);
         }
     }
 
@@ -305,5 +306,67 @@ public class CreatureAI : MonoBehaviour
         if (factionMe == FactionAllegiance.enemy && factionOther == FactionAllegiance.player) return true;
         return false;
     }
+
+    public CreatureAIData Save()
+    {
+        CreatureAIData data = new CreatureAIData();
+        data.locationGoal = locationGoal.HasValue ? HelpFunc.VectorToArray(locationGoal.Value) : null;
+        data.detectionDistance = detectionDistance;
+        data.attackDistance = attackDistance;
+        data.preferredFightDistance = preferredFightDistance;
+        data.cautionTime = cautionTime;
+        data.searchTime = searchTime;
+        data.idleTime = idleTime;
+        data.idleRoutine = HelpFunc.VectorListToArrayList(idleRoutine);
+        data.LOCATION_MAX_OFFSET = LOCATION_MAX_OFFSET;
+        data.DISTANCE_MAX_OFFSET = DISTANCE_MAX_OFFSET;
+        data.targetID = targetID;
+        data.targetLastPos = targetLastPos.HasValue ? HelpFunc.VectorToArray(targetLastPos.Value) : null;
+        data.state = state;
+        data.routineIndex = routineIndex;
+        data.countdown = countdown;
+        return data;
+    }
+
+    public void Load(CreatureAIData data, bool loadTransform = true)
+    {
+        locationGoal = (data.locationGoal != null) ? HelpFunc.DataToVec2(data.locationGoal) : null;
+        detectionDistance = data.detectionDistance;
+        attackDistance = data.attackDistance;
+        preferredFightDistance = data.preferredFightDistance;
+        cautionTime = data.cautionTime;
+        searchTime = data.searchTime;
+        idleTime = data.idleTime;
+        idleRoutine = HelpFunc.DataToListVec2(data.idleRoutine);
+        LOCATION_MAX_OFFSET = data.LOCATION_MAX_OFFSET;
+        DISTANCE_MAX_OFFSET = data.DISTANCE_MAX_OFFSET;
+        targetID = data.targetID;
+        targetLastPos = (data.targetLastPos != null) ? HelpFunc.DataToVec2(data.targetLastPos) : null;
+        state = data.state;
+        routineIndex = data.routineIndex;
+        countdown = data.countdown;
+    }
+}
+
+[Serializable]
+public class CreatureAIData
+{
+    public CreatureAIData() { }
+
+    public float[] locationGoal;
+    public float detectionDistance;
+    public float attackDistance;
+    public float preferredFightDistance;
+    public float cautionTime;
+    public float searchTime;
+    public float idleTime;
+    public List<float[]> idleRoutine;
+    public float LOCATION_MAX_OFFSET;
+    public float DISTANCE_MAX_OFFSET;
+    public ulong targetID;
+    public float[] targetLastPos;
+    public aiState state;
+    public int routineIndex;
+    public float countdown;
 
 }

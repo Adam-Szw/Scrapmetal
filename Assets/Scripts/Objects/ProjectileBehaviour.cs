@@ -10,7 +10,7 @@ using static CreatureAnimations;
 
 /* Handles both dumb bullets and guided missiles
  */
-public class ProjectileBehaviour : ObjectBehaviour
+public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Spawnable<ProjectileData>
 {
     // bullets behaviour
     public float speedInitial;
@@ -82,9 +82,9 @@ public class ProjectileBehaviour : ObjectBehaviour
         return data;
     }
 
-    public void Load(ProjectileData data)
+    public void Load(ProjectileData data, bool loadTransform = true)
     {
-        base.Load(data);
+        base.Load(data, loadTransform);
         speedInitial = data.speedInitial;
         acceleration = data.acceleration;
         lifespan = data.lifespan;
@@ -93,6 +93,19 @@ public class ProjectileBehaviour : ObjectBehaviour
         lifeRemaining = data.lifeRemaining;
     }
 
+    public static GameObject Spawn(ProjectileData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
+    {
+        GameObject obj = ObjectBehaviour.Spawn(data, position, rotation, scale, parent);
+        obj.GetComponent<ProjectileBehaviour>().Load(data, false);
+        return obj;
+    }
+
+    public static GameObject Spawn(ProjectileData data, Transform parent = null)
+    {
+        GameObject obj = ObjectBehaviour.Spawn(data, parent);
+        obj.GetComponent<ProjectileBehaviour>().Load(data);
+        return obj;
+    }
 }
 
 [Serializable]

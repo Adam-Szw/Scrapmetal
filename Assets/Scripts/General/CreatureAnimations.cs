@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using static CreatureAnimations;
 using static HumanoidAnimations;
-using movementState = CreatureAnimations.movementState;
+using static UnityEngine.GraphicsBuffer;
 
-public class CreatureAnimations
+public class CreatureAnimations : Saveable<CreatureAnimationData>
 {
     // If false then whether or not the sprite should be flipped comes down to facing vector rather than movement one
     public bool movementDeterminesFlip = false;
@@ -20,6 +20,8 @@ public class CreatureAnimations
     public float speedRunThreshold = 0.0f;
     // When should the run animation reach maximum multiplier
     public float speedMaxAnimationSpeed = 0.0f;
+
+    [HideInInspector] public GameObject aimingReferenceBone;
 
     protected Transform transform;
     protected List<Animator> animators;
@@ -45,7 +47,7 @@ public class CreatureAnimations
     protected movementState stateMovement = movementState.idle;
     protected Vector2 facingVector = Vector2.zero;
     protected Vector2 movementVector = Vector2.zero;
-    protected Vector2 aimingVector = Vector2.zero;
+    protected Vector2 aimingLocation = Vector2.zero;
     protected float speed = 0.0f;
 
     // Useful flags for calculations. Readonly for outside of this class
@@ -59,14 +61,13 @@ public class CreatureAnimations
     private Direction facingVerticalDirection = Direction.neutral;
     private bool movingBackward = false;        // these 2 are not the same. backwards refers only to horizontal
     private bool movingAgainstFacing = false;   // misalignment of running and facing direction
-    private Joint aimingReferenceBone;
 
-    public CreatureAnimations(Transform transform, List<Animator> animators, string[] bodypartNames, string aimingBoneName)
+    public CreatureAnimations(Transform transform, List<Animator> animators, string[] bodypartNames, GameObject aimingBone)
     {
         this.transform = transform;
         this.animators = animators;
         ListJoints(bodypartNames);
-        aimingReferenceBone = GetJointByName(aimingBoneName).Value;
+        aimingReferenceBone = aimingBone;
     }
 
     public void SetMovementVector(Vector2 movementVector)
@@ -83,9 +84,9 @@ public class CreatureAnimations
         VectorUpdate();
     }
 
-    public void SetAimingVector(Vector2 aimLocation)
+    public void SetAimingLocation(Vector2 aimingLocation)
     {
-        aimingVector = (aimLocation - (Vector2)aimingReferenceBone.obj.transform.position).normalized;
+        this.aimingLocation = aimingLocation;
     }
 
     public void SetSpeed(float speed)
@@ -99,7 +100,7 @@ public class CreatureAnimations
 
     public Vector2 GetMovementVector() { return movementVector; }
 
-    public Vector2 GetAimingVector() { return aimingVector; }
+    public Vector2 GetAimingLocation() { return aimingLocation; }
 
     public movementState GetStateMovement() { return stateMovement; }
 
@@ -213,6 +214,11 @@ public class CreatureAnimations
         }
     }
 
+    protected Vector2 GetAimingVector()
+    {
+        return aimingLocation - (Vector2)aimingReferenceBone.transform.position;
+    }
+
     // This will update the list of joints available to the script
     private void ListJoints(string[] bodypartNames)
     {
@@ -287,19 +293,25 @@ public class CreatureAnimations
     public CreatureAnimationData Save()
     {
         CreatureAnimationData data = new CreatureAnimationData();
+        data.alive = alive;
         data.stateMovement = GetStateMovement();
         data.facingVector = HelpFunc.VectorToArray(GetFacingVector());
         data.movementVector = HelpFunc.VectorToArray(GetMovementVector());
+        data.aimingLocation = HelpFunc.VectorToArray(GetAimingLocation());
+        data.speed = speed;
         data.animatorsState = GetState();
         data.jointsAngles = GetJointsAngles();
         return data;
     }
 
-    public void Load(CreatureAnimationData data)
+    public void Load(CreatureAnimationData data, bool loadTransform = true)
     {
+        SetAlive(data.alive);
         SetStateMovement(data.stateMovement);
         SetMovementVector(HelpFunc.DataToVec2(data.facingVector));
         SetFacingVector(HelpFunc.DataToVec2(data.movementVector));
+        SetAimingLocation(HelpFunc.DataToVec2(data.aimingLocation));
+        SetSpeed(speed);
         List<Tuple<int, float>> state = data.animatorsState;
         for(int i = 0; i < state.Count; i++)
         {
@@ -318,9 +330,12 @@ public class CreatureAnimationData
 {
     public CreatureAnimationData() { }
 
+    public bool alive;
     public movementState stateMovement;
     public float[] facingVector;
     public float[] movementVector;
+    public float[] aimingLocation;
+    public float speed;
     public List<Tuple<int, float>> animatorsState;
     public List<float[]> jointsAngles;
 }

@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.FilePathAttribute;
 using UnityEngine.UIElements;
+using static UnityEngine.RuleTile.TilingRuleOutput;
+using Transform = UnityEngine.Transform;
 
 /* This class controls basic information for all dynamic entities in the game
  */
-public class EntityBehaviour : MonoBehaviour
+public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<EntityData>
 {
-    [HideInInspector] public ulong ID = 0;
+    public string prefabPath;
 
+    [HideInInspector] public ulong ID = 0;
     private float speed = 0.0f;
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb;
-
-    private static ulong nextID = 1;
 
     protected void Update()
     {
@@ -26,7 +27,7 @@ public class EntityBehaviour : MonoBehaviour
     protected void Awake()
     {
         rb = this.gameObject.GetComponent<Rigidbody2D>();
-        ID = ++nextID;
+        ID = ++GlobalControl.nextID;
     }
 
     public void SetSpeed(float speed)
@@ -94,10 +95,11 @@ public class EntityBehaviour : MonoBehaviour
         }
     }
 
-    protected EntityData Save()
+    public EntityData Save()
     {
         EntityData data = new EntityData();
         data.ID = ID;
+        data.prefabPath = prefabPath;
         data.location = HelpFunc.VectorToArray(transform.localPosition);
         data.rotation = HelpFunc.QuaternionToArray(transform.localRotation);
         data.scale = HelpFunc.VectorToArray(transform.localScale);
@@ -106,16 +108,37 @@ public class EntityBehaviour : MonoBehaviour
         return data;
     }
 
-    protected void Load(EntityData data)
+    public void Load(EntityData data, bool loadTransform = true)
     {
-        transform.localPosition = HelpFunc.DataToVec3(data.location);
-        transform.rotation = HelpFunc.DataToQuaternion(data.rotation);
-        transform.localScale = HelpFunc.DataToVec3(data.scale);
+        prefabPath = data.prefabPath;
+        if(loadTransform)
+        {
+            transform.localPosition = HelpFunc.DataToVec3(data.location);
+            transform.rotation = HelpFunc.DataToQuaternion(data.rotation);
+            transform.localScale = HelpFunc.DataToVec3(data.scale);
+        }
         SetMoveVector(HelpFunc.DataToVec2(data.velocity));
         ID = data.ID;
         speed = data.speed;
     }
 
+    public static GameObject Spawn(EntityData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
+    {
+        GameObject obj;
+        if (parent != null) obj = Instantiate(Resources.Load<GameObject>(data.prefabPath), position, rotation, parent);
+        else obj = Instantiate(Resources.Load<GameObject>(data.prefabPath), position, rotation);
+        obj.GetComponent<EntityBehaviour>().Load(data, false);
+        return obj;
+    }
+
+    public static GameObject Spawn(EntityData data, Transform parent = null)
+    {
+        GameObject obj;
+        if (parent != null) obj = Instantiate(Resources.Load<GameObject>(data.prefabPath), parent);
+        else obj = Instantiate(Resources.Load<GameObject>(data.prefabPath));
+        obj.GetComponent<EntityBehaviour>().Load(data);
+        return obj;
+    }
 }
 
 [Serializable]
@@ -123,6 +146,7 @@ public class EntityData
 {
     // Basic information
     public ulong ID;
+    public string prefabPath;
     public float[] location;
     public float[] rotation;
     public float[] scale;

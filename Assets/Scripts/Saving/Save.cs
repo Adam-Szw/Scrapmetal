@@ -11,6 +11,13 @@ using System.Threading.Tasks;
 public class Save
 {
     public string currentScene;
-    public PlayerData playerData;
+    public ulong nextID;
     public List<SceneData> scenes = new List<SceneData>();
+
+    public Save(string currentScene, ulong nextID, List<SceneData> scenes)
+    {
+        this.currentScene = currentScene;
+        this.scenes = scenes;
+        this.nextID = nextID;
+    }
 }

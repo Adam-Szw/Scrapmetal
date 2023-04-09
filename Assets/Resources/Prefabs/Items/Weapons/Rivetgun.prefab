@@ -182,16 +182,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469dedd87cc55884789be4752c929b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
   prefabPath: Prefabs/Items/Weapons/Rivetgun
+  ID: 0
   ownerID: 0
   target: {x: 0, y: 0}
   projectilePrefab: {fileID: 8289283381652960123, guid: 7385c1a77b1573749b2a7f6a0d556713, type: 3}
   maxAmmo: 100
   currAmmo: 100
   cooldown: 0.1
-  spread: 5
-  snapMaxAngle: 15
+  spread: 0
+  snapMaxAngle: 0
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}
 --- !u!50 &7695863947780370617

@@ -9,7 +9,7 @@ using static CreatureAnimations;
 using static HumanoidAnimations;
 using static UnityEngine.GraphicsBuffer;
 
-public class HumanoidAnimations : CreatureAnimations
+public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimationData>
 {
 
     public enum handsState
@@ -30,8 +30,8 @@ public class HumanoidAnimations : CreatureAnimations
 
     /* Animators should come in order: body, arms, legs
      */
-    public HumanoidAnimations(Transform transform, List<Animator> animators, string[] jointNames, string aimingBoneName) :
-        base(transform, animators, jointNames, aimingBoneName)
+    public HumanoidAnimations(Transform transform, List<Animator> animators, string[] jointNames, GameObject aimingBone) :
+        base(transform, animators, jointNames, aimingBone)
     {
         useRunAnimation = true;
         useWalkBackwardAnimation = true;
@@ -100,6 +100,8 @@ public class HumanoidAnimations : CreatureAnimations
         const float TORSO_BEND_MAX_ANGLE = 10.0f;
         const float TORSO_BEND_STEP = 20.0f;
 
+        Vector2 aimingVector = GetAimingVector();
+        if (aimingVector.magnitude < 0.2f) return;
         float angleFraction = Vector2.SignedAngle(new Vector2(aimingVector.x, 0.0f), aimingVector) / 90.0f;
         angleFraction *= Mathf.Sign(aimingVector.x);
         RotateJoint(head, HEAD_BEND_MAX_ANGLE * angleFraction, HEAD_BEND_STEP);
@@ -116,6 +118,8 @@ public class HumanoidAnimations : CreatureAnimations
         const float ARM_LOW_R_BEND_OFFSET_ANGLE = -30.0f;
         const float ARM_LOW_R_BEND_STEP = 200.0f;
 
+        Vector2 aimingVector = GetAimingVector();
+        if (aimingVector.magnitude < 0.2f) return;
         float angleFraction = Vector2.SignedAngle(new Vector2(aimingVector.x, 0.0f), aimingVector) / 90.0f;
         angleFraction *= Mathf.Sign(aimingVector.x);
         RotateJoint(arm_up_r, (ARM_UP_R_BEND_MAX_ANGLE * angleFraction) + ARM_UP_R_BEND_OFFSET_ANGLE, ARM_UP_R_BEND_STEP);
@@ -129,7 +133,9 @@ public class HumanoidAnimations : CreatureAnimations
     {
         const float HAND_R_BEND_STEP = 300.0f;
 
-        float targetAngle = Mathf.Atan2(aimingVector.y, aimingVector.x) * Mathf.Rad2Deg;
+        Vector2 aimingVector = GetAimingVector();
+        if (aimingVector.magnitude < 0.2f) return;
+        float targetAngle = HelpFunc.Vec2ToAngle(aimingVector);
         targetAngle += hand_r.obj.transform.lossyScale.x > 0 ? 0.0f : -180.0f;
         RotateJoint(hand_r, targetAngle, HAND_R_BEND_STEP, false);
     }
@@ -137,18 +143,15 @@ public class HumanoidAnimations : CreatureAnimations
     public new HumanoidAnimationData Save()
     {
         HumanoidAnimationData data = new HumanoidAnimationData(base.Save());
-        data.aimingVector = HelpFunc.VectorToArray(GetAimingVector());
         data.stateHands = stateHands;
         return data;
     }
 
-    public void Load(HumanoidAnimationData data)
+    public void Load(HumanoidAnimationData data, bool loadTransform = true)
     {
         base.Load(data);
         SetStateHands(data.stateHands);
-        aimingVector = HelpFunc.DataToVec2(data.aimingVector);
     }
-
 }
 
 [Serializable]
@@ -158,13 +161,15 @@ public class HumanoidAnimationData : CreatureAnimationData
 
     public HumanoidAnimationData(CreatureAnimationData data)
     {
+        this.alive = data.alive;
         this.stateMovement = data.stateMovement;
         this.facingVector = data.facingVector;
         this.movementVector = data.movementVector;
+        this.aimingLocation = data.aimingLocation;
+        this.speed = data.speed;
         this.animatorsState = data.animatorsState;
         this.jointsAngles = data.jointsAngles;
     }
 
     public handsState stateHands;
-    public float[] aimingVector;
 }

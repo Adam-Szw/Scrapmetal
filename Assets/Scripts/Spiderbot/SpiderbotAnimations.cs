@@ -5,7 +5,7 @@ using UnityEngine;
 using static CreatureAnimations;
 using static HumanoidAnimations;
 
-public class SpiderbotAnimations : CreatureAnimations
+public class SpiderbotAnimations : CreatureAnimations, Saveable<SpiderbotAnimationData>
 {
 
     private Animator bodyAnimator;
@@ -15,8 +15,8 @@ public class SpiderbotAnimations : CreatureAnimations
 
     /* Animators should come in order: body, arms, legs
      */
-    public SpiderbotAnimations(Transform transform, List<Animator> animators, string[] jointNames, string aimingBoneName) :
-        base(transform, animators, jointNames, aimingBoneName)
+    public SpiderbotAnimations(Transform transform, List<Animator> animators, string[] jointNames, GameObject aimingBone) :
+        base(transform, animators, jointNames, aimingBone)
     {
         bodyAnimator = animators[0];
         sensor = GetJointByName("Sensor_Parent").GetValueOrDefault();
@@ -63,14 +63,12 @@ public class SpiderbotAnimations : CreatureAnimations
     public new SpiderbotAnimationData Save()
     {
         SpiderbotAnimationData data = new SpiderbotAnimationData(base.Save());
-        data.aimingVector = HelpFunc.VectorToArray(GetAimingVector());
         return data;
     }
 
-    public void Load(SpiderbotAnimationData data)
+    public void Load(SpiderbotAnimationData data, bool loadTransform = true)
     {
         base.Load(data);
-        aimingVector = HelpFunc.DataToVec2(data.aimingVector);
     }
 
 }
@@ -82,12 +80,14 @@ public class SpiderbotAnimationData : CreatureAnimationData
 
     public SpiderbotAnimationData(CreatureAnimationData data)
     {
+        this.alive = data.alive;
         this.stateMovement = data.stateMovement;
         this.facingVector = data.facingVector;
         this.movementVector = data.movementVector;
+        this.aimingLocation = data.aimingLocation;
+        this.speed = data.speed;
         this.animatorsState = data.animatorsState;
         this.jointsAngles = data.jointsAngles;
     }
 
-    public float[] aimingVector;
 }

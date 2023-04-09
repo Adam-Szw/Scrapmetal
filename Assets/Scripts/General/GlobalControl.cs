@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,10 +16,12 @@ public class GlobalControl : MonoBehaviour
     // Global variables
     public static int projectileSortLayer = 20; // sorting layer for all projectiles in scene
 
-    public static GameObject player;
     public static Camera currentCamera;
-
     public static CameraControl cameraControl;
+
+    [HideInInspector] public static ulong nextID = 1;
+
+    private static GameObject player = null;
 
     public static bool paused { get; private set; }
 
@@ -39,8 +42,11 @@ public class GlobalControl : MonoBehaviour
 
     void Update()
     {
+        if (!player) player = player = HelpFunc.FindPlayerInScene();
         if (!paused) cameraControl.AdjustCameraToPlayer();
     }
+
+    public static GameObject GetPlayer() { return player; }
 
     public static void PauseGame()
     {
@@ -56,14 +62,14 @@ public class GlobalControl : MonoBehaviour
 
     public static void Save()
     {
-        // Build save file
-        Save save = new Save();
+        PauseGame();
         // Save current scene
         string sceneCurr = SceneManager.GetActiveScene().name;
-        save.currentScene = sceneCurr;
-        save.playerData = GetPlayerData(sceneCurr);
-        save.scenes.Add(GetSceneData(sceneCurr));
+        List<SceneData> sceneData = new List<SceneData>();
+        sceneData.Add(new SceneData(sceneCurr, cameraControl.Save(), SaveEntities(sceneCurr)));
+        Save save = new Save(sceneCurr, nextID, sceneData);
 
+        // Save to the folder
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/testingSave";
         FileStream fstream = new FileStream(path, FileMode.Create);
@@ -92,51 +98,52 @@ public class GlobalControl : MonoBehaviour
         }
         if (scene != null)
         {
-            cameraControl.Load(scene.cameraData);
             // Destroy entities in current scene
+            player = null;
             DestroyEntities(sceneCurr);
             // Load entities using save file
-            LoadEntities(scene, save.playerData);
+            LoadEntities(scene.entities);
+            player = HelpFunc.FindPlayerInScene();
+            cameraControl.Load(scene.cameraData);
         }
-        UnpauseGame();
-
+        nextID = save.nextID;
     }
 
-    private static PlayerData GetPlayerData(string sceneName)
+    private static readonly Dictionary<Type, Action<EntityData>> SpawnMethods = new Dictionary<Type, Action<EntityData>>()
     {
-        PlayerData playerData = null;
-        // Find the player object in top layer of the scene
-        List<GameObject> objects = SceneManager.GetSceneByName(sceneName).GetRootGameObjects().ToList();
+        { typeof(PlayerData), d => PlayerBehaviour.Spawn((PlayerData)d) },
+        { typeof(HumanoidData), d => HumanoidBehaviour.Spawn((HumanoidData)d) },
+        { typeof(SpiderbotData), d => SpiderbotBehaviour.Spawn((SpiderbotData)d) },
+        { typeof(CreatureData), d => CreatureBehaviour.Spawn((CreatureData)d) },
+        { typeof(WeaponData), d => WeaponBehaviour.Spawn((WeaponData)d) },
+        { typeof(ProjectileData), d => ProjectileBehaviour.Spawn((ProjectileData)d) },
+        { typeof(ObjectData), d => ObjectBehaviour.Spawn((ObjectData)d) },
+        { typeof(EntityData), d => EntityBehaviour.Spawn(d) }
+    };
+
+    private static List<EntityData> SaveEntities(string sceneName)
+    {
+        List<EntityData> entities = new List<EntityData>();
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        List<GameObject> objects = scene.GetRootGameObjects().ToList();
         foreach (GameObject obj in objects)
         {
-            PlayerBehaviour pB = obj.GetComponent<PlayerBehaviour>();
-            if (pB) playerData = pB.Save();
+            EntityBehaviour b = obj.GetComponent<EntityBehaviour>();
+            if (b)
+            {
+                MethodInfo saveMethod = b.GetType().GetMethod("Save");
+                entities.Add((EntityData)saveMethod.Invoke(b, null));
+            }
         }
-        return playerData;
+        return entities;
     }
 
-    /* Builds save data for currently active scene
-     */
-    private static SceneData GetSceneData(string name)
+    private static void LoadEntities(List<EntityData> data)
     {
-        SceneData sceneData = new SceneData();
-        sceneData.name = name;
-        sceneData.cameraData = cameraControl.Save();
-        Scene scene = SceneManager.GetSceneByName(name);
-        List<GameObject> objects = scene.GetRootGameObjects().ToList();
-        // Go over all objects present in top layer of the scene, searching for various saveable entities
-        foreach(GameObject obj in objects)
+        foreach (EntityData d in data)
         {
-            // Save all non-player humanoid characters
-            HumanoidBehaviour hB = obj.GetComponent<HumanoidBehaviour>();
-            PlayerBehaviour pB = obj.GetComponent<PlayerBehaviour>();
-            if (hB && !pB) sceneData.humanoids.Add(hB.Save());
-            // Save all bullets
-            ProjectileBehaviour bB = obj.GetComponent<ProjectileBehaviour>();
-            if (bB) sceneData.bullets.Add(bB.Save());
-
+            if (SpawnMethods.TryGetValue(d.GetType(), out var spawnMethod)) spawnMethod(d);
         }
-        return sceneData;
     }
 
     /* Destroy all entities in a given scene
@@ -146,28 +153,9 @@ public class GlobalControl : MonoBehaviour
         List<GameObject> objects = SceneManager.GetSceneByName(scene).GetRootGameObjects().ToList();
         foreach (GameObject obj in objects)
         {
-            // Destroy humanoids
-            HumanoidBehaviour hB = obj.GetComponent<HumanoidBehaviour>();
-            if (hB) Destroy(obj);
-            // Destroy bullets
-            ObjectBehaviour bB = obj.GetComponent<ObjectBehaviour>();
-            if (bB) Destroy(obj);
+            EntityBehaviour eB = obj.GetComponent<EntityBehaviour>();
+            if (eB) Destroy(obj);
         }
     }
 
-    /* Load entities in current scene state using save file
-     */
-    private static void LoadEntities(SceneData data, PlayerData playerData)
-    {
-        GameObject player = Instantiate(Resources.Load<GameObject>(PlayerBehaviour.PREFAB_PATH));
-        player.GetComponent<PlayerBehaviour>().Load(playerData);
-        foreach (HumanoidData hD in data.humanoids)
-        {
-            HumanoidBehaviour.Spawn(hD);
-        }
-        foreach (ProjectileData bB in data.bullets)
-        {
-            ProjectileBehaviour.Spawn(bB);
-        }
-    }
 }

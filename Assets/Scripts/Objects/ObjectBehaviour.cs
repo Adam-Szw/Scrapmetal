@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using static WeaponBehaviour;
 
-public class ObjectBehaviour : EntityBehaviour
+public class ObjectBehaviour : EntityBehaviour, Saveable<ObjectData>, Spawnable<ObjectData>
 {
-    public string prefabPath;
     public ulong ownerID = 0;
 
     public virtual void Use() { }
@@ -19,14 +18,24 @@ public class ObjectBehaviour : EntityBehaviour
         return data;
     }
 
-    /* dontLoadBody refers to not loading transform and rigibdody data.
-     * This is useful when spawning things at a new location using ObjectData
-     */
-    public void Load(ObjectData data, bool dontLoadBody = false)
+    public void Load(ObjectData data, bool loadTransform = true)
     {
-        if (!dontLoadBody) base.Load(data);
-        this.prefabPath = data.prefabPath;
+        base.Load(data, loadTransform);
         this.ownerID = data.ownerID;
+    }
+
+    public static GameObject Spawn(ObjectData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
+    {
+        GameObject obj = EntityBehaviour.Spawn(data, position, rotation, scale, parent);
+        obj.GetComponent<ObjectBehaviour>().Load(data, false);
+        return obj;
+    }
+
+    public static GameObject Spawn(ObjectData data, Transform parent = null)
+    {
+        GameObject obj = EntityBehaviour.Spawn(data, parent);
+        obj.GetComponent<ObjectBehaviour>().Load(data);
+        return obj;
     }
 }
 
@@ -45,6 +54,5 @@ public class ObjectData : EntityData
         this.speed = data.speed;
     }
 
-    public string prefabPath;
     public ulong ownerID;
 }
