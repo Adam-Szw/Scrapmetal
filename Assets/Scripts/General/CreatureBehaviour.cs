@@ -41,13 +41,14 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     // Handle collision with projectiles
     public void OnTriggerEnter2D(Collider2D other)
     {
-        // If hit by a bullet
-        if (!(other.gameObject.GetComponent<ProjectileBehaviour>() == null))
+        ProjectileBehaviour b = other.gameObject.GetComponent<ProjectileBehaviour>();
+        if (b)
         {
-            ProjectileBehaviour bulletBehaviour = other.gameObject.GetComponent<ProjectileBehaviour>();
             // Do nothing if hit yourself
-            if (bulletBehaviour.ownerID == ID) return;
-            DealDamage(bulletBehaviour.damage);
+            if (b.ownerID == ID) return;
+            // Do nothing if from same faction
+            // TODO
+            DealDamage(b.damage);
             Destroy(other.gameObject);
             if (GetAlive()) GetAnimations().PlayFlinch();
         }

@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 using UnityEngine.UIElements;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 using Transform = UnityEngine.Transform;
 
 /* This class controls basic information for all dynamic entities in the game
@@ -40,7 +38,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
 
     public void SetMoveVector(Vector2 velocityVector)
     {
-        this.moveVector = velocityVector;
+        this.moveVector = velocityVector.normalized;
         UpdateRigidBody();
     }
 
@@ -58,7 +56,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     public void UpdateRigidBody()
     {
         if (!rb) return;
-        rb.velocity = moveVector.normalized * speed;
+        rb.velocity = moveVector * speed;
     }
 
     public static GameObject Spawn(string prefabPath, Vector2 position, Quaternion rotation, Transform parent)

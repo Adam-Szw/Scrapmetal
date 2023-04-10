@@ -21,32 +21,40 @@ public class GlobalControl : MonoBehaviour
 
     [HideInInspector] public static ulong nextID = 1;
 
-    private static GameObject player = null;
+    private static Transform playerTransform;
 
     public static bool paused { get; private set; }
 
     void Awake()
     {
+        // These 2 collision layers refer to entity and wall colliders
+        Physics2D.IgnoreLayerCollision(0, 6);
         currentCamera = Camera.main;
         cameraControl = new CameraControl();
         cameraControl.currentCamera = currentCamera;
-        player = HelpFunc.FindPlayerInScene();
+        PlayerInput.currCamera = currentCamera;
     }
 
     void Start()
     {
-        // These 2 collision layers refer to entity and wall colliders
-        Physics2D.IgnoreLayerCollision(0, 6);
         paused = false;
+        SetPlayerTransform(HelpFunc.FindPlayerInScene());
     }
 
     void Update()
     {
-        if (!player) player = player = HelpFunc.FindPlayerInScene();
+        if (!playerTransform) SetPlayerTransform(HelpFunc.FindPlayerInScene());
         if (!paused) cameraControl.AdjustCameraToPlayer();
     }
 
-    public static GameObject GetPlayer() { return player; }
+    public static Transform GetPlayerTransform() { return playerTransform; }
+
+    private static void SetPlayerTransform(GameObject player)
+    {
+        playerTransform = player.transform;
+        cameraControl.playerTransform = player.transform;
+    }
+
 
     public static void PauseGame()
     {
@@ -99,11 +107,11 @@ public class GlobalControl : MonoBehaviour
         if (scene != null)
         {
             // Destroy entities in current scene
-            player = null;
+            playerTransform = null;
             DestroyEntities(sceneCurr);
             // Load entities using save file
             LoadEntities(scene.entities);
-            player = HelpFunc.FindPlayerInScene();
+            SetPlayerTransform(HelpFunc.FindPlayerInScene());
             cameraControl.Load(scene.cameraData);
         }
         nextID = save.nextID;

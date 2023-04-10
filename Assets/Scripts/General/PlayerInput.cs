@@ -6,6 +6,8 @@ using UnityEngine;
  */
 public class PlayerInput : MonoBehaviour
 {
+    public static Camera currCamera = null;
+
     public static bool up = false;
     public static bool down = false;
     public static bool left = false;
@@ -68,15 +70,14 @@ public class PlayerInput : MonoBehaviour
 
     public static Vector2 GetMousePositionRelative()
     {
-        Vector3 mouseRelative = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouseRelative.z = 0;
+        Vector2 mouseRelative = currCamera.ScreenToWorldPoint(Input.mousePosition);
         return mouseRelative;
     }
 
     private static int GetMouseQuadrant()
     {
         int quadrant;
-        Vector2 playerPos = GlobalControl.GetPlayer().transform.position;
+        Vector2 playerPos = GlobalControl.GetPlayerTransform().position;
         if (mousePos.y > playerPos.y)
         {
             if (mousePos.x > playerPos.x) quadrant = 0;
