@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1216973000764266709}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Attachpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 762638198330839663}
   - component: {fileID: 7194358951515551220}
   - component: {fileID: 7695863947780370617}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Rivetgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -77,7 +78,7 @@ public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<
         float angle = GetSnapAngle();
         Vector2 targetVec = target - (Vector2)projectileAttachment.transform.position;
         float desiredAngle = HelpFunc.Vec2ToAngle(targetVec);
-        return angle == desiredAngle;
+        return Mathf.Round(angle * 10.0f) / 10.0f == Mathf.Round(desiredAngle * 10.0f) / 10.0f;
     }
 
     private void AcquireTargetLocation()

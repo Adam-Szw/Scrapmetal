@@ -143,17 +143,30 @@ class HelpFunc
         return distanceCurr <= range;
     }
 
-    public static List<GameObject> GetCreaturesInRadius(Vector2 location, float radius)
+    // Recursively disables all colliders in the object
+    public static void DisableColliders(Transform parent)
     {
-        List<GameObject> objects = new List<GameObject>();
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(location, radius);
+        Collider2D[] colliders = parent.gameObject.GetComponentsInParent<Collider2D>();
+        foreach (Collider2D collider in colliders) collider.enabled = false;
+        Collider2D[] childColliders = parent.gameObject.GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D collider in childColliders) collider.enabled = false;
+    }
+
+    public static void DisableInternalCollision(Transform parent)
+    {
+        List<Collider2D> colliders = new List<Collider2D>(parent.gameObject.GetComponentsInChildren<Collider2D>());
+        colliders.Add(parent.gameObject.GetComponent<Collider2D>());
+
         foreach (Collider2D collider in colliders)
         {
-            Transform parent = collider.transform.root;
-            CreatureBehaviour behaviour = parent.gameObject.GetComponent<CreatureBehaviour>();
-            if (behaviour != null && !objects.Contains(parent.gameObject)) objects.Add(parent.gameObject);
+            foreach (Collider2D otherCollider in colliders)
+            {
+                if (collider != otherCollider)
+                {
+                    Physics2D.IgnoreCollision(collider, otherCollider);
+                }
+            }
         }
-        return objects;
     }
 
 }

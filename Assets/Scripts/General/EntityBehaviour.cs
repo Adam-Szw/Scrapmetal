@@ -26,6 +26,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     {
         rb = this.gameObject.GetComponent<Rigidbody2D>();
         ID = ++GlobalControl.nextID;
+        HelpFunc.DisableInternalCollision(transform);
     }
 
     public void SetSpeed(float speed)
@@ -69,28 +70,6 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     {
         GameObject obj = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
         return obj;
-    }
-
-
-    // Recursively disables all colliders in the object
-    protected void DisableColliders(Transform parent)
-    {
-        CapsuleCollider2D capsuleCollider = parent.GetComponent<CapsuleCollider2D>();
-        if (capsuleCollider != null) capsuleCollider.enabled = false;
-        BoxCollider2D boxCollider = parent.GetComponent<BoxCollider2D>();
-        if (boxCollider != null) boxCollider.enabled = false;
-        PolygonCollider2D polygonCollider = parent.GetComponent<PolygonCollider2D>();
-        if (polygonCollider != null) polygonCollider.enabled = false;
-        foreach (Transform child in parent)
-        {
-            capsuleCollider = child.GetComponent<CapsuleCollider2D>();
-            if (capsuleCollider != null) capsuleCollider.enabled = false;
-            boxCollider = child.GetComponent<BoxCollider2D>();
-            if (boxCollider != null) boxCollider.enabled = false;
-            polygonCollider = child.GetComponent<PolygonCollider2D>();
-            if (polygonCollider != null) polygonCollider.enabled = false;
-            DisableColliders(child);
-        }
     }
 
     public EntityData Save()

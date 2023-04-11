@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1216973000764266709}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Attachpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2012167021715772540}
   - component: {fileID: 7194358951515551220}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MissileLauncherSpiderbot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,8 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469dedd87cc55884789be4752c929b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
   prefabPath: Prefabs/Items/Weapons/MissileLauncherSpiderbot
+  ID: 0
   ownerID: 0
   target: {x: 0, y: 0}
   projectilePrefab: {fileID: 8289283381652960123, guid: 39965df7c7fb6a9449a84c11555f4ca3, type: 3}

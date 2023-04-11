@@ -27,8 +27,6 @@ public class GlobalControl : MonoBehaviour
 
     void Awake()
     {
-        // These 2 collision layers refer to entity and wall colliders
-        Physics2D.IgnoreLayerCollision(0, 6);
         currentCamera = Camera.main;
         cameraControl = new CameraControl();
         cameraControl.currentCamera = currentCamera;

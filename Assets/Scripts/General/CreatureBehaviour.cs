@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static CreatureBehaviour;
+using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 
 /* This class controls information for characters and enemies in the game
@@ -21,7 +22,6 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         enemy       // Enemy faction, attack player only but not NPCs etc.
     }
     public FactionAllegiance faction = FactionAllegiance.neutral;
-    public GameObject visionBlocker;
     public CreatureAI aiControl = null;
 
     public float moveSpeed = 0.0f;
@@ -41,6 +41,8 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     // Handle collision with projectiles
     public void OnTriggerEnter2D(Collider2D other)
     {
+        // Do nothing if its detection collision
+        if (other.gameObject.layer == 8) return;
         ProjectileBehaviour b = other.gameObject.GetComponent<ProjectileBehaviour>();
         if (b)
         {
@@ -64,7 +66,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     {
         this.alive = alive;
         GetAnimations().SetAlive(alive);
-        if (!alive) DisableColliders(transform);
+        if (!alive) HelpFunc.DisableColliders(transform);
         if (!alive) base.SetSpeed(0.0f);
     }
 
@@ -135,6 +137,16 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         }
     }
 
+    public void NotifyDetectedEntity(Collider2D other)
+    {
+        if (aiControl) aiControl.AddEntityDetected(other.gameObject);
+    }
+
+    public void NotifyDetectedEntityLeft(Collider2D other)
+    {
+        if (aiControl) aiControl.RemoveEntityDetected(other.gameObject);
+    }
+
     protected virtual CreatureAnimations GetAnimations() { return null; }
 
     protected virtual List<WeaponBehaviour> GetWeapons() { return null; }
@@ -155,7 +167,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     {
         base.Load(data, loadTransform);
         faction = data.faction;
-        if ((data.aiData != null) && aiControl) aiControl.Load(data.aiData);
+        if (data.aiData != null) aiControl.Load(data.aiData);
         moveSpeed = data.moveSpeed;
         SetAlive(data.alive);
         maxHealth = data.maxHealth;

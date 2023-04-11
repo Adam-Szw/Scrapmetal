@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3819838904565128919}
   - component: {fileID: 4086353994325864380}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Sensor_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8297313850885154841}
   - component: {fileID: 4232129759395879038}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7868373093383452718}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: 2_Leg_Up_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3251694820454840097}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 980672506533601571}
   - component: {fileID: 320537365642163767}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,7 +218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2604150783844077204}
   - component: {fileID: 5593669550640453084}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 2592590684580892877}
   - component: {fileID: 6662261350275299506}
   - component: {fileID: 7792085878806797448}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 4895163705709731562}
   - component: {fileID: 1848261123328821173}
   - component: {fileID: 5157292247909361199}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +482,7 @@ GameObject:
   - component: {fileID: 2632043513221553082}
   - component: {fileID: 212473060321908339}
   - component: {fileID: 8605143748483052857}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -587,7 +587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1336146515824196264}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 2039845628662143810}
   - component: {fileID: 4243635600058867995}
   - component: {fileID: 6554676219581391644}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -727,7 +727,7 @@ GameObject:
   m_Component:
   - component: {fileID: 808543954952675842}
   - component: {fileID: 4545733370801286707}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -776,7 +776,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3393545389909283650}
   - component: {fileID: 4202779533297347256}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -824,7 +824,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4969687260151071972}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -856,7 +856,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6228120790385174823}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -890,7 +890,7 @@ GameObject:
   - component: {fileID: 2310733091787640421}
   - component: {fileID: 4005081888377094490}
   - component: {fileID: 6869930270510351751}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -995,7 +995,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 838404470232382758}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: 4_Leg_Up_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1027,7 +1027,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1733067028673878822}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1061,7 +1061,7 @@ GameObject:
   - component: {fileID: 5675563754582159658}
   - component: {fileID: 2232387351455925197}
   - component: {fileID: 4553723627421736878}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1166,7 +1166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3166352747541590108}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Sensor_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1199,7 +1199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8358787880173365838}
   - component: {fileID: 6954304718649273859}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1247,7 +1247,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7987697564057148392}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1281,7 +1281,7 @@ GameObject:
   - component: {fileID: 9024088657091791727}
   - component: {fileID: 3488172221696226053}
   - component: {fileID: 8173480584016046106}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1388,7 +1388,7 @@ GameObject:
   - component: {fileID: 2483730598250690804}
   - component: {fileID: 1379732327734974317}
   - component: {fileID: 8282348652218548485}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1495,7 +1495,7 @@ GameObject:
   - component: {fileID: 5074502638442465717}
   - component: {fileID: 7896373892707643515}
   - component: {fileID: 6684415457812366013}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1601,7 +1601,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8043324387524509294}
   - component: {fileID: 7592698180567592814}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1650,7 +1650,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4235722954398773366}
   - component: {fileID: 2951814293029235330}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1698,7 +1698,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3591267323235512666}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1731,7 +1731,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6464877105250744921}
   - component: {fileID: 8973788450217579919}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1780,7 +1780,7 @@ GameObject:
   - component: {fileID: 5919507412795302826}
   - component: {fileID: 8173607000600720085}
   - component: {fileID: 8369117170170402294}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1887,7 +1887,7 @@ GameObject:
   - component: {fileID: 1936370697098935910}
   - component: {fileID: 8432091233903542590}
   - component: {fileID: 6027098173485144142}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1994,7 +1994,7 @@ GameObject:
   - component: {fileID: 1004891852981647322}
   - component: {fileID: 1026704303791482390}
   - component: {fileID: 3542951288263359330}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Sensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2124,7 +2124,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7113395538907551942}
-  - {fileID: 4899381937335287995}
+  - {fileID: 8786093663197094229}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2143,8 +2143,7 @@ MonoBehaviour:
   prefabPath: Prefabs/Creatures/Spiderbot
   ID: 0
   faction: 4
-  visionBlocker: {fileID: 5942778926896504844}
-  aiControl: {fileID: 0}
+  aiControl: {fileID: 5291230762624573668}
   moveSpeed: 3
   maxHealth: 100
   health: 100
@@ -2231,7 +2230,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7845445974020684257}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2264,7 +2263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8861097734330274334}
   - component: {fileID: 4835026237783347208}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2313,7 +2312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5721417630964368502}
   - component: {fileID: 8710347225268898251}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2361,7 +2360,7 @@ GameObject:
   m_Component:
   - component: {fileID: 277591433024553906}
   - component: {fileID: 7574717300510505329}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2410,7 +2409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 782416843363255477}
   - component: {fileID: 5552421150548587493}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2458,7 +2457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2343594035437345424}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2492,7 +2491,7 @@ GameObject:
   - component: {fileID: 766948946257126557}
   - component: {fileID: 488826811268483636}
   - component: {fileID: 6098612286933775722}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2597,7 +2596,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 672284663889428818}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: 4_Leg_Up_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2629,7 +2628,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4940797592742842531}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: 2_Leg_Up_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2663,7 +2662,7 @@ GameObject:
   - component: {fileID: 5168636875571254240}
   - component: {fileID: 8454665049663035272}
   - component: {fileID: 8522464913123826260}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2769,7 +2768,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4111320108016120585}
   - component: {fileID: 3995520752283470953}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Turret_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2818,7 +2817,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7624972389706093463}
   - component: {fileID: 3133338792708400230}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2868,7 +2867,7 @@ GameObject:
   - component: {fileID: 6274986097525496876}
   - component: {fileID: 1130109351690882265}
   - component: {fileID: 4494257642177773720}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2974,7 +2973,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1701335214481900442}
   - component: {fileID: 5042611240776826803}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3022,7 +3021,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1886021930834867902}
   - component: {fileID: 3351039647951496435}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3071,7 +3070,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5094838266423568812}
   - component: {fileID: 7567324334580366512}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3119,7 +3118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 675610467519619058}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3151,7 +3150,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3176978688878652763}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: 1_Leg_Up_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3174,54 +3173,6 @@ Transform:
   m_Father: {fileID: 8262990158536205114}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90.397}
---- !u!1 &5942778926896504844
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4899381937335287995}
-  - component: {fileID: 7806749293995093784}
-  m_Layer: 3
-  m_Name: Vision Block
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4899381937335287995
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5942778926896504844}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6867522891542710802}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &7806749293995093784
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5942778926896504844}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.04785012, y: -0.3806336}
-  m_Size: {x: 2.015536, y: 0.3738741}
-  m_Direction: 1
 --- !u!1 &6029288299621829933
 GameObject:
   m_ObjectHideFlags: 0
@@ -3231,7 +3182,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7409312743560996796}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: 3_Leg_Up_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3266,7 +3217,7 @@ GameObject:
   - component: {fileID: 8828904608405065635}
   - component: {fileID: 602641322710681049}
   - component: {fileID: 7070277646296220638}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3392,7 +3343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2801170787972727692}
   - component: {fileID: 116163813686287833}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3441,7 +3392,7 @@ GameObject:
   - component: {fileID: 3251374706392587602}
   - component: {fileID: 8510488887945740744}
   - component: {fileID: 6481242974886049613}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3546,7 +3497,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5388998962359009252}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3580,7 +3531,7 @@ GameObject:
   - component: {fileID: 1937600398002111916}
   - component: {fileID: 2320695583244633042}
   - component: {fileID: 6346597302801610004}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3685,7 +3636,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7113395538907551942}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Body_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3717,7 +3668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8717607520543007905}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3749,7 +3700,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6934718246469151641}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: 1_Leg_Up_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3783,7 +3734,7 @@ GameObject:
   - component: {fileID: 2075316279361223482}
   - component: {fileID: 2762454725938848574}
   - component: {fileID: 1378016461754039065}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3889,7 +3840,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5130011198098096073}
   - component: {fileID: 6895290181784400853}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3937,7 +3888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2152494098380993703}
   - component: {fileID: 7594474754279259757}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3986,7 +3937,7 @@ GameObject:
   - component: {fileID: 8659467340946026303}
   - component: {fileID: 9110360710632962758}
   - component: {fileID: 3467425615894823634}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4091,7 +4042,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7821485754763715242}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4123,7 +4074,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2363991285554250158}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4155,7 +4106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4010096937487750406}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4189,7 +4140,7 @@ GameObject:
   - component: {fileID: 5023820525539463212}
   - component: {fileID: 2843863026697738086}
   - component: {fileID: 8935884138826683675}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4296,7 +4247,7 @@ GameObject:
   - component: {fileID: 2832942632465799415}
   - component: {fileID: 7025107292106378457}
   - component: {fileID: 3306131734927306912}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4402,7 +4353,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7908739317436772897}
   - component: {fileID: 2947715335858547569}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4452,7 +4403,7 @@ GameObject:
   - component: {fileID: 5248061749006504000}
   - component: {fileID: 7134911773320625202}
   - component: {fileID: 8565588607643435263}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4558,7 +4509,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3302813169748561405}
   - component: {fileID: 7250594827002951752}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4606,7 +4557,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 834952381366333250}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Weapon_Attachment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4628,6 +4579,68 @@ Transform:
   m_Father: {fileID: 4111320108016120585}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8129291521013386819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8786093663197094229}
+  - component: {fileID: 3952320449646664972}
+  - component: {fileID: 4101501089141471874}
+  m_Layer: 8
+  m_Name: Detector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8786093663197094229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8129291521013386819}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6867522891542710802}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &3952320449646664972
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8129291521013386819}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 12
+--- !u!114 &4101501089141471874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8129291521013386819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aa0672017e5cad48a910def4198988f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviour: {fileID: 9011052219695591588}
 --- !u!1 &8196948676588368004
 GameObject:
   m_ObjectHideFlags: 0
@@ -4637,7 +4650,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8262990158536205114}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Legs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4677,7 +4690,7 @@ GameObject:
   m_Component:
   - component: {fileID: 505835431031034436}
   - component: {fileID: 8987636736788580683}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_B_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4725,7 +4738,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2335331465973630828}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: 3_Leg_Up_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4759,7 +4772,7 @@ GameObject:
   - component: {fileID: 6176804020213520603}
   - component: {fileID: 7320837359945177252}
   - component: {fileID: 1083807642755033781}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4865,7 +4878,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7784714850960540969}
   - component: {fileID: 8504325765198470261}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Middle_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4913,7 +4926,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 547365269173682624}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4947,7 +4960,7 @@ GameObject:
   - component: {fileID: 6394377544261112552}
   - component: {fileID: 5422803712960479264}
   - component: {fileID: 7009885734023409691}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5054,7 +5067,7 @@ GameObject:
   - component: {fileID: 3086752255098824638}
   - component: {fileID: 2031345735026514950}
   - component: {fileID: 6974487115787235428}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Low_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5160,7 +5173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7343203351385855843}
   - component: {fileID: 6294445638827933182}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Body_Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5227,7 +5240,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2021653006526552063}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Turret_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5261,7 +5274,7 @@ GameObject:
   - component: {fileID: 6955327086895127665}
   - component: {fileID: 9084244356491363221}
   - component: {fileID: 8331168783733977352}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Leg_Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
