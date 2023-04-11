@@ -21,6 +21,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         berserk,    // Attacks everything including in own faction
         enemy       // Enemy faction, attack player only but not NPCs etc.
     }
+    public GameObject healthbar = null;
     public FactionAllegiance faction = FactionAllegiance.neutral;
     public CreatureAI aiControl = null;
 
@@ -29,13 +30,32 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     [SerializeField] private float health = 100.0f;
     [SerializeField] private bool alive = true;
 
+    [HideInInspector] public CircleCollider2D visionCollider;
+
     [HideInInspector] public InventoryManager inventoryManager;
+
+    private HealthbarBehaviour healthbarBehaviour = null;
 
     new protected void Update()
     {
         base.Update();
         if (GlobalControl.paused) return;
         if (alive) GetAnimations().UpdateRotations();
+    }
+
+    protected new void Awake()
+    {
+        base.Awake();
+        // Record healthbar
+        if (healthbar) healthbarBehaviour = healthbar.GetComponent<HealthbarBehaviour>();
+        // Create vision collider
+        GameObject vision = new GameObject("VisionCollider");
+        vision.transform.parent = transform;
+        vision.transform.localPosition = Vector3.zero;
+        vision.layer = 9;
+        visionCollider = vision.AddComponent<CircleCollider2D>();
+        visionCollider.offset = gameObject.GetComponent<Collider2D>().offset;
+        visionCollider.radius = 0.1f;
     }
 
     // Handle collision with projectiles
@@ -49,16 +69,22 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
             // Do nothing if hit yourself
             if (b.ownerID == ID) return;
             // Do nothing if from same faction
-            // TODO
+            if (b.ownerFaction == faction && faction != FactionAllegiance.berserk) return;
+            else if (aiControl) aiControl.NotifyTakingDamage();
             DealDamage(b.damage);
             Destroy(other.gameObject);
             if (GetAlive()) GetAnimations().PlayFlinch();
         }
     }
 
+    public float GetHealth() { return health; }
+
+    public float GetMaxHealth() { return maxHealth; }
+
     public void DealDamage(float amount)
     {
         health -= amount;
+        if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
         if (health <= 0) SetAlive(false);
     }
 
@@ -68,6 +94,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         GetAnimations().SetAlive(alive);
         if (!alive) HelpFunc.DisableColliders(transform);
         if (!alive) base.SetSpeed(0.0f);
+        if (!alive && healthbarBehaviour) healthbarBehaviour.Enable(false);
     }
 
     public bool GetAlive() { return alive; }
@@ -172,6 +199,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         SetAlive(data.alive);
         maxHealth = data.maxHealth;
         health = data.health;
+        if (healthbarBehaviour && alive) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
     }
 
     public static GameObject Spawn(CreatureData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)

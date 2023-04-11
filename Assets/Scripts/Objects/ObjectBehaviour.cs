@@ -7,6 +7,7 @@ using static WeaponBehaviour;
 public class ObjectBehaviour : EntityBehaviour, Saveable<ObjectData>, Spawnable<ObjectData>
 {
     public ulong ownerID = 0;
+    public CreatureBehaviour.FactionAllegiance ownerFaction = CreatureBehaviour.FactionAllegiance.berserk;
 
     public virtual void Use() { }
 
@@ -15,6 +16,7 @@ public class ObjectBehaviour : EntityBehaviour, Saveable<ObjectData>, Spawnable<
         ObjectData data = new ObjectData(base.Save());
         data.prefabPath = prefabPath;
         data.ownerID = ownerID;
+        data.ownerFaction = ownerFaction;
         return data;
     }
 
@@ -22,6 +24,7 @@ public class ObjectBehaviour : EntityBehaviour, Saveable<ObjectData>, Spawnable<
     {
         base.Load(data, loadTransform);
         this.ownerID = data.ownerID;
+        this.ownerFaction = data.ownerFaction;
     }
 
     public static GameObject Spawn(ObjectData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -55,4 +58,5 @@ public class ObjectData : EntityData
     }
 
     public ulong ownerID;
+    public CreatureBehaviour.FactionAllegiance ownerFaction;
 }

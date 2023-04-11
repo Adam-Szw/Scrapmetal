@@ -60,6 +60,7 @@ public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<
         projBehaviour.ownerID = ownerID;
         projBehaviour.guidanceTargetID = guidanceTargetID;
         projBehaviour.guidanceTarget = guidanceTarget;
+        projBehaviour.ownerFaction = ownerFaction;
 
         // Ammo, cooldown and animation
         currAmmo--;
@@ -90,7 +91,7 @@ public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<
             guidanceTargetID = b.ID;
         }
         // Find target if only ID provided
-        if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindGameObjectByBehaviourID(guidanceTargetID);
+        if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindEntityByID(guidanceTargetID);
         else guidanceTarget = null;
         if (guidanceTarget != null) target = guidanceTarget.transform.position;
     }

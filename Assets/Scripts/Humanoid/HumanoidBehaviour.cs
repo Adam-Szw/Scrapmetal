@@ -68,6 +68,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         else obj.GetComponent<ObjectBehaviour>().Load(item);
         obj.GetComponent<SpriteRenderer>().sortingOrder = itemActiveSortLayer;
         obj.GetComponent<ObjectBehaviour>().ownerID = ID;
+        obj.GetComponent<ObjectBehaviour>().ownerFaction = faction;
         itemActive = obj;
 
     }
@@ -113,7 +114,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         HumanoidData data = new HumanoidData(base.Save());
         data.bodypartData = SaveBodypartData();
         data.animationData = animations.Save();
-        if (itemActive != null)
+        if (itemActive)
         {
             if (hasWeapon) data.itemActive = itemActive.GetComponent<WeaponBehaviour>().Save();
             else data.itemActive = itemActive.GetComponent<ObjectBehaviour>().Save();

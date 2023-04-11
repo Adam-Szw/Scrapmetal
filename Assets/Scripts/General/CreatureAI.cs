@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using static CreatureAI;
@@ -13,11 +14,12 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     public CreatureBehaviour behaviour;
 
     [SerializeField] private Vector2? locationGoal = null;
+    [SerializeField] private float detectionRange = 0.0f;
+    [SerializeField] private float detectionRangeCaution = 0.0f;
     [SerializeField] private float attackDistance = 0.0f;
     [SerializeField] private float preferredFightDistance = 0.0f;
     [SerializeField] private float cautionTime = 0.0f;
     [SerializeField] private float searchTime = 0.0f;
-    [SerializeField] private float idleTime = 0.0f;
     [SerializeField] private List<Vector2> idleRoutine = new List<Vector2>();
     [SerializeField] private float LOCATION_MAX_OFFSET = 0.1f;
     [SerializeField] private float DISTANCE_MAX_OFFSET = 2.0f;
@@ -33,7 +35,11 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     private Coroutine timer = null;
     private float countdown = 0.0f;
 
-    private List<GameObject> entitiesInDetectionRange = new List<GameObject>();
+    private CircleCollider2D visionCollider;
+    private CircleCollider2D detectorCollider;
+    private Dictionary<GameObject, float> entities = new Dictionary<GameObject, float>();
+    private List<GameObject> entitiesSorted = null;
+    private float detectionRangeCurrent = 0.0f;
 
     /* hold - stand in place
      * idle - play idle cycle (for example patrol an area)
@@ -47,8 +53,24 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         hold, idle, caution, search, track, attack
     }
 
+    public void Awake()
+    {
+        // Create detector
+        GameObject detector = new GameObject("Detector");
+        detector.transform.parent = transform;
+        detector.transform.localPosition = Vector3.zero;
+        detector.layer = 8;
+        Detection detection = detector.AddComponent<Detection>();
+        detection.behaviour = behaviour;
+        detectorCollider = detector.AddComponent<CircleCollider2D>();
+        detectorCollider.radius = detectionRange;
+        detectorCollider.isTrigger = true;
+        visionCollider = behaviour.visionCollider;
+    }
+
     public void Start()
     {
+        UpdateDetectionRadius();
         StartCoroutine(UpdateMovement());
         StartCoroutine(UpdateFacing());
         StartCoroutine(AIUpdate());
@@ -67,7 +89,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         // If we have object but not id then grab ID
         if (target && (targetID == 0)) targetID = target.GetComponent<EntityBehaviour>().ID;
         // If we have ID but not object then grab object
-        if (!target && (targetID != 0)) target = HelpFunc.FindGameObjectByBehaviourID(targetID);
+        if (!target && (targetID != 0)) target = HelpFunc.FindEntityByID(targetID);
         // If object wasnt found then it must have been destroyed so we have no target
         if (!target) targetID = 0;
         // If we do have target then grab the position
@@ -76,20 +98,41 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
 
     public void AddEntityDetected(GameObject entity)
     {
-        CreatureBehaviour behaviour = entity.GetComponent<CreatureBehaviour>();
-        if (!behaviour) return;
-        if (!entitiesInDetectionRange.Contains(entity))
+        CreatureBehaviour b = entity.GetComponent<CreatureBehaviour>();
+        if (!b) return;
+        bool add = ShouldAggro(behaviour.faction, b.faction);
+        if (add)
         {
-            entitiesInDetectionRange.Add(entity);
+            entities.Add(entity, (entity.transform.position - transform.position).magnitude);
         }
     }
 
     public void RemoveEntityDetected(GameObject entity)
     {
-        if (entitiesInDetectionRange.Contains(entity))
+        entities.Remove(entity);
+    }
+
+    public void NotifyTakingDamage()
+    {
+        if (state == aiState.idle)
         {
-            entitiesInDetectionRange.Remove(entity);
+            state = aiState.caution;
+            UpdateDetectionRadius();
+            locationGoal = null;
+            StartTimer(cautionTime);
         }
+    }
+
+    // Get distance to each entity in list and sort it by those distances
+    private void UpdateEntitiesDistance()
+    {
+        Dictionary<GameObject, float> entitiesCopy = new Dictionary<GameObject, float>(entities);
+        foreach (KeyValuePair<GameObject, float> pair in entitiesCopy)
+        {
+            float distance = (pair.Key.transform.position - transform.position).magnitude;
+            entities[pair.Key] = distance;
+        }
+        entitiesSorted = entities.OrderBy(x => x.Value).Select(x => x.Key).ToList();
     }
 
     private IEnumerator UpdateMovement()
@@ -151,50 +194,34 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                 enabled = false;
                 break;
             }
-            ScanEntities();
+            if (HaveTarget())
+            {
+                ScanEntities(new List<GameObject>() { target });
+            }
+            else
+            {
+                UpdateEntitiesDistance();
+                ScanEntities(entitiesSorted);
+            }
             UpdateAIState();
             yield return new WaitForSeconds(.5f);
         }
     }
 
-    private void ScanEntities()
+    private void ScanEntities(List<GameObject> entityList)
     {
-        List<Tuple<GameObject, float>> toScan = new List<Tuple<GameObject, float>>();
-        // First check if we still have line of sight on target
-        ObtainTargetLocation();
-        // We dont have target - scan everything in list of entities
-        if (!target)
-        {
-            // Make a list with distances to potential targets
-            foreach (GameObject entity in entitiesInDetectionRange)
-            {
-                // Get rid of any deleted objects
-                if (!entity) { entitiesInDetectionRange.Remove(entity); continue; }
-                CreatureBehaviour b = entity.GetComponent<CreatureBehaviour>();
-                bool detect = ShouldAggro(behaviour.faction, b.faction);
-                if (detect)
-                {
-                    float distance = (entity.transform.position - transform.position).magnitude;
-                    toScan.Add(new Tuple<GameObject, float>(entity, distance));
-                }
-            }
-        }
-        // We have target - only scan to maintain the target
-        else
-        {
-            toScan.Add(new Tuple<GameObject, float>(target, 0f));
-        }
-        // Sort entities to scan by distance to us
-        toScan.Sort((x, y) => x.Item2.CompareTo(y.Item2));
         // Scan each potential enemy for line of sight starting with closest
         bool targetKept = false;
-        foreach (Tuple<GameObject, float> tpl in toScan)
+        foreach (GameObject entity in entityList)
         {
-            RaycastHit2D hit = RaycastEntity(tpl.Item1);
-            if (hit.collider != null)
+            RaycastHit2D hit = RaycastEntity(entity);
+            if (hit.collider == null) continue;
+            Transform hitParentTransform = hit.collider.transform.parent;
+            if (hitParentTransform == null) continue;
+            if (hitParentTransform.gameObject == entity)
             {
                 // Target acquired
-                target = tpl.Item1;
+                target = entity;
                 targetKept = true;
                 break;
             }
@@ -204,6 +231,29 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         {
             target = null;
             targetID = 0;
+        }
+    }
+
+    private void UpdateDetectionRadius()
+    {
+        switch (state)
+        {
+            case aiState.hold:
+                {
+                    detectorCollider.radius = 0f;
+                    detectionRangeCurrent = 0f;
+                    break;
+                }
+            case aiState.idle:
+                {
+                    detectorCollider.radius = detectionRange;
+                    detectionRangeCurrent = detectionRange;
+                    break;
+                }
+            default:
+                detectorCollider.radius = detectionRangeCaution;
+                detectionRangeCurrent = detectionRangeCaution;
+                break;
         }
     }
 
@@ -218,19 +268,18 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                 }
             case aiState.idle:
                 {
-                    // set a timer if reached location
-                    if (LocationGoalAchieved()) StartTimer(idleTime);
-                    // if timer finished, path to the next goal in routine or loop to start
-                    if (TimerUp())
+                    // cycle idle route
+                    if (LocationGoalAchieved())
                     {
-                        locationGoal = idleRoutine[routineIndex];
-                        routineIndex++;
                         if (routineIndex >= idleRoutine.Count) routineIndex = 0;
+                        if (idleRoutine.Count > 0) locationGoal = idleRoutine[routineIndex];
+                        routineIndex++;
                     }
                     // target spotted - begin caution phase
                     if (HaveTarget())
                     {
                         state = aiState.caution;
+                        UpdateDetectionRadius();
                         locationGoal = null;
                         StartTimer(cautionTime);
                     }
@@ -245,6 +294,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                         {
                             // how dare you! time to fight
                             state = aiState.track;
+                            UpdateDetectionRadius();
                             break;
                         }
                         else
@@ -252,6 +302,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                             // they got away - resume routine
                             StartTimer(0.0f);
                             state = aiState.idle;
+                            UpdateDetectionRadius();
                             routineIndex = 0;
                             break;
                         }
@@ -266,12 +317,14 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                     {
                         // target reacquired - begin fighting again
                         state = aiState.track;
+                        UpdateDetectionRadius();
                         break;
                     }
+                    // they got away - resume routine
                     if (TimerUp())
                     {
-                        // they got away - resume routine
                         state = aiState.idle;
+                        UpdateDetectionRadius();
                         routineIndex = 0;
                         break;
                     }
@@ -284,7 +337,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                     {
                         // target lost, search for target
                         state = aiState.search;
-                        countdown = searchTime;
+                        UpdateDetectionRadius();
+                        StartTimer(searchTime);
                         break;
                     }
                     // path to the target to get in weapon range
@@ -296,6 +350,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                     {
                         // in engage range, attack
                         state = aiState.attack;
+                        UpdateDetectionRadius();
                         locationGoal = null;
                         break;
                     }
@@ -308,6 +363,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                     {
                         // target lost, search for target
                         state = aiState.search;
+                        UpdateDetectionRadius();
                         StartTimer(searchTime);
                         break;
                     }
@@ -343,13 +399,13 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
 
     private RaycastHit2D RaycastEntity(GameObject entity)
     {
-        // Temporarily change layer of our vision blocker so it doesnt block the raycast
-        Collider2D targetCollider = entity.GetComponent<Collider2D>();
-        Vector2 targetLoc = ((Vector2)entity.transform.position) + targetCollider.offset;
-        Vector2 position = transform.position;
-        Vector2 targetVec = targetLoc - position;
-        RaycastHit2D hit = Physics2D.Raycast(position, targetVec, targetVec.magnitude, 1 << 0);
-        Debug.DrawRay(position, targetVec, Color.yellow, 2f);
+        CreatureBehaviour b = entity.GetComponent<CreatureBehaviour>();
+        Vector2 targetLoc = (Vector2)b.visionCollider.transform.position + b.visionCollider.offset;
+        Vector2 originLoc = (Vector2)behaviour.visionCollider.transform.position + behaviour.visionCollider.offset;
+        Vector2 targetVec = targetLoc - originLoc;
+        originLoc = originLoc + targetVec.normalized * 0.2f;
+        RaycastHit2D hit = Physics2D.Raycast(originLoc, targetVec, detectionRangeCurrent, 1 << 9);
+        Debug.DrawRay(originLoc, targetVec.normalized * detectionRangeCurrent, Color.yellow);
         return hit;
     }
 
@@ -385,17 +441,20 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
             countdown -= Time.deltaTime;
             yield return null;
         }
+        timer = null;
     }
 
     public CreatureAIData Save()
     {
         CreatureAIData data = new CreatureAIData();
         data.locationGoal = locationGoal.HasValue ? HelpFunc.VectorToArray(locationGoal.Value) : null;
+        data.detectionRange = detectionRange;
+        data.detectionRangeCaution = detectionRangeCaution;
+        data.detectionRangeCurrent = detectionRangeCurrent;
         data.attackDistance = attackDistance;
         data.preferredFightDistance = preferredFightDistance;
         data.cautionTime = cautionTime;
         data.searchTime = searchTime;
-        data.idleTime = idleTime;
         data.idleRoutine = HelpFunc.VectorListToArrayList(idleRoutine);
         data.LOCATION_MAX_OFFSET = LOCATION_MAX_OFFSET;
         data.DISTANCE_MAX_OFFSET = DISTANCE_MAX_OFFSET;
@@ -410,16 +469,18 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     public void Load(CreatureAIData data, bool loadTransform = true)
     {
         locationGoal = (data.locationGoal != null) ? HelpFunc.DataToVec2(data.locationGoal) : null;
+        detectionRange = data.detectionRange;
+        detectionRangeCaution = data.detectionRangeCaution;
+        detectionRangeCurrent = data.detectionRangeCurrent;
         attackDistance = data.attackDistance;
         preferredFightDistance = data.preferredFightDistance;
         cautionTime = data.cautionTime;
         searchTime = data.searchTime;
-        idleTime = data.idleTime;
         idleRoutine = HelpFunc.DataToListVec2(data.idleRoutine);
         LOCATION_MAX_OFFSET = data.LOCATION_MAX_OFFSET;
         DISTANCE_MAX_OFFSET = data.DISTANCE_MAX_OFFSET;
         targetID = data.targetID;
-        if (targetID != 0) target = HelpFunc.FindGameObjectByBehaviourID(targetID);
+        if (targetID != 0) target = HelpFunc.FindEntityByID(targetID);
         targetLastPos = (data.targetLastPos != null) ? HelpFunc.DataToVec2(data.targetLastPos) : null;
         state = data.state;
         routineIndex = data.routineIndex;
@@ -434,11 +495,13 @@ public class CreatureAIData
     public CreatureAIData() { }
 
     public float[] locationGoal;
+    public float detectionRange;
+    public float detectionRangeCaution;
+    public float detectionRangeCurrent;
     public float attackDistance;
     public float preferredFightDistance;
     public float cautionTime;
     public float searchTime;
-    public float idleTime;
     public List<float[]> idleRoutine;
     public float LOCATION_MAX_OFFSET;
     public float DISTANCE_MAX_OFFSET;

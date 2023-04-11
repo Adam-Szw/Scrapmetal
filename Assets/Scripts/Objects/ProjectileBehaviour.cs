@@ -41,7 +41,7 @@ public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Sp
         // If guidance used, turn missile accordingly
         if (guidanceTarget != null && guidanceStep > 0) TurnMissile();
         // Acquire target if ID is given but target not found
-        else if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindGameObjectByBehaviourID(guidanceTargetID);
+        else if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindEntityByID(guidanceTargetID);
         // Update velocity vector to match rotation
         SetMoveVector(HelpFunc.EulerToVec2(transform.rotation.eulerAngles.z));
         // Update speed

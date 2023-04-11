@@ -20,7 +20,7 @@ class HelpFunc
     }
 
     // Search all gameobjects to find one with EntityBehaviour with given ID
-    public static GameObject FindGameObjectByBehaviourID(ulong ID)
+    public static GameObject FindEntityByID(ulong ID)
     {
         List<GameObject> objects = SceneManager.GetActiveScene().GetRootGameObjects().ToList();
         foreach (GameObject o in objects)
