@@ -7,12 +7,7 @@ using UnityEngine;
 public class StructureVisibilityAreaTrigger : MonoBehaviour
 {
 
-    private StructureBehaviour structureBehaviour;
-
-    private void Start()
-    {
-        structureBehaviour = transform.parent.gameObject.GetComponent<StructureBehaviour>();
-    }
+    public StructureBehaviour structureBehaviour;
 
     private void OnTriggerEnter2D(Collider2D other)
     {

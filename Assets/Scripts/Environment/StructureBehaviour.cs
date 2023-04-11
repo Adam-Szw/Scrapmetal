@@ -7,15 +7,48 @@ using UnityEngine.Tilemaps;
  */
 public class StructureBehaviour : MonoBehaviour
 {
-    [SerializeField] private GameObject tilemapOutsideGroundFloor;
+    public GameObject tilemapOutsideGroundFloor;
     // All outside tilemaps should go here except first floor as it has special behaviour and is assigned above
-    [SerializeField] private List<GameObject> tilemapsOutside;
-    [SerializeField] private List<GameObject> tilemapsInside;
-    [SerializeField] private List<GameObject> masks;
+    public List<GameObject> tilemapsOutside;
+    public List<GameObject> tilemapsInside;
+    public Sprite maskSprite;
 
-    public Vector2 currPlayerPos = Vector2.zero;
+    [HideInInspector] public Vector2 currPlayerPos;
 
+    private List<GameObject> masks = new List<GameObject>();
     private bool maskEnabled = false;
+
+    public void Start()
+    {
+        // Create masks
+        foreach (GameObject tilemap in tilemapsOutside) CreateMask(tilemap);
+        foreach (GameObject tilemap in tilemapsInside) CreateMask(tilemap);
+        CreateMask(tilemapOutsideGroundFloor);
+    }
+
+    public void Update()
+    {
+        if (GlobalControl.paused) return;
+        // Move all masks so the player is visible
+        if (maskEnabled)
+        {
+            foreach (GameObject mask in masks)
+            {
+                mask.transform.position = currPlayerPos;
+            }
+        }
+    }
+
+    private void CreateMask(GameObject parent)
+    {
+        GameObject mask = new GameObject("Mask");
+        mask.transform.parent = parent.transform;
+        mask.transform.localEulerAngles = new Vector3(0f, 0f, 19.29005f);
+        SpriteMask sprMask = mask.AddComponent<SpriteMask>();
+        sprMask.sprite = maskSprite;
+        sprMask.alphaCutoff = 1f;
+        masks.Add(mask);
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -63,6 +96,7 @@ public class StructureBehaviour : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (GlobalControl.paused) return;
         // Only if triggering object is player
         if (!other.gameObject.GetComponent<PlayerBehaviour>()) return;
         currPlayerPos = other.gameObject.transform.position;
@@ -83,20 +117,6 @@ public class StructureBehaviour : MonoBehaviour
         foreach (GameObject mask in masks)
         {
             mask.GetComponent<SpriteMask>().enabled = false;
-        }
-    }
-
-    void Update()
-    {
-        if (GlobalControl.paused) return;
-
-        // Move all masks so the player is visible
-        if (maskEnabled)
-        {
-            foreach(GameObject mask in masks)
-            {
-                mask.transform.position = currPlayerPos;
-            }
         }
     }
 

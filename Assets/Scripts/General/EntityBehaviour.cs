@@ -11,6 +11,8 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
 {
     public string prefabPath;
 
+    public GameObject targetBone = null;    // Object at which enemy weapons will be targeted
+
     [HideInInspector] public ulong ID = 0;
     private float speed = 0.0f;
     private Vector2 moveVector = Vector2.zero;
