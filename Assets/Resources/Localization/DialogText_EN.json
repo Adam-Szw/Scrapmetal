@@ -1,0 +1,14 @@
+{
+    "dialogData": [
+        {
+            "id": 1,
+            "text": "This is the text for dialog ID 1.",
+            "response": "This is response for ID: 1."
+        },
+        {
+            "id": 2,
+            "text": "This is the text for dialog ID 2.",
+            "response": "This is response for ID: 2.\ntest new line"
+        }
+    ]
+}

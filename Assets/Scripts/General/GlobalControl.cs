@@ -26,10 +26,14 @@ public class GlobalControl : MonoBehaviour
 
     void Awake()
     {
+        // Camera stuff
         currentCamera = Camera.main;
         cameraControl = new CameraControl();
         cameraControl.currentCamera = currentCamera;
         PlayerInput.currCamera = currentCamera;
+        // Dialog stuff
+        DialogLibrary.LoadDialogLocalization("DialogText_EN");
+        DialogLibrary.LoadDialogOptions();
     }
 
     void Start()

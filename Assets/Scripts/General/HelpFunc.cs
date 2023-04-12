@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 /* This class contains some useful tools not built-in Unity
  */
-class HelpFunc
+public static class HelpFunc
 {
     // Recursively search object and its children for an object by name
     public static GameObject RecursiveFindChild(GameObject parent, string name)
