@@ -155,7 +155,8 @@ class HelpFunc
     public static void DisableInternalCollision(Transform parent)
     {
         List<Collider2D> colliders = new List<Collider2D>(parent.gameObject.GetComponentsInChildren<Collider2D>());
-        colliders.Add(parent.gameObject.GetComponent<Collider2D>());
+        Collider2D pCollider = parent.gameObject.GetComponent<Collider2D>();
+        if (pCollider) colliders.Add(pCollider);
 
         foreach (Collider2D collider in colliders)
         {

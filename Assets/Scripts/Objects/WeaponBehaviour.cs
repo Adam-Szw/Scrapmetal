@@ -21,6 +21,7 @@ public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<
 
     [HideInInspector] public ulong guidanceTargetID = 0;
     [HideInInspector] public GameObject guidanceTarget = null;
+    [HideInInspector] public GameObject groundReferenceObject = null;
 
     private float cooldownCurrent = 0.0f;
     private Animator animator;
@@ -52,8 +53,7 @@ public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<
 
         // Spawn projectile
         float shootAngle = GetSnapAngle();
-        GameObject proj = Instantiate(projectilePrefab, projectileAttachment.transform.position, Quaternion.Euler(0f, 0f, shootAngle));
-        proj.GetComponent<SpriteRenderer>().sortingOrder = GlobalControl.projectileSortLayer;
+        GameObject proj = Instantiate(projectilePrefab, projectileAttachment.transform.position, Quaternion.Euler(Vector3.zero));
 
         // Transfer properties
         ProjectileBehaviour projBehaviour = proj.GetComponent<ProjectileBehaviour>();
@@ -61,6 +61,8 @@ public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<
         projBehaviour.guidanceTargetID = guidanceTargetID;
         projBehaviour.guidanceTarget = guidanceTarget;
         projBehaviour.ownerFaction = ownerFaction;
+        projBehaviour.CreateStructureCollider(groundReferenceObject);
+        projBehaviour.RotateSprite(shootAngle);
 
         // Ammo, cooldown and animation
         currAmmo--;

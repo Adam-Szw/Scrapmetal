@@ -2103,7 +2103,6 @@ GameObject:
   - component: {fileID: 5291230762624573668}
   - component: {fileID: 2978790146387656399}
   - component: {fileID: 3580721524377681868}
-  - component: {fileID: 4804127292015437786}
   m_Layer: 0
   m_Name: Spiderbot
   m_TagString: Untagged
@@ -2147,11 +2146,12 @@ MonoBehaviour:
   faction: 4
   aiControl: {fileID: 5291230762624573668}
   moveSpeed: 3
+  weaponAttachmentBone: {fileID: 8109489427493512261}
+  groundReferenceObject: {fileID: 8025869341345888668}
   maxHealth: 100
   health: 100
   alive: 1
   visionCollider: {fileID: 0}
-  weaponAttachmentBone: {fileID: 8109489427493512261}
   target: {fileID: 0}
 --- !u!114 &5291230762624573668
 MonoBehaviour:
@@ -2171,7 +2171,8 @@ MonoBehaviour:
   attackDistance: 10
   preferredFightDistance: 8
   cautionTime: 2
-  searchTime: 3
+  searchTime: 8
+  chaseTime: 6
   idleRoutine: []
   LOCATION_MAX_OFFSET: 0.1
   DISTANCE_MAX_OFFSET: 4
@@ -2210,20 +2211,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.04785012, y: -0.477}
-  m_Size: {x: 2.015536, y: 0.3738741}
+  m_Offset: {x: 0.0413291, y: -0.42549354}
+  m_Size: {x: 1.7207859, y: 0.26298907}
   m_Direction: 1
---- !u!210 &4804127292015437786
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4070046796214033033}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!1 &4224721772167164810
 GameObject:
   m_ObjectHideFlags: 0
@@ -4543,6 +4533,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9129734224495408463}
+  - component: {fileID: 1776999147713040880}
   m_Layer: 0
   m_Name: Ground_Offset
   m_TagString: Untagged
@@ -4566,6 +4557,17 @@ Transform:
   m_Father: {fileID: 6867522891542710802}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &1776999147713040880
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8025869341345888668}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &8040532380381978176
 GameObject:
   m_ObjectHideFlags: 0

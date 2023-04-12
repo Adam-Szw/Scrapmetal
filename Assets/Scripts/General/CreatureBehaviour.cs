@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static CreatureBehaviour;
@@ -26,6 +27,8 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public CreatureAI aiControl = null;
 
     public float moveSpeed = 0.0f;
+    [SerializeField] protected GameObject weaponAttachmentBone = null;
+    [SerializeField] protected GameObject groundReferenceObject = null;
     [SerializeField] private float maxHealth = 100.0f;
     [SerializeField] private float health = 100.0f;
     [SerializeField] private bool alive = true;
@@ -35,6 +38,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     [HideInInspector] public InventoryManager inventoryManager;
 
     private HealthbarBehaviour healthbarBehaviour = null;
+    private GameObject lastDealer = null;
 
     new protected void Update()
     {
@@ -48,33 +52,29 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         base.Awake();
         // Record healthbar
         if (healthbar) healthbarBehaviour = healthbar.GetComponent<HealthbarBehaviour>();
-        // Create vision collider
-        GameObject vision = new GameObject("VisionCollider");
-        vision.transform.parent = transform;
-        vision.transform.localPosition = Vector3.zero;
-        vision.layer = 9;
-        visionCollider = vision.AddComponent<CircleCollider2D>();
-        visionCollider.offset = gameObject.GetComponent<Collider2D>().offset;
-        visionCollider.radius = 0.1f;
+        AddVisionCollider();
     }
 
     // Handle collision with projectiles
     public void OnTriggerEnter2D(Collider2D other)
     {
-        // Do nothing if its detection collision
-        if (other.gameObject.layer == 8) return;
-        ProjectileBehaviour b = other.gameObject.GetComponent<ProjectileBehaviour>();
-        if (b)
-        {
-            // Do nothing if hit yourself
-            if (b.ownerID == ID) return;
-            // Do nothing if from same faction
-            if (b.ownerFaction == faction && faction != FactionAllegiance.berserk) return;
-            else if (aiControl) aiControl.NotifyTakingDamage();
-            DealDamage(b.damage);
-            Destroy(other.gameObject);
-            if (GetAlive()) GetAnimations().PlayFlinch();
-        }
+        // Do nothing if its detection collision or projectile wall collision
+        if (other.gameObject.layer == 8 || other.gameObject.layer == 10) return;
+        ProjectileTrigger t = other.gameObject.GetComponent<ProjectileTrigger>();
+        if (!t) return;
+        ProjectileBehaviour b = t.behaviour;
+        // Do nothing if hit yourself
+        if (b.ownerID == ID) return;
+        // Do nothing if from same faction
+        if (b.ownerFaction == faction && faction != FactionAllegiance.berserk) return;
+        // Do nothing if this was already registered
+        if (other.gameObject == lastDealer) return;
+        // Apply changes
+        lastDealer = other.gameObject;
+        if (aiControl) aiControl.NotifyTakingDamage();
+        DealDamage(b.damage);
+        Destroy(b.gameObject);
+        if (GetAlive()) GetAnimations().PlayFlinch();
     }
 
     public float GetHealth() { return health; }
@@ -177,6 +177,17 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     protected virtual CreatureAnimations GetAnimations() { return null; }
 
     protected virtual List<WeaponBehaviour> GetWeapons() { return null; }
+
+    private void AddVisionCollider()
+    {
+        GameObject vision = new GameObject("VisionCollider");
+        vision.transform.parent = transform;
+        vision.transform.localPosition = Vector3.zero;
+        vision.layer = 9;
+        visionCollider = vision.AddComponent<CircleCollider2D>();
+        visionCollider.offset = gameObject.GetComponent<Collider2D>().offset;
+        visionCollider.radius = 0.1f;
+    }
 
     public new CreatureData Save()
     {

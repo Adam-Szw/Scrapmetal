@@ -891,11 +891,12 @@ MonoBehaviour:
   faction: 0
   aiControl: {fileID: 0}
   moveSpeed: 0
+  weaponAttachmentBone: {fileID: 4415601639827162915}
+  groundReferenceObject: {fileID: 8155264429366595155}
   maxHealth: 100
   health: 100
   alive: 1
   visionCollider: {fileID: 0}
-  weaponAttachmentBone: {fileID: 4415601639827162915}
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 12
   playerSpeed: 5

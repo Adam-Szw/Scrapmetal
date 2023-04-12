@@ -14,7 +14,6 @@ using Scene = UnityEngine.SceneManagement.Scene;
 public class GlobalControl : MonoBehaviour
 {
     // Global variables
-    public static int projectileSortLayer = 20; // sorting layer for all projectiles in scene
 
     public static Camera currentCamera;
     public static CameraControl cameraControl;

@@ -6,8 +6,6 @@ using UnityEngine.U2D.Animation;
 
 public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Spawnable<SpiderbotData>
 {
-    [SerializeField] private GameObject weaponAttachmentBone;
-
     public GameObject target;
 
     public SpiderbotAnimations animations;
@@ -28,6 +26,7 @@ public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Sp
         GameObject weapon = WeaponBehaviour.Spawn("Prefabs/Items/Weapons/MissileLauncherSpiderbot", position, rotation, weaponAttachmentBone.transform);
         weaponBehaviour = weapon.GetComponent<WeaponBehaviour>();
         weaponBehaviour.ownerID = ID;
+        weaponBehaviour.groundReferenceObject = groundReferenceObject;
     }
 
     new protected void Update()

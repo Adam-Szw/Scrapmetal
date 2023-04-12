@@ -12,6 +12,8 @@ using static CreatureAnimations;
  */
 public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Spawnable<ProjectileData>
 {
+    public GameObject spriteObject;
+
     // bullets behaviour
     public float speedInitial;
     public float acceleration;
@@ -30,7 +32,6 @@ public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Sp
     new protected void Awake()
     {
         base.Awake();
-        SetMoveVector(HelpFunc.EulerToVec2(transform.eulerAngles.z));
         SetSpeed(speedInitial);
     }
 
@@ -42,8 +43,6 @@ public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Sp
         if (guidanceTarget != null && guidanceStep > 0) TurnMissile();
         // Acquire target if ID is given but target not found
         else if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindEntityByID(guidanceTargetID);
-        // Update velocity vector to match rotation
-        SetMoveVector(HelpFunc.EulerToVec2(transform.rotation.eulerAngles.z));
         // Update speed
         SetSpeed(Mathf.Max(GetSpeed() + acceleration * Time.deltaTime, 0.0f));
         // Update lifetime
@@ -57,18 +56,40 @@ public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Sp
         return obj;
     }
 
+    public void CreateStructureCollider(GameObject groundReference)
+    {
+        float referenceHeight = groundReference.transform.position.y;
+        float myHeight = transform.position.y;
+        GameObject structureCollider = new GameObject("Structure_Collider");
+        structureCollider.transform.parent = transform;
+        structureCollider.transform.localPosition = new Vector3(0f, referenceHeight - myHeight, 0f);
+        structureCollider.layer = 10;
+        CircleCollider2D collider = structureCollider.AddComponent<CircleCollider2D>();
+        collider.isTrigger = true;
+        collider.radius = 0.1f;
+        ProjectileTrigger trigger = structureCollider.AddComponent<ProjectileTrigger>();
+        trigger.behaviour = this;
+    }
+
+    public void RotateSprite(float angle)
+    {
+        spriteObject.transform.Rotate(0.0f, 0.0f, angle);
+        // Update velocity vector to match rotation
+        SetMoveVector(HelpFunc.EulerToVec2(spriteObject.transform.rotation.eulerAngles.z));
+    }
+
     private void TurnMissile()
     {
         Vector2 targetPos = guidanceTarget.transform.position;
         Vector2 missilePos = transform.position;
         Vector2 targetVec = targetPos - missilePos;
         float targetAngle = HelpFunc.Vec2ToAngle(targetVec);
-        float currAngle = transform.rotation.eulerAngles.z;
+        float currAngle = spriteObject.transform.rotation.eulerAngles.z;
         currAngle = HelpFunc.NormalizeAngle(currAngle);
         float angleDiff = -HelpFunc.SmallestAngle(targetAngle, currAngle);
         float maxStep = guidanceStep * Time.deltaTime;
         float step = Mathf.Clamp(angleDiff, -maxStep, maxStep);
-        transform.Rotate(0.0f, 0.0f, step);
+        RotateSprite(step);
     }
 
     new public ProjectileData Save()
@@ -79,6 +100,7 @@ public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Sp
         data.lifespan = lifespan;
         data.damage = damage;
         data.lifeRemaining = lifeRemaining;
+        data.projectileRotation = spriteObject.transform.localEulerAngles.z;
         return data;
     }
 
@@ -91,6 +113,7 @@ public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Sp
         damage = data.damage;
         ownerID = data.ownerID;
         lifeRemaining = data.lifeRemaining;
+        spriteObject.transform.localEulerAngles = new Vector3(0f, 0f, data.projectileRotation);
     }
 
     public static GameObject Spawn(ProjectileData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -125,4 +148,5 @@ public class ProjectileData : ObjectData
     public float damage;
     public float lifeRemaining;
     public List<string> graphicsData;
+    public float projectileRotation;
 }

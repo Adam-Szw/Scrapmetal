@@ -20,6 +20,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     [SerializeField] private float preferredFightDistance = 0.0f;
     [SerializeField] private float cautionTime = 0.0f;
     [SerializeField] private float searchTime = 0.0f;
+    [SerializeField] private float chaseTime = 0.0f;
     [SerializeField] private List<Vector2> idleRoutine = new List<Vector2>();
     [SerializeField] private float LOCATION_MAX_OFFSET = 0.1f;
     [SerializeField] private float DISTANCE_MAX_OFFSET = 2.0f;
@@ -295,6 +296,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                             // how dare you! time to fight
                             state = aiState.track;
                             UpdateDetectionRadius();
+                            StartTimer(chaseTime);
                             break;
                         }
                         else
@@ -302,6 +304,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                             // they got away - resume routine
                             StartTimer(0.0f);
                             state = aiState.idle;
+                            locationGoal = null;
                             UpdateDetectionRadius();
                             routineIndex = 0;
                             break;
@@ -318,12 +321,14 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                         // target reacquired - begin fighting again
                         state = aiState.track;
                         UpdateDetectionRadius();
+                        StartTimer(chaseTime);
                         break;
                     }
                     // they got away - resume routine
                     if (TimerUp())
                     {
                         state = aiState.idle;
+                        locationGoal = null;
                         UpdateDetectionRadius();
                         routineIndex = 0;
                         break;
@@ -332,7 +337,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                 }
             case aiState.track:
                 {
-                    // check if detection still has target first
+                    // check if detection still has target and if we are not tired of chasing
                     if (!HaveTarget())
                     {
                         // target lost, search for target
@@ -340,6 +345,13 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                         UpdateDetectionRadius();
                         StartTimer(searchTime);
                         break;
+                    }
+                    if (TimerUp())
+                    {
+                        state = aiState.idle;
+                        locationGoal = null;
+                        UpdateDetectionRadius();
+                        routineIndex = 0;
                     }
                     // path to the target to get in weapon range
                     ObtainTargetLocation();
@@ -455,6 +467,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         data.preferredFightDistance = preferredFightDistance;
         data.cautionTime = cautionTime;
         data.searchTime = searchTime;
+        data.chaseTime = chaseTime;
         data.idleRoutine = HelpFunc.VectorListToArrayList(idleRoutine);
         data.LOCATION_MAX_OFFSET = LOCATION_MAX_OFFSET;
         data.DISTANCE_MAX_OFFSET = DISTANCE_MAX_OFFSET;
@@ -476,6 +489,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         preferredFightDistance = data.preferredFightDistance;
         cautionTime = data.cautionTime;
         searchTime = data.searchTime;
+        chaseTime = data.chaseTime;
         idleRoutine = HelpFunc.DataToListVec2(data.idleRoutine);
         LOCATION_MAX_OFFSET = data.LOCATION_MAX_OFFSET;
         DISTANCE_MAX_OFFSET = data.DISTANCE_MAX_OFFSET;
@@ -502,6 +516,7 @@ public class CreatureAIData
     public float preferredFightDistance;
     public float cautionTime;
     public float searchTime;
+    public float chaseTime;
     public List<float[]> idleRoutine;
     public float LOCATION_MAX_OFFSET;
     public float DISTANCE_MAX_OFFSET;

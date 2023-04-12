@@ -95,13 +95,14 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
     // Updates bend of torso and head to look at the characters target
     private void UpdateFacing()
     {
+        Vector2 aimingVector = GetAimingVector();
+        if (aimingVector.magnitude < 0.7f) return;
+
         const float HEAD_BEND_MAX_ANGLE = 30.0f;
         const float HEAD_BEND_STEP = 60.0f;
         const float TORSO_BEND_MAX_ANGLE = 10.0f;
         const float TORSO_BEND_STEP = 20.0f;
 
-        Vector2 aimingVector = GetAimingVector();
-        if (aimingVector.magnitude < 0.2f) return;
         float angleFraction = Vector2.SignedAngle(new Vector2(aimingVector.x, 0.0f), aimingVector) / 90.0f;
         angleFraction *= Mathf.Sign(aimingVector.x);
         RotateJoint(head, HEAD_BEND_MAX_ANGLE * angleFraction, HEAD_BEND_STEP);
@@ -111,6 +112,9 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
     // Updates arm to point towards characters target when wielding weapon
     private void UpdateArmBend()
     {
+        Vector2 aimingVector = GetAimingVector();
+        if (aimingVector.magnitude < 0.7f) return;
+
         const float ARM_UP_R_BEND_MAX_ANGLE = 60.0f;
         const float ARM_UP_R_BEND_OFFSET_ANGLE = 30.0f;
         const float ARM_UP_R_BEND_STEP = 170.0f;
@@ -118,8 +122,6 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
         const float ARM_LOW_R_BEND_OFFSET_ANGLE = -30.0f;
         const float ARM_LOW_R_BEND_STEP = 200.0f;
 
-        Vector2 aimingVector = GetAimingVector();
-        if (aimingVector.magnitude < 0.2f) return;
         float angleFraction = Vector2.SignedAngle(new Vector2(aimingVector.x, 0.0f), aimingVector) / 90.0f;
         angleFraction *= Mathf.Sign(aimingVector.x);
         RotateJoint(arm_up_r, (ARM_UP_R_BEND_MAX_ANGLE * angleFraction) + ARM_UP_R_BEND_OFFSET_ANGLE, ARM_UP_R_BEND_STEP);
@@ -131,10 +133,11 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
     // TODO - there is a bug if mouse pointer is over the weapon where the hand twists too far
     private void UpdateHandBend()
     {
+        Vector2 aimingVector = GetAimingVector();
+        if (aimingVector.magnitude < 0.7f) return;
+
         const float HAND_R_BEND_STEP = 300.0f;
 
-        Vector2 aimingVector = GetAimingVector();
-        if (aimingVector.magnitude < 0.2f) return;
         float targetAngle = HelpFunc.Vec2ToAngle(aimingVector);
         targetAngle += hand_r.obj.transform.lossyScale.x > 0 ? 0.0f : -180.0f;
         RotateJoint(hand_r, targetAngle, HAND_R_BEND_STEP, false);

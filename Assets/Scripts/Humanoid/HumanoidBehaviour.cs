@@ -13,7 +13,6 @@ using ColorUtility = UnityEngine.ColorUtility;
 
 public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spawnable<HumanoidData>
 {
-    [SerializeField] private GameObject weaponAttachmentBone;
     [SerializeField] private Vector2 weaponAttachmentOffset;
     [SerializeField] private int itemActiveSortLayer;
 
@@ -64,6 +63,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
             obj.GetComponent<WeaponBehaviour>().Load((WeaponData)item, true);
             hasWeapon = true;
             animations.aimingReferenceBone = HelpFunc.RecursiveFindChild(obj, "Attachpoint");
+            obj.GetComponent<WeaponBehaviour>().groundReferenceObject = groundReferenceObject;
         }
         else obj.GetComponent<ObjectBehaviour>().Load(item);
         obj.GetComponent<SpriteRenderer>().sortingOrder = itemActiveSortLayer;
