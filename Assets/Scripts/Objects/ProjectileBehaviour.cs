@@ -10,7 +10,7 @@ using static CreatureAnimations;
 
 /* Handles both dumb bullets and guided missiles
  */
-public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Spawnable<ProjectileData>
+public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spawnable<ProjectileData>
 {
     public GameObject spriteObject;
 
@@ -118,28 +118,31 @@ public class ProjectileBehaviour : ObjectBehaviour, Saveable<ProjectileData>, Sp
 
     public static GameObject Spawn(ProjectileData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
     {
-        GameObject obj = ObjectBehaviour.Spawn(data, position, rotation, scale, parent);
+        GameObject obj = ItemBehaviour.Spawn(data, position, rotation, scale, parent);
         obj.GetComponent<ProjectileBehaviour>().Load(data, false);
         return obj;
     }
 
     public static GameObject Spawn(ProjectileData data, Transform parent = null)
     {
-        GameObject obj = ObjectBehaviour.Spawn(data, parent);
+        GameObject obj = ItemBehaviour.Spawn(data, parent);
         obj.GetComponent<ProjectileBehaviour>().Load(data);
         return obj;
     }
 }
 
 [Serializable]
-public class ProjectileData : ObjectData
+public class ProjectileData : ItemData
 {
     public ProjectileData() { }
 
-    public ProjectileData(ObjectData data) : base(data)
+    public ProjectileData(ItemData data) : base(data)
     {
-        this.prefabPath = data.prefabPath;
-        this.ownerID = data.ownerID;
+        prefabPath = data.prefabPath;
+        ownerID = data.ownerID;
+        descriptionText = data.descriptionText;
+        inventoryIconLink = data.inventoryIconLink;
+        value = data.value;
     }
 
     public float speedInitial;

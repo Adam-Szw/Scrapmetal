@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static HumanoidAnimations;
 using static WeaponBehaviour;
 using Random = UnityEngine.Random;
 
-public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<WeaponData>
+public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<WeaponData>
 {
     public Vector2 target = Vector2.zero;   // Targeting location
     public GameObject projectilePrefab;
@@ -18,6 +19,7 @@ public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<
     public float cooldown;
     public float spread = 0;
     public float snapMaxAngle = 0;
+    public handsState animationType = handsState.empty;    // Used only by humanoid users
 
     [HideInInspector] public ulong guidanceTargetID = 0;
     [HideInInspector] public GameObject guidanceTarget = null;
@@ -124,48 +126,53 @@ public class WeaponBehaviour : ObjectBehaviour, Saveable<WeaponData>, Spawnable<
     public new WeaponData Save()
     {
         WeaponData data = new WeaponData(base.Save());
-        data.cooldown = this.cooldown;
-        data.maxAmmo = this.maxAmmo;
-        data.target = HelpFunc.VectorToArray(this.target);
-        data.currAmmo = this.currAmmo;
-        data.cooldownCurrent = this.cooldownCurrent;
+        data.cooldown = cooldown;
+        data.maxAmmo = maxAmmo;
+        data.target = HelpFunc.VectorToArray(target);
+        data.currAmmo = currAmmo;
+        data.cooldownCurrent = cooldownCurrent;
+        data.animationType = animationType;
         return data;
     }
 
     public void Load(WeaponData data, bool loadTransform = true)
     {
         base.Load(data, loadTransform);
-        this.cooldown = data.cooldown;
-        this.maxAmmo = data.maxAmmo;
-        this.target = HelpFunc.DataToVec2(data.target);
-        this.currAmmo = data.currAmmo;
-        this.cooldownCurrent = data.cooldownCurrent;
+        cooldown = data.cooldown;
+        maxAmmo = data.maxAmmo;
+        target = HelpFunc.DataToVec2(data.target);
+        currAmmo = data.currAmmo;
+        cooldownCurrent = data.cooldownCurrent;
+        animationType = data.animationType;
     }
 
     public static GameObject Spawn(WeaponData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
     {
-        GameObject obj = ObjectBehaviour.Spawn(data, position, rotation, scale, parent);
+        GameObject obj = ItemBehaviour.Spawn(data, position, rotation, scale, parent);
         obj.GetComponent<WeaponBehaviour>().Load(data, false);
         return obj;
     }
 
     public static GameObject Spawn(WeaponData data, Transform parent = null)
     {
-        GameObject obj = ObjectBehaviour.Spawn(data, parent);
+        GameObject obj = ItemBehaviour.Spawn(data, parent);
         obj.GetComponent<WeaponBehaviour>().Load(data);
         return obj;
     }
 }
 
 [Serializable]
-public class WeaponData : ObjectData
+public class WeaponData : ItemData
 {
     public WeaponData() { }
 
-    public WeaponData(ObjectData data) : base(data)
+    public WeaponData(ItemData data) : base(data)
     {
-        this.prefabPath = data.prefabPath;
-        this.ownerID = data.ownerID;
+        ownerID = data.ownerID;
+        ownerFaction = data.ownerFaction;
+        descriptionText = data.descriptionText;
+        inventoryIconLink = data.inventoryIconLink;
+        value = data.value;
     }
 
     public float damage;
@@ -176,4 +183,5 @@ public class WeaponData : ObjectData
     public bool firing;
     public int currAmmo;
     public float cooldownCurrent = 0.0f;
+    public handsState animationType;
 }

@@ -89,6 +89,7 @@ public class SpiderbotData : CreatureData
         this.alive = data.alive;
         this.maxHealth = data.maxHealth;
         this.health = data.health;
+        this.inventory = data.inventory;
     }
 
     public SpiderbotAnimationData animationData;

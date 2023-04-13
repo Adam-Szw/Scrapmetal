@@ -34,8 +34,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     [SerializeField] private bool alive = true;
 
     [HideInInspector] public CircleCollider2D visionCollider;
-
-    [HideInInspector] public InventoryManager inventoryManager;
+    [HideInInspector] public List<ItemData> inventory;
 
     private HealthbarBehaviour healthbarBehaviour = null;
     private GameObject lastDealer = null;
@@ -198,6 +197,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         data.alive = alive;
         data.maxHealth = maxHealth;
         data.health = health;
+        data.inventory = inventory;
         return data;
     }
 
@@ -211,6 +211,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         maxHealth = data.maxHealth;
         health = data.health;
         if (healthbarBehaviour && alive) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
+        inventory = data.inventory;
     }
 
     public static GameObject Spawn(CreatureData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -235,13 +236,13 @@ public class CreatureData : EntityData
 
     public CreatureData(EntityData data)
     {
-        this.ID = data.ID;
-        this.prefabPath = data.prefabPath;
-        this.location = data.location;
-        this.rotation = data.rotation;
-        this.scale = data.scale;
-        this.velocity = data.velocity;
-        this.speed = data.speed;
+        ID = data.ID;
+        prefabPath = data.prefabPath;
+        location = data.location;
+        rotation = data.rotation;
+        scale = data.scale;
+        velocity = data.velocity;
+        speed = data.speed;
     }
 
     public FactionAllegiance faction;
@@ -250,4 +251,5 @@ public class CreatureData : EntityData
     public float maxHealth;
     public bool alive;
     public float health;
+    public List<ItemData> inventory;
 }

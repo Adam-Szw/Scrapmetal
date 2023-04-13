@@ -10,26 +10,37 @@ public class UIControl : MonoBehaviour
 
     private static string menuPrefabPath = "Prefabs/UI/Menu";
     private static string dialogPrefabPath = "Prefabs/UI/Dialog";
+    private static string inventoryPrefabPath = "Prefabs/UI/Inventory";
     private static GameObject menu = null;
     private static GameObject dialog = null;
+    private static GameObject inventory = null;
 
     public void Update()
     {
-        // Open or close menu when ESC bind used
-        if(PlayerInput.esc)
+        if (PlayerInput.esc)
         {
-            if (menu == null) showInGameMenu();
-            else destroyInGameMenu();
+            if (inventory)
+            {
+                destroyInventory();
+                return;
+            }
+            if (!menu) showMenu();
+            else destroyMenu();
+        }
+        if (PlayerInput.tab)
+        {
+            if (!inventory) showInventory();
+            else destroyInventory();
         }
     }
 
-    public static void showInGameMenu()
+    public static void showMenu()
     {
         GlobalControl.PauseGame();
         menu = Instantiate(Resources.Load<GameObject>(menuPrefabPath));
     }
 
-    public static void destroyInGameMenu()
+    public static void destroyMenu()
     {
         Destroy(menu);
         menu = null;
@@ -50,5 +61,17 @@ public class UIControl : MonoBehaviour
         GlobalControl.UnpauseGame();
     }
 
+    public static void showInventory()
+    {
+        GlobalControl.PauseGame();
+        inventory = Instantiate(Resources.Load<GameObject>(inventoryPrefabPath));
+        inventory.GetComponent<InventoryControl>().LoadInventoryPanel(GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>());
+    }
 
+    public static void destroyInventory()
+    {
+        Destroy(inventory);
+        inventory = null;
+        GlobalControl.UnpauseGame();
+    }
 }

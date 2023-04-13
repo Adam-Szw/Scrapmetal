@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -21,8 +22,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
     public static string[] BODYPARTS = new string[] { "Pelvis", "Torso", "Head", "Arm_Up_R", "Arm_Low_R",
     "Hand_R", "Arm_Up_L", "Arm_Low_L", "Hand_L", "Leg_Up_R", "Leg_Low_R", "Foot_R", "Leg_Up_L", "Leg_Low_L", "Foot_L" };
 
-    private GameObject itemActive = null;
-    private bool hasWeapon = false;
+    private ItemBehaviour activeItemBehaviour = null;
 
     new protected void Awake()
     {
@@ -30,8 +30,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
         Animator armsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Arms").GetComponent<Animator>();
         Animator legsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Legs").GetComponent<Animator>();
-        GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Hand_R_Parent");
-        animations = new HumanoidAnimations(transform, new List<Animator>() { bodyAnimator, armsAnimator, legsAnimator }, BODYPARTS, aimBone);
+        animations = new HumanoidAnimations(transform, new List<Animator>() { bodyAnimator, armsAnimator, legsAnimator }, BODYPARTS, weaponAttachmentBone);
     }
 
     new protected void Update()
@@ -45,38 +44,54 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         return animations;
     }
 
-    // Spawns an item in selected bone for character. Null can be provided to indicate that no items should be selected.
-    public void SetItemActive(ObjectData item)
+    /* Spawns an item in selected bone for character. Null can be provided to indicate that no items should be selected.
+     * Returns data of the item that is to be unequipped.
+     */
+    public ItemData SetItemActive(ItemData item)
     {
-        // Save to inventory before destroying
-        Destroy(itemActive);
-        hasWeapon = false;
-        itemActive = null;
-        if (item == null) return;
+        // Save item before destroying
+        ItemData data = null;
+        if (activeItemBehaviour != null)
+        {
+            MethodInfo saveMethod = activeItemBehaviour.GetType().GetMethod("Save");
+            data = (ItemData)saveMethod.Invoke(activeItemBehaviour, null);
+            // Destroy item object
+            Destroy(activeItemBehaviour.gameObject);
+            activeItemBehaviour = null;
+        }
+        animations.aimingReferenceBone = weaponAttachmentBone;
+        animations.SetStateHands(handsState.empty);
+        animations.ResetJoints();
+        // Finish here if no new item provided
+        if (item == null) return data;
+        // Spawn new item in hand/bone
         Vector3 position = weaponAttachmentBone.transform.position + (Vector3)weaponAttachmentOffset;
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-        // Spawn the item in hand/bone
-        GameObject obj = ObjectBehaviour.Spawn(item.prefabPath, position, rotation, weaponAttachmentBone.transform);
+        GameObject obj = ItemBehaviour.Spawn(item.prefabPath, position, rotation, weaponAttachmentBone.transform);
         // Load item's details but not its transform
         if (item.GetType() == typeof(WeaponData))
         {
-            obj.GetComponent<WeaponBehaviour>().Load((WeaponData)item, true);
-            hasWeapon = true;
+            WeaponBehaviour behaviour = obj.GetComponent<WeaponBehaviour>();
+            behaviour.Load((WeaponData)item, true);
+            // Transfer references and set animation
+            behaviour.groundReferenceObject = groundReferenceObject;
             animations.aimingReferenceBone = HelpFunc.RecursiveFindChild(obj, "Attachpoint");
-            obj.GetComponent<WeaponBehaviour>().groundReferenceObject = groundReferenceObject;
+            animations.SetStateHands(behaviour.animationType);
         }
-        else obj.GetComponent<ObjectBehaviour>().Load(item);
+        else obj.GetComponent<ItemBehaviour>().Load(item);
         obj.GetComponent<SpriteRenderer>().sortingOrder = itemActiveSortLayer;
-        obj.GetComponent<ObjectBehaviour>().ownerID = ID;
-        obj.GetComponent<ObjectBehaviour>().ownerFaction = faction;
-        itemActive = obj;
+        ItemBehaviour itemB = obj.GetComponent<ItemBehaviour>();
+        itemB.ownerID = ID;
+        itemB.ownerFaction = faction;
+        activeItemBehaviour = itemB;
 
+        return data;
     }
 
     protected override List<WeaponBehaviour> GetWeapons()
     {
         List<WeaponBehaviour> weapons = new List<WeaponBehaviour>();
-        if (hasWeapon) weapons.Add(itemActive.GetComponent<WeaponBehaviour>());
+        if (activeItemBehaviour is WeaponBehaviour) weapons.Add((WeaponBehaviour)activeItemBehaviour);
         return weapons;
     }
 
@@ -114,10 +129,10 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         HumanoidData data = new HumanoidData(base.Save());
         data.bodypartData = SaveBodypartData();
         data.animationData = animations.Save();
-        if (itemActive)
+        if (activeItemBehaviour)
         {
-            if (hasWeapon) data.itemActive = itemActive.GetComponent<WeaponBehaviour>().Save();
-            else data.itemActive = itemActive.GetComponent<ObjectBehaviour>().Save();
+            MethodInfo saveMethod = activeItemBehaviour.GetType().GetMethod("Save");
+            data.itemActive = (ItemData)saveMethod.Invoke(activeItemBehaviour, null);
         }
         else data.itemActive = null;
         return data;
@@ -154,15 +169,16 @@ public class HumanoidData : CreatureData
 
     public HumanoidData(CreatureData data) : base(data)
     {
-        this.faction = data.faction;
-        this.aiData = data.aiData;
-        this.moveSpeed = data.moveSpeed;
-        this.alive = data.alive;
-        this.maxHealth = data.maxHealth;
-        this.health = data.health;
+        faction = data.faction;
+        aiData = data.aiData;
+        moveSpeed = data.moveSpeed;
+        alive = data.alive;
+        maxHealth = data.maxHealth;
+        health = data.health;
+        inventory = data.inventory;
     }
 
-    public ObjectData itemActive;
+    public ItemData itemActive;
     public List<string> bodypartData;
     public HumanoidAnimationData animationData;
 }

@@ -897,10 +897,12 @@ MonoBehaviour:
   health: 100
   alive: 1
   visionCollider: {fileID: 0}
+  inventory: []
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 12
   playerSpeed: 5
   playerSpeedBackward: 3
+  currencyCount: 50
 --- !u!50 &8151393122861713825
 Rigidbody2D:
   serializedVersion: 4

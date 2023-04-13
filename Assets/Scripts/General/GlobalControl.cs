@@ -21,6 +21,7 @@ public class GlobalControl : MonoBehaviour
     [HideInInspector] public static ulong nextID = 1;
 
     private static Transform playerTransform;
+    private static GameObject player;
 
     public static bool paused { get; private set; }
 
@@ -39,19 +40,22 @@ public class GlobalControl : MonoBehaviour
     void Start()
     {
         paused = false;
-        SetPlayerTransform(HelpFunc.FindPlayerInScene());
+        SetPlayer(HelpFunc.FindPlayerInScene());
     }
 
     void Update()
     {
-        if (!playerTransform) SetPlayerTransform(HelpFunc.FindPlayerInScene());
+        if (!playerTransform) SetPlayer(HelpFunc.FindPlayerInScene());
         if (!paused) cameraControl.AdjustCameraToPlayer();
     }
 
     public static Transform GetPlayerTransform() { return playerTransform; }
 
-    private static void SetPlayerTransform(GameObject player)
+    public static GameObject GetPlayer() { return player; }
+
+    private static void SetPlayer(GameObject player)
     {
+        GlobalControl.player = player;
         playerTransform = player.transform;
         cameraControl.playerTransform = player.transform;
     }
@@ -112,7 +116,7 @@ public class GlobalControl : MonoBehaviour
             DestroyEntities(sceneCurr);
             // Load entities using save file
             LoadEntities(scene.entities);
-            SetPlayerTransform(HelpFunc.FindPlayerInScene());
+            SetPlayer(HelpFunc.FindPlayerInScene());
             cameraControl.Load(scene.cameraData);
         }
         nextID = save.nextID;
@@ -126,7 +130,7 @@ public class GlobalControl : MonoBehaviour
         { typeof(CreatureData), d => CreatureBehaviour.Spawn((CreatureData)d) },
         { typeof(WeaponData), d => WeaponBehaviour.Spawn((WeaponData)d) },
         { typeof(ProjectileData), d => ProjectileBehaviour.Spawn((ProjectileData)d) },
-        { typeof(ObjectData), d => ObjectBehaviour.Spawn((ObjectData)d) },
+        { typeof(ItemData), d => ItemBehaviour.Spawn((ItemData)d) },
         { typeof(EntityData), d => EntityBehaviour.Spawn(d) }
     };
 

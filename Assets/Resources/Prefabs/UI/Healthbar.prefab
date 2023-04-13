@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4028731303224087647}
   - component: {fileID: 406831040217718185}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: Healthbar_Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5902267190822495123}
   - component: {fileID: 8723365612935234520}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: Healthbar_Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 9094980192939273627}
   - component: {fileID: 4123785504597575078}
   - component: {fileID: 208385159244422613}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: Healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

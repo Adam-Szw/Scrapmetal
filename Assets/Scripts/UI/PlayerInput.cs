@@ -13,12 +13,15 @@ public class PlayerInput : MonoBehaviour
     public static bool left = false;
     public static bool right = false;
 
-    public static bool one = false;
-    public static bool two = false;
+    public static bool num1 = false;
+    public static bool num2 = false;
+    public static bool num3 = false;
+    public static bool num4 = false;
     public static bool leftclick = false;
     public static bool rightclick = false;
 
     public static bool esc = false;
+    public static bool tab = false;
 
     public static Vector2 mousePos = Vector2.zero;
 
@@ -37,12 +40,15 @@ public class PlayerInput : MonoBehaviour
         left = Input.GetKey(KeyCode.A);
         right = Input.GetKey(KeyCode.D);
 
-        one = Input.GetKeyDown(KeyCode.Alpha1);
-        two = Input.GetKeyDown(KeyCode.Alpha2);
+        num1 = Input.GetKeyDown(KeyCode.Alpha1);
+        num2 = Input.GetKeyDown(KeyCode.Alpha2);
+        num3 = Input.GetKeyDown(KeyCode.Alpha3);
+        num4 = Input.GetKeyDown(KeyCode.Alpha4);
         leftclick = Input.GetKeyDown(KeyCode.Mouse0);
         rightclick = Input.GetKeyDown(KeyCode.Mouse1);
 
         esc = Input.GetKeyDown(KeyCode.Escape);
+        tab = Input.GetKeyDown(KeyCode.Tab);
 
         mousePos = GetMousePositionRelative();
     }
