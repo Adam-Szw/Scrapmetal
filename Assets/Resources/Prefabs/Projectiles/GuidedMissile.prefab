@@ -215,9 +215,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabPath: Prefabs/Projectiles/GuidedMissile
   targetBone: {fileID: 0}
+  interactTextOffset: {x: 0, y: 0}
   ID: 0
-  ownerID: 0
   ownerFaction: 5
+  descriptionText: No description
+  inventoryIconLink: Icons/Icon_Test
+  value: 0
+  pickable: 0
+  ownerID: 0
   spriteObject: {fileID: 7390212982548210473}
   speedInitial: 1
   acceleration: 25
@@ -227,4 +232,3 @@ MonoBehaviour:
   guidanceStep: 60
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}
-  heightOffset: 0

@@ -35,6 +35,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     [HideInInspector] public CircleCollider2D visionCollider;
     [HideInInspector] public List<ItemData> inventory;
+    [HideInInspector] public static int inventoryLimit = 40;
 
     private HealthbarBehaviour healthbarBehaviour = null;
     private GameObject lastDealer = null;
@@ -57,8 +58,8 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     // Handle collision with projectiles
     public void OnTriggerEnter2D(Collider2D other)
     {
-        // Do nothing if its detection collision or projectile wall collision
-        if (other.gameObject.layer == 8 || other.gameObject.layer == 10) return;
+        // Do nothing if its a collision with something else than projectile
+        if (other.gameObject.layer != 6) return;
         ProjectileTrigger t = other.gameObject.GetComponent<ProjectileTrigger>();
         if (!t) return;
         ProjectileBehaviour b = t.behaviour;

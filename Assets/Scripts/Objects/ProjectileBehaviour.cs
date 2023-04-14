@@ -14,7 +14,6 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
 {
     public GameObject spriteObject;
 
-    // bullets behaviour
     public float speedInitial;
     public float acceleration;
     public float lifespan;
@@ -143,6 +142,7 @@ public class ProjectileData : ItemData
         descriptionText = data.descriptionText;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;
+        pickable = data.pickable;
     }
 
     public float speedInitial;

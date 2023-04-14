@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using UnityEngine;
+using static PlayerBehaviour;
 using static PlayerBehaviour.ArmorSlot;
 
 /* Everything that is unique to the player and not other humanoid NPCs goes here
@@ -14,6 +17,10 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     [HideInInspector] public int currencyCount = 0;
     private int weaponSelected = -1;
 
+    private Dictionary<GameObject, float> interactibles = new Dictionary<GameObject, float>();
+    private GameObject selectedInteractible = null;
+
+    [Serializable]
     public struct WeaponSlot
     {
         public WeaponData weapon;
@@ -26,6 +33,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         }
     }
 
+    [Serializable]
     public struct ArmorSlot
     {
         public enum Slot
@@ -46,13 +54,12 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     [HideInInspector] public List<WeaponSlot> weapons = new List<WeaponSlot>();
     [HideInInspector] public List<ArmorSlot> armors = new List<ArmorSlot>();
 
+    public static float interactibleInteravalTime = 0.2f;
+
     new protected void Awake()
     {
         base.Awake();
-        GameObject gun = WeaponBehaviour.Spawn("Prefabs/Items/Weapons/Rivetgun", transform.position, transform.rotation);
-        WeaponData data = gun.GetComponent<WeaponBehaviour>().Save();
-        Destroy(gun);
-        inventory.Add(data);
+        StartCoroutine(PickableHighlightLoop());
     }
 
     new protected void Update()
@@ -72,11 +79,29 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         if (PlayerInput.num3) SetWeaponFromSlot(2);
         if (PlayerInput.num4) SetWeaponFromSlot(3);
 
+        // Send attack message
         if (PlayerInput.leftclick)
         {
             SetAttackTarget(PlayerInput.mousePos);
             Attack();
         }
+
+        // Interact with selected interactible
+        if (PlayerInput.e) UseInteractible();
+
+        // Reload currently selected weapon
+        //if (PlayerInput.r)
+    }
+
+    public void NotifyDetectedInteractible(GameObject obj)
+    {
+        float distance = (gameObject.transform.position - obj.transform.position).magnitude;
+        interactibles[obj] = distance;
+    }
+
+    public void NotifyDetectedInteractibleLeft(GameObject obj)
+    {
+        interactibles.Remove(obj);
     }
 
     public void UnequipWeapon(int index)
@@ -123,6 +148,46 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         UnequipArmor(aSlot.slot);
         armors.Add(aSlot);
         if (inventory.Contains(aSlot.armor)) inventory.Remove(aSlot.armor);
+    }
+
+    // Continuously run highlight code every 0.2 seconds for closest object
+    private IEnumerator PickableHighlightLoop()
+    {
+        while (true)
+        {
+            if (!GlobalControl.paused) RefreshInteractibles();
+            yield return new WaitForSeconds(interactibleInteravalTime);
+        }
+    }
+
+    // Updates distances to all interactible objects. After this, triggers highlight action for closest one.
+    private void RefreshInteractibles()
+    {
+        selectedInteractible = null;
+        Dictionary<GameObject, float> dictNew = new Dictionary<GameObject, float>();
+        foreach (KeyValuePair<GameObject, float> pair in interactibles)
+        {
+            GameObject obj = pair.Key;
+            float distance = (groundReferenceObject.transform.position - obj.transform.position).magnitude;
+            dictNew[obj] = distance;
+        }
+        interactibles = dictNew;
+        GameObject closest = interactibles.OrderBy(pair => pair.Value).FirstOrDefault().Key;
+        if (!closest) return;
+        selectedInteractible = closest;
+        EntityBehaviour b = closest.GetComponent<EntityBehaviour>();
+        if (!b) return;
+        b.interactionEnterEffect?.Invoke(this);
+    }
+
+
+    // Trigger selected interactible's effect. If no interactible is selected do nothing
+    private void UseInteractible()
+    {
+        if (!selectedInteractible) return;
+        EntityBehaviour b = selectedInteractible.GetComponent<EntityBehaviour>();
+        if (!b) return;
+        b.interactionUseEffect?.Invoke(this);
     }
 
     private void SetWeaponFromSlot(int index)
@@ -212,6 +277,8 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         PlayerData data = new PlayerData(base.Save());
         data.currencyCount = currencyCount;
         data.weaponSelected = weaponSelected;
+        data.weapons = weapons;
+        data.armors = armors;
         return data;
     }
 
@@ -220,6 +287,8 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     {
         base.Load(data, loadTransform);
         currencyCount = data.currencyCount;
+        weapons = data.weapons;
+        armors = data.armors;
         weaponSelected = data.weaponSelected;
         GetWeaponBySlot(weaponSelected);
         UpdateState();
@@ -254,5 +323,7 @@ public class PlayerData : HumanoidData
 
     public int currencyCount;
     public int weaponSelected;
+    public List<WeaponSlot> weapons;
+    public List<ArmorSlot> armors;
 
 }

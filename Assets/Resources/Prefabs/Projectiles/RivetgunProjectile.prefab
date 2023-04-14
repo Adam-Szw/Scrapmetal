@@ -215,9 +215,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabPath: Prefabs/Projectiles/RivetgunProjectile
   targetBone: {fileID: 0}
+  interactTextOffset: {x: 0, y: 0}
   ID: 0
-  ownerID: 0
   ownerFaction: 5
+  descriptionText: No description
+  inventoryIconLink: Icons/Icon_Test
+  value: 0
+  pickable: 0
+  ownerID: 0
   spriteObject: {fileID: 3122470777355908165}
   speedInitial: 20
   acceleration: -1
@@ -227,4 +232,3 @@ MonoBehaviour:
   guidanceStep: 0
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}
-  heightOffset: 0

@@ -11,16 +11,16 @@ using Random = UnityEngine.Random;
 
 public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<WeaponData>
 {
-    public Vector2 target = Vector2.zero;   // Targeting location
     public GameObject projectilePrefab;
 
-    public int maxAmmo;
-    public int currAmmo;
-    public float cooldown;
+    public int maxAmmo = 0;
+    public int currAmmo = 0;
+    public float cooldown = 0;
     public float spread = 0;
     public float snapMaxAngle = 0;
     public handsState animationType = handsState.empty;    // Used only by humanoid users
 
+    [HideInInspector] public Vector2 target = Vector2.zero;   // Targeting location
     [HideInInspector] public ulong guidanceTargetID = 0;
     [HideInInspector] public GameObject guidanceTarget = null;
     [HideInInspector] public GameObject groundReferenceObject = null;
@@ -33,7 +33,7 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
     {
         base.Awake();
         projectileAttachment = HelpFunc.RecursiveFindChild(this.gameObject, "Attachpoint");
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     protected new void Update()
@@ -173,6 +173,7 @@ public class WeaponData : ItemData
         descriptionText = data.descriptionText;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;
+        pickable = data.pickable;
     }
 
     public float damage;

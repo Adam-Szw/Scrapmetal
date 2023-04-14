@@ -72,14 +72,16 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         if (item.GetType() == typeof(WeaponData))
         {
             WeaponBehaviour behaviour = obj.GetComponent<WeaponBehaviour>();
-            behaviour.Load((WeaponData)item, true);
+            behaviour.Load((WeaponData)item, false);
             // Transfer references and set animation
             behaviour.groundReferenceObject = groundReferenceObject;
             animations.aimingReferenceBone = HelpFunc.RecursiveFindChild(obj, "Attachpoint");
             animations.SetStateHands(behaviour.animationType);
         }
         else obj.GetComponent<ItemBehaviour>().Load(item);
-        obj.GetComponent<SpriteRenderer>().sortingOrder = itemActiveSortLayer;
+        obj.GetComponentInChildren<SpriteRenderer>().sortingOrder = itemActiveSortLayer;
+        Rigidbody2D objRB = obj.GetComponentInChildren<Rigidbody2D>();
+        Destroy(objRB);
         ItemBehaviour itemB = obj.GetComponent<ItemBehaviour>();
         itemB.ownerID = ID;
         itemB.ownerFaction = faction;

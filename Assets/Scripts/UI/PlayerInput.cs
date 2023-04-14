@@ -20,6 +20,8 @@ public class PlayerInput : MonoBehaviour
     public static bool leftclick = false;
     public static bool rightclick = false;
 
+    public static bool e = false;
+    public static bool r = false;
     public static bool esc = false;
     public static bool tab = false;
 
@@ -47,6 +49,8 @@ public class PlayerInput : MonoBehaviour
         leftclick = Input.GetKeyDown(KeyCode.Mouse0);
         rightclick = Input.GetKeyDown(KeyCode.Mouse1);
 
+        e = Input.GetKeyDown(KeyCode.E);
+        r = Input.GetKeyDown(KeyCode.R);
         esc = Input.GetKeyDown(KeyCode.Escape);
         tab = Input.GetKeyDown(KeyCode.Tab);
 

@@ -3,20 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Unity.VisualScripting.Antlr3.Runtime.Tree.TreeWizard;
 using Transform = UnityEngine.Transform;
 
 /* This class controls basic information for all dynamic entities in the game
  */
 public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<EntityData>
 {
-    public string prefabPath;
+    public delegate void InteractionEffect(CreatureBehaviour user);
 
+    public string prefabPath;
     public GameObject targetBone = null;    // Object at which enemy weapons will be targeted
+    public Vector2 interactTextOffset = Vector2.zero;
 
     [HideInInspector] public ulong ID = 0;
     private float speed = 0.0f;
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb;
+    // Effect to be triggered when this entity enters interaction field
+    [HideInInspector] public InteractionEffect interactionEnterEffect = null;
+    // Effect to be triggered when this entity is interacted with
+    [HideInInspector] public InteractionEffect interactionUseEffect = null;
 
     protected void Update()
     {
@@ -29,6 +36,20 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         rb = this.gameObject.GetComponent<Rigidbody2D>();
         ID = ++GlobalControl.nextID;
         HelpFunc.DisableInternalCollision(transform);
+    }
+
+    // Adds collider for interactible detection by the player, essentially making this object detectable for interactions
+    public void AddInteractionCollider()
+    {
+        GameObject interaction = new GameObject("InteractionCollider");
+        interaction.transform.parent = transform;
+        interaction.transform.localPosition = Vector3.zero;
+        interaction.layer = 11;
+        InteractibleTrigger trigger = interaction.AddComponent<InteractibleTrigger>();
+        trigger.owner = gameObject;
+        CircleCollider2D collider = interaction.AddComponent<CircleCollider2D>();
+        collider.isTrigger = true;
+        collider.radius = 0.1f;
     }
 
     public void SetSpeed(float speed)

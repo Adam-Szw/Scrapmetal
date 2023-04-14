@@ -21,8 +21,6 @@ public class InventoryControl : MonoBehaviour
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI shopText;
 
-    [HideInInspector] public static int panelLimit = 0;
-
     private List<Button> inventorySlots = new List<Button>();
     private int inventoryOccupied = 0;
     private List<Button> shopSlots = new List<Button>();
@@ -50,7 +48,6 @@ public class InventoryControl : MonoBehaviour
             Button button = child.GetComponent<Button>();
             if (button != null) shopSlots.Add(button);
         }
-        panelLimit = Mathf.Min(inventorySlots.Count, shopSlots.Count);
         cancelAction.onClick.AddListener(() =>
         {
             ClearActionPanel();
@@ -157,7 +154,7 @@ public class InventoryControl : MonoBehaviour
         EnableButton(false, cancelAction);
         // set description to item text
         descriptionText.text = item.descriptionText;
-        if (item is WeaponData) descriptionText.text += "\n\nAmmo: " +
+        if (status != ItemStatus.equipped && item is WeaponData) descriptionText.text += "\n\nAmmo: " +
                 ((WeaponData)item).currAmmo + "/" + ((WeaponData)item).maxAmmo;
         if (status == ItemStatus.equipped) descriptionText.text += "\n\nClick to unequip the item";
         else if (!isShopOpen && status == ItemStatus.inventory && (item is WeaponData || item is ArmorData))
@@ -253,7 +250,7 @@ public class InventoryControl : MonoBehaviour
     private void TryUnequipItem(int weaponIndex)
     {
         // No space in inventory - do nothing
-        if (inventoryOccupied >= panelLimit) return;
+        if (inventoryOccupied >= CreatureBehaviour.inventoryLimit) return;
         // De-equip the item
         playerBehaviour.UnequipWeapon(weaponIndex);
     }
@@ -261,7 +258,7 @@ public class InventoryControl : MonoBehaviour
     private void TryUnequipItem(Slot armorSlot)
     {
         // No space in inventory - do nothing
-        if (inventoryOccupied >= panelLimit) return;
+        if (inventoryOccupied >= CreatureBehaviour.inventoryLimit) return;
         // De-equip the item
         playerBehaviour.UnequipArmor(armorSlot);
     }
@@ -348,7 +345,7 @@ public class InventoryControl : MonoBehaviour
         for (int i = 0; i < items.Count; i++)
         {
             // Do nothing if we run out of slots
-            if (inventoryOccupied >= panelLimit) break;
+            if (inventoryOccupied >= CreatureBehaviour.inventoryLimit) break;
             SetupSlot(inventorySlots[i], items[i], ItemStatus.inventory);
         }
     }
@@ -359,7 +356,7 @@ public class InventoryControl : MonoBehaviour
         for (int i = 0; i < shopItems.Count; i++)
         {
             // Do nothing if we run out of slots
-            if (shopOccupied >= panelLimit) break;
+            if (shopOccupied >= CreatureBehaviour.inventoryLimit) break;
             SetupSlot(shopSlots[i], shopItems[i], ItemStatus.shop);
         }
     }
