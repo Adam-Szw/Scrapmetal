@@ -33,8 +33,8 @@ public static class DialogLibrary
         public List<DialogData> dialogData;
     }
 
-    public static List<DialogOption> options = new List<DialogOption>();
     public static Dictionary<ulong, DialogLocal> dialogLocalization = new Dictionary<ulong, DialogLocal>();
+    public static List<DialogOption> options = new List<DialogOption>();
 
     public static void LoadDialogLocalization(string filename)
     {

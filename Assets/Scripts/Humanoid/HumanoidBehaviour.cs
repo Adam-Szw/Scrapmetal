@@ -18,11 +18,12 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
     [SerializeField] private int itemActiveSortLayer;
 
     [HideInInspector] public HumanoidAnimations animations;
+    public float backwardSpeedMultiplier = 0.5f;
 
     public static string[] BODYPARTS = new string[] { "Pelvis", "Torso", "Head", "Arm_Up_R", "Arm_Low_R",
     "Hand_R", "Arm_Up_L", "Arm_Low_L", "Hand_L", "Leg_Up_R", "Leg_Low_R", "Foot_R", "Leg_Up_L", "Leg_Low_L", "Foot_L" };
 
-    private ItemBehaviour activeItemBehaviour = null;
+    protected ItemBehaviour activeItemBehaviour = null;
 
     new protected void Awake()
     {
@@ -49,6 +50,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
      */
     public ItemData SetItemActive(ItemData item)
     {
+        // We have to destroy current item
         // Save item before destroying
         ItemData data = null;
         if (activeItemBehaviour != null)
@@ -64,7 +66,9 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         animations.ResetJoints();
         // Finish here if no new item provided
         if (item == null) return data;
+
         // Spawn new item in hand/bone
+        // We have to specify extra details so spawning process is more manual than usual here
         Vector3 position = weaponAttachmentBone.transform.position + (Vector3)weaponAttachmentOffset;
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
         GameObject obj = ItemBehaviour.Spawn(item.prefabPath, position, rotation, weaponAttachmentBone.transform);
@@ -95,6 +99,16 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         List<WeaponBehaviour> weapons = new List<WeaponBehaviour>();
         if (activeItemBehaviour is WeaponBehaviour) weapons.Add((WeaponBehaviour)activeItemBehaviour);
         return weapons;
+    }
+
+    protected void SetBodypart(string partName, string category, string label, string colorRGBA)
+    {
+        SpriteResolver spR = HelpFunc.RecursiveFindChild(this.gameObject, partName).GetComponent<SpriteResolver>();
+        SpriteRenderer spRD = HelpFunc.RecursiveFindChild(this.gameObject, partName).GetComponent<SpriteRenderer>();
+        spR.SetCategoryAndLabel(category, label);
+        Color color;
+        ColorUtility.TryParseHtmlString("#" + colorRGBA, out color);
+        spRD.color = color;
     }
 
     private List<string> SaveBodypartData()

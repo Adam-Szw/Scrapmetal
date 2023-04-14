@@ -216,20 +216,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabPath: Prefabs/Items/Weapons/Rivetgun
   targetBone: {fileID: 8289283381652960123}
-  interactTextOffset: {x: 0, y: -1}
+  interactAttachment: {fileID: 8289283381652960123}
   ID: 0
-  ownerFaction: 5
+  ownerFaction: 1
   descriptionText: No description
   inventoryIconLink: Icons/Icon_Test
   value: 20
   pickable: 1
+  removeOnPick: 0
   ownerID: 0
   projectilePrefab: {fileID: 8289283381652960123, guid: 7385c1a77b1573749b2a7f6a0d556713, type: 3}
   maxAmmo: 100
   currAmmo: 100
   cooldown: 0.1
   spread: 0
-  snapMaxAngle: 0
+  snapMaxAngle: 5
   animationType: 1
   target: {x: 0, y: 0}
   guidanceTargetID: 0

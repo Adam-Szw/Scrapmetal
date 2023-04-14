@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -27,8 +28,8 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public CreatureAI aiControl = null;
 
     public float moveSpeed = 0.0f;
-    [SerializeField] protected GameObject weaponAttachmentBone = null;
-    [SerializeField] protected GameObject groundReferenceObject = null;
+    [HideInInspector] public GameObject weaponAttachmentBone = null;
+    [HideInInspector] public GameObject groundReferenceObject = null;
     [SerializeField] private float maxHealth = 100.0f;
     [SerializeField] private float health = 100.0f;
     [SerializeField] private bool alive = true;
@@ -36,6 +37,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     [HideInInspector] public CircleCollider2D visionCollider;
     [HideInInspector] public List<ItemData> inventory;
     [HideInInspector] public static int inventoryLimit = 40;
+    [HideInInspector] public List<ItemData> loot;
 
     private HealthbarBehaviour healthbarBehaviour = null;
     private GameObject lastDealer = null;
@@ -90,6 +92,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public void DealDamage(float amount)
     {
         health -= amount;
+        SpawnFloatingText(Color.red, "-" + amount, 0.35f);
         if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
         if (health <= 0) SetAlive(false);
     }
@@ -98,9 +101,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     {
         this.alive = alive;
         GetAnimations().SetAlive(alive);
-        if (!alive) HelpFunc.DisableColliders(transform);
-        if (!alive) base.SetSpeed(0.0f);
-        if (!alive && healthbarBehaviour) healthbarBehaviour.Enable(false);
+        if (!alive) RunDeathActions();
     }
 
     public bool GetAlive() { return alive; }
@@ -154,20 +155,16 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public bool AnyWeaponOnTarget()
     {
         if (!alive) return false;
-        foreach (WeaponBehaviour w in GetWeapons())
-        {
-            if (w.IsOnTarget()) return true;
-        }
+        foreach (WeaponBehaviour w in GetWeapons()) if (w.IsOnTarget()) return true;
         return false;
     }
 
-    public void Attack()
+    public bool Attack()
     {
-        if (!alive) return;
-        foreach (WeaponBehaviour w in GetWeapons())
-        {
-            w.Use();
-        }
+        if (!alive) return false;
+        foreach (WeaponBehaviour w in GetWeapons()) w.Use();
+        if (GetWeapons().Count > 0) return true;
+        return false;
     }
 
     public void NotifyDetectedEntity(Collider2D other)
@@ -183,6 +180,26 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     protected virtual CreatureAnimations GetAnimations() { return null; }
 
     protected virtual List<WeaponBehaviour> GetWeapons() { return null; }
+
+    private void RunDeathActions()
+    {
+        HelpFunc.DisableColliders(transform);
+        base.SetSpeed(0.0f);
+        if (healthbarBehaviour) healthbarBehaviour.Enable(false);
+        StartCoroutine(DestroyInTime(5));
+        foreach (ItemData item in loot)
+        {
+            item.pickable = true;
+            GameObject obj = ItemBehaviour.FlexibleSpawn(item);
+            obj.transform.position = groundReferenceObject.transform.position;
+        }
+    }
+
+    private IEnumerator DestroyInTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(gameObject);
+    }
 
     private void AddVisionCollider()
     {

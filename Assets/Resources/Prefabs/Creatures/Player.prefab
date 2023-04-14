@@ -932,6 +932,7 @@ Transform:
   m_Children:
   - {fileID: 3909560357254033558}
   - {fileID: 117947718528063668}
+  - {fileID: 2899334321027787720}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -949,11 +950,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabPath: Prefabs/Creatures/Player
   targetBone: {fileID: 3900115423345690400}
+  interactAttachment: {fileID: 8978408460839306871}
   ID: 0
   healthbar: {fileID: 0}
   faction: 0
   aiControl: {fileID: 0}
-  moveSpeed: 0
+  moveSpeed: 5
   weaponAttachmentBone: {fileID: 4415601639827162915}
   groundReferenceObject: {fileID: 8155264429366595155}
   maxHealth: 100
@@ -961,11 +963,14 @@ MonoBehaviour:
   alive: 1
   visionCollider: {fileID: 0}
   inventory: []
+  loot: []
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 12
-  playerSpeed: 5
-  playerSpeedBackward: 3
-  currencyCount: 50
+  backwardSpeedMultiplier: 0.5
+  currencyCount: 0
+  weaponEnabled: 0
+  weapons: []
+  armors: []
 --- !u!50 &8151393122861713825
 Rigidbody2D:
   serializedVersion: 4
@@ -3851,3 +3856,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &8978408460839306871
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2899334321027787720}
+  m_Layer: 0
+  m_Name: Interaction_Offset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2899334321027787720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8978408460839306871}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.07, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5684202536283468193}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

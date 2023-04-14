@@ -4,21 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using UnityEngine;
+using static ArmorBehaviour;
+using static ArmorBehaviour.ArmorSlot;
 using static PlayerBehaviour;
-using static PlayerBehaviour.ArmorSlot;
 
 /* Everything that is unique to the player and not other humanoid NPCs goes here
  */
 public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnable<PlayerData>
 {
-    [SerializeField] private float playerSpeed;
-    [SerializeField] private float playerSpeedBackward;
-
     [HideInInspector] public int currencyCount = 0;
     private int weaponSelected = -1;
 
     private Dictionary<GameObject, float> interactibles = new Dictionary<GameObject, float>();
     private GameObject selectedInteractible = null;
+
+    [HideInInspector] public bool weaponEnabled = false;
 
     [Serializable]
     public struct WeaponSlot
@@ -30,24 +30,6 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         {
             this.weapon = weapon;
             this.index = index;
-        }
-    }
-
-    [Serializable]
-    public struct ArmorSlot
-    {
-        public enum Slot
-        {
-            head, torso, arms, legs
-        }
-
-        public ArmorData armor;
-        public Slot slot;
-
-        public ArmorSlot(ArmorData armor, Slot slot)
-        {
-            this.armor = armor;
-            this.slot = slot;
         }
     }
 
@@ -83,7 +65,13 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         if (PlayerInput.leftclick)
         {
             SetAttackTarget(PlayerInput.mousePos);
-            Attack();
+            bool attackExecuted = Attack();
+            // If attack executed then we must have weapon selected. Update UI accordingly
+            if (attackExecuted && UIControl.combatUI)
+            {
+                WeaponBehaviour weapon = (WeaponBehaviour)activeItemBehaviour;
+                UIControl.combatUI.GetComponent<CombatUIControl>().UpdateAmmoCounter(weapon.currAmmo, weapon.maxAmmo);
+            }
         }
 
         // Interact with selected interactible
@@ -196,7 +184,22 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         ItemData toStore = SetItemActive(weapon);
         if (toStore != null) StoreItem(toStore);
         weaponSelected = index;
-        if (weapon == null) weaponSelected = -1;
+        // Show or hide UI ammo counter if applicable
+        if (weapon != null) 
+        {
+            weaponEnabled = true;
+            if (UIControl.combatUI)
+            {
+                UIControl.combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(true);
+                UIControl.combatUI.GetComponent<CombatUIControl>().UpdateAmmoCounter(weapon.currAmmo, weapon.maxAmmo);
+            }
+        }
+        else
+        {
+            weaponEnabled = false;
+            weaponSelected = -1;
+            if (UIControl.combatUI) UIControl.combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(false);
+        }
     }
 
     private WeaponData GetWeaponBySlot(int index)
@@ -255,12 +258,11 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
             if (PlayerInput.left) moveVector += new Vector2(-1.0f, 0.0f);
             if (PlayerInput.right) moveVector += new Vector2(1.0f, 0.0f);
             moveVector.Normalize();
-
         }
 
         // Make player character move based on inputs
         SetMoveVector(moveVector);
-        if (moveVector.magnitude > 0) SetSpeed(animations.IsMovingAgainstFacing() ? playerSpeedBackward : playerSpeed);
+        if (moveVector.magnitude > 0) SetSpeed(animations.IsMovingAgainstFacing() ? moveSpeed * backwardSpeedMultiplier : moveSpeed);
         else SetSpeed(0.0f);
     }
 

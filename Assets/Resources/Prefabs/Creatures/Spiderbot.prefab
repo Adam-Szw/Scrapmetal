@@ -471,6 +471,37 @@ MonoBehaviour:
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
+--- !u!1 &1010068221656279094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2449212533458143173}
+  m_Layer: 0
+  m_Name: Interaction_Offset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2449212533458143173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010068221656279094}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.214, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6867522891542710802}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1096748545426623096
 GameObject:
   m_ObjectHideFlags: 0
@@ -2124,6 +2155,7 @@ Transform:
   m_Children:
   - {fileID: 9129734224495408463}
   - {fileID: 4642035785776053427}
+  - {fileID: 2449212533458143173}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2141,6 +2173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabPath: Prefabs/Creatures/Spiderbot
   targetBone: {fileID: 4224721772167164810}
+  interactAttachment: {fileID: 1010068221656279094}
   ID: 0
   healthbar: {fileID: 4699295782675156808}
   faction: 4
@@ -2152,6 +2185,8 @@ MonoBehaviour:
   health: 100
   alive: 1
   visionCollider: {fileID: 0}
+  inventory: []
+  loot: []
   target: {fileID: 0}
 --- !u!114 &5291230762624573668
 MonoBehaviour:

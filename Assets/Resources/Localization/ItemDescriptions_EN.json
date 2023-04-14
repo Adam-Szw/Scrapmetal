@@ -1,0 +1,12 @@
+{
+    "itemLocalData": [
+        {
+            "id": 1,
+            "text": "This is description for item 1",
+        },
+        {
+            "id": 2,
+            "text": "This is description for item 2",
+        }
+    ]
+}

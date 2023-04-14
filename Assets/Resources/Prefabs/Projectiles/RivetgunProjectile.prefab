@@ -215,7 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabPath: Prefabs/Projectiles/RivetgunProjectile
   targetBone: {fileID: 0}
-  interactTextOffset: {x: 0, y: 0}
+  interactAttachment: {fileID: 0}
   ID: 0
   ownerFaction: 5
   descriptionText: No description
@@ -228,7 +228,7 @@ MonoBehaviour:
   acceleration: -1
   lifespan: 3
   lifeRemaining: 3
-  damage: 25
+  damage: 1
   guidanceStep: 0
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}

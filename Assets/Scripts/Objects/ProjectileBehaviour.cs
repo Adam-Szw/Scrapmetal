@@ -139,7 +139,7 @@ public class ProjectileData : ItemData
     {
         prefabPath = data.prefabPath;
         ownerID = data.ownerID;
-        descriptionText = data.descriptionText;
+        descriptionTextLinkID = data.descriptionTextLinkID;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;
         pickable = data.pickable;

@@ -22,7 +22,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     [SerializeField] private float searchTime = 0.0f;
     [SerializeField] private float chaseTime = 0.0f;
     [SerializeField] private List<Vector2> idleRoutine = new List<Vector2>();
-    [SerializeField] private float LOCATION_MAX_OFFSET = 0.1f;
+    [SerializeField] private float LOCATION_MAX_OFFSET = 0.5f;
     [SerializeField] private float DISTANCE_MAX_OFFSET = 2.0f;
 
     // Handled by detection system
@@ -36,7 +36,6 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     private Coroutine timer = null;
     private float countdown = 0.0f;
 
-    private CircleCollider2D visionCollider;
     private CircleCollider2D detectorCollider;
     private Dictionary<GameObject, float> entities = new Dictionary<GameObject, float>();
     private List<GameObject> entitiesSorted = null;
@@ -66,7 +65,6 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         detectorCollider = detector.AddComponent<CircleCollider2D>();
         detectorCollider.radius = detectionRange;
         detectorCollider.isTrigger = true;
-        visionCollider = behaviour.visionCollider;
     }
 
     public void Start()

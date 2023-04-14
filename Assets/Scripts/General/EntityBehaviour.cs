@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Unity.VisualScripting.Antlr3.Runtime.Tree.TreeWizard;
@@ -13,13 +14,13 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     public delegate void InteractionEffect(CreatureBehaviour user);
 
     public string prefabPath;
-    public GameObject targetBone = null;    // Object at which enemy weapons will be targeted
-    public Vector2 interactTextOffset = Vector2.zero;
+    public GameObject targetBone = null;            // Object at which enemy weapons will be targeted
+    public GameObject interactAttachment = null;    // Interaction and floating texts will reference position of this object
 
     [HideInInspector] public ulong ID = 0;
     private float speed = 0.0f;
     private Vector2 moveVector = Vector2.zero;
-    private Rigidbody2D rb;
+    private Rigidbody2D rb = null;
     // Effect to be triggered when this entity enters interaction field
     [HideInInspector] public InteractionEffect interactionEnterEffect = null;
     // Effect to be triggered when this entity is interacted with
@@ -81,6 +82,28 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     {
         if (!rb) return;
         rb.velocity = moveVector * speed;
+    }
+
+    // Spawn a text above entity for given time. The text will move slightly in its duration
+    public void SpawnFloatingText(Color color, string text, float time)
+    {
+        StartCoroutine(SpawnFloatingTextCoroutine(color, text, time));
+    }
+
+    private IEnumerator SpawnFloatingTextCoroutine(Color color, string text, float time)
+    {
+        GameObject txt = Instantiate(Resources.Load<GameObject>("Prefabs/UI/TextObjectLight"));
+        txt.GetComponentInChildren<TextMeshProUGUI>().text = text;
+        txt.GetComponentInChildren<TextMeshProUGUI>().color = color;
+        txt.transform.position = interactAttachment.transform.position;
+        float i = 0;
+        while (i < time)
+        {
+            txt.transform.position = txt.transform.position + new Vector3(0f, 0.03f, 0f);
+            i += 0.05f;
+            yield return new WaitForSeconds(.05f);
+        }
+        Destroy(txt);
     }
 
     public static GameObject Spawn(string prefabPath, Vector2 position, Quaternion rotation, Transform parent)

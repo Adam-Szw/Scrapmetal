@@ -34,6 +34,7 @@ public class GlobalControl : MonoBehaviour
         // Load dialog localization
         DialogLibrary.LoadDialogLocalization("DialogText_EN");
         DialogLibrary.LoadDialogOptions();
+        ItemLibrary.LoadItemLocalization("ItemDescriptions_EN");
     }
 
     void Start()

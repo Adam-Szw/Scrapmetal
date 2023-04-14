@@ -78,13 +78,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabPath: Prefabs/Items/Weapons/MissileLauncherSpiderbot
   targetBone: {fileID: 0}
-  interactTextOffset: {x: 0, y: 0}
+  interactAttachment: {fileID: 0}
   ID: 0
-  ownerFaction: 5
+  ownerFaction: 1
   descriptionText: No description
   inventoryIconLink: Icons/Icon_Test
   value: 0
   pickable: 0
+  removeOnPick: 0
   ownerID: 0
   projectilePrefab: {fileID: 8289283381652960123, guid: 39965df7c7fb6a9449a84c11555f4ca3, type: 3}
   maxAmmo: 100

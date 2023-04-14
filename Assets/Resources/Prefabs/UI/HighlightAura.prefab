@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3682940883395615035}
   - component: {fileID: 6470744213355274195}
-  m_Layer: 0
+  - component: {fileID: 1796164177852368642}
+  m_Layer: 3
   m_Name: HighlightAura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,3 +85,14 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!210 &1796164177852368642
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8046071696054617836}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0

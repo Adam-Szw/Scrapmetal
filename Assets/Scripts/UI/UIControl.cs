@@ -12,10 +12,10 @@ public class UIControl : MonoBehaviour
     private static string dialogPrefabPath = "Prefabs/UI/Dialog";
     private static string inventoryPrefabPath = "Prefabs/UI/Inventory";
     private static string combatUIPrefabPath = "Prefabs/UI/CombatUI";
-    private static GameObject menu = null;
-    private static GameObject dialog = null;
-    private static GameObject inventory = null;
-    private static GameObject combatUI = null;
+    [HideInInspector] public static GameObject menu = null;
+    [HideInInspector] public static GameObject dialog = null;
+    [HideInInspector] public static GameObject inventory = null;
+    [HideInInspector] public static GameObject combatUI = null;
 
     public void Update()
     {
@@ -102,6 +102,7 @@ public class UIControl : MonoBehaviour
     {
         combatUI = Instantiate(Resources.Load<GameObject>(combatUIPrefabPath));
         GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().SetHealthbar(combatUI.GetComponent<CombatUIControl>().healthbarBehaviour);
+        combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().weaponEnabled);
     }
 
     public static void DestroyCombatUI()

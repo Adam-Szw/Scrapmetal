@@ -2,10 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ArmorBehaviour;
+using static HumanoidAnimations;
 using static PlayerBehaviour;
 
 public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<ArmorData>
 {
+
+    [Serializable]
+    public struct ArmorSlot
+    {
+        public enum Slot
+        {
+            head, torso, arms, legs
+        }
+
+        public ArmorData armor;
+        public Slot slot;
+
+        public ArmorSlot(ArmorData armor, Slot slot)
+        {
+            this.armor = armor;
+            this.slot = slot;
+        }
+    }
 
     public ArmorSlot.Slot slot;
 
@@ -32,6 +52,14 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         this.slot = data.slot;
     }
 
+    public static ArmorData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable,
+     ArmorSlot.Slot slot)
+    {
+        ArmorData data = new ArmorData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable));
+        data.slot = slot;
+        return null;
+    }
+
     public static GameObject Spawn(ArmorData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
     {
         GameObject obj = ItemBehaviour.Spawn(data, position, rotation, scale, parent);
@@ -54,11 +82,11 @@ public class ArmorData : ItemData
 
     public ArmorData(ItemData data) : base(data)
     {
-        this.prefabPath = data.prefabPath;
-        this.ownerID = data.ownerID;
-        this.descriptionText = data.descriptionText;
-        this.inventoryIconLink = data.inventoryIconLink;
-        this.value = data.value;
+        prefabPath = data.prefabPath;
+        ownerID = data.ownerID;
+        descriptionTextLinkID = data.descriptionTextLinkID;
+        inventoryIconLink = data.inventoryIconLink;
+        value = data.value;
     }
 
     public ArmorSlot.Slot slot;

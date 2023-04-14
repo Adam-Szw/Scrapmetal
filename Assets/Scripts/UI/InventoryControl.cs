@@ -5,8 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static ArmorBehaviour;
+using static ArmorBehaviour.ArmorSlot;
 using static PlayerBehaviour;
-using static PlayerBehaviour.ArmorSlot;
 using static UnityEditor.Progress;
 
 public class InventoryControl : MonoBehaviour
@@ -17,6 +18,7 @@ public class InventoryControl : MonoBehaviour
     public Button[] weaponSlots;
     public Button[] armorSlots;
     public Button cancelAction;
+    public Button throwAction;
     public TextMeshProUGUI currencyText;
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI shopText;
@@ -88,6 +90,8 @@ public class InventoryControl : MonoBehaviour
         foreach (Button b in actionButtons) ClearButtonActions(b);
         foreach (Button b in actionButtons) SetButtonText(b, "No text");
         EnableButton(false, cancelAction);
+        EnableButton(false, throwAction);
+        ClearButtonActions(throwAction);
         descriptionText.text = "No text";
         EnableText(false, descriptionText);
         hoverLocked = false;
@@ -152,8 +156,9 @@ public class InventoryControl : MonoBehaviour
         foreach (Button b in actionButtons) EnableButton(false, b);
         EnableText(true, descriptionText);
         EnableButton(false, cancelAction);
+        EnableButton(false, throwAction);
         // set description to item text
-        descriptionText.text = item.descriptionText;
+        descriptionText.text = ItemLibrary.itemLocalization.TryGetValue(item.descriptionTextLinkID, out string val) ? val : "No description";
         if (status != ItemStatus.equipped && item is WeaponData) descriptionText.text += "\n\nAmmo: " +
                 ((WeaponData)item).currAmmo + "/" + ((WeaponData)item).maxAmmo;
         if (status == ItemStatus.equipped) descriptionText.text += "\n\nClick to unequip the item";
@@ -179,6 +184,9 @@ public class InventoryControl : MonoBehaviour
         {
             if (!isShopOpen)
             {
+                EnableButton(true, cancelAction);
+                EnableButton(true, throwAction);
+                SetupThrowItemButton(throwAction, item);
                 foreach (Button b in actionButtons) EnableButton(false, b);
                 // setup actions according to what we can do with this item
                 if (item is WeaponData)
@@ -188,14 +196,12 @@ public class InventoryControl : MonoBehaviour
                     SetupAssignWeaponSlotButton(actionButtons[1], (WeaponData)item, 1);
                     SetupAssignWeaponSlotButton(actionButtons[2], (WeaponData)item, 2);
                     SetupAssignWeaponSlotButton(actionButtons[3], (WeaponData)item, 3);
-                    EnableButton(true, cancelAction);
                     hoverLocked = true;
                 }
                 if (item is ArmorData)
                 {
                     // For armor, allow option to equip item in correct slot
                     SetupAssignArmorButton(actionButtons[0], (ArmorData)item);
-                    EnableButton(true, cancelAction);
                     hoverLocked = true;
                 }
                 // consumables will go here
@@ -333,6 +339,19 @@ public class InventoryControl : MonoBehaviour
             playerBehaviour.currencyCount += (int)Mathf.Round(item.value / 2);
             playerBehaviour.inventory.Remove(item);
             shopItems.Add(item);
+            LoadInventoryPanel(playerBehaviour, shopItems);
+        });
+    }
+
+    private void SetupThrowItemButton(Button button, ItemData item)
+    {
+        EnableButton(true, button);
+        button.onClick.AddListener(() =>
+        {
+            playerBehaviour.inventory.Remove(item);
+            item.pickable = true;
+            GameObject obj = ItemBehaviour.FlexibleSpawn(item);
+            obj.transform.position = playerBehaviour.groundReferenceObject.transform.position;
             LoadInventoryPanel(playerBehaviour, shopItems);
         });
     }

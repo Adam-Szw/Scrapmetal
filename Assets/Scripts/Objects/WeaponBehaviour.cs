@@ -123,6 +123,19 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
         return finalAngle;
     }
 
+    public static WeaponData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable,
+        float cooldown, int maxAmmo, handsState animationType)
+    {
+        WeaponData data = new WeaponData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable));
+        data.cooldown = cooldown;
+        data.maxAmmo = maxAmmo;
+        data.target = HelpFunc.VectorToArray(Vector2.zero);
+        data.currAmmo = maxAmmo;
+        data.cooldownCurrent = 0f;
+        data.animationType = animationType;
+        return null;
+    }
+
     public new WeaponData Save()
     {
         WeaponData data = new WeaponData(base.Save());
@@ -170,7 +183,7 @@ public class WeaponData : ItemData
     {
         ownerID = data.ownerID;
         ownerFaction = data.ownerFaction;
-        descriptionText = data.descriptionText;
+        descriptionTextLinkID = data.descriptionTextLinkID;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;
         pickable = data.pickable;
