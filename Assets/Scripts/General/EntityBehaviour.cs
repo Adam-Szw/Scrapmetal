@@ -84,6 +84,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         data.scale = HelpFunc.VectorToArray(transform.localScale);
         data.velocity = HelpFunc.VectorToArray(GetMoveVector());
         data.speed = speed;
+        data.active = gameObject.activeSelf;
         return data;
     }
 
@@ -99,6 +100,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         SetMoveVector(HelpFunc.DataToVec2(data.velocity));
         ID = data.ID;
         speed = data.speed;
+        gameObject.SetActive(data.active);
     }
 
     public static GameObject Spawn(EntityData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -124,6 +126,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
 public class EntityData
 {
     // Basic information
+    public bool active;
     public ulong ID;
     public string prefabPath;
     public float[] location;

@@ -22,7 +22,7 @@ public class MainMenuControl : MonoBehaviour
         loadButton.onClick.AddListener(() =>
         {
             GlobalControl.Load();
-            UIControl.destroyMenu();
+            UIControl.DestroyMenu();
         });
     }
 }

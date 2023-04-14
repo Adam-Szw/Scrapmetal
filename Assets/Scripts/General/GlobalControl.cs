@@ -14,7 +14,6 @@ using Scene = UnityEngine.SceneManagement.Scene;
 public class GlobalControl : MonoBehaviour
 {
     // Global variables
-
     public static Camera currentCamera;
     public static CameraControl cameraControl;
 
@@ -27,12 +26,12 @@ public class GlobalControl : MonoBehaviour
 
     void Awake()
     {
-        // Camera stuff
+        // Setup main camera
         currentCamera = Camera.main;
         cameraControl = new CameraControl();
         cameraControl.currentCamera = currentCamera;
         PlayerInput.currCamera = currentCamera;
-        // Dialog stuff
+        // Load dialog localization
         DialogLibrary.LoadDialogLocalization("DialogText_EN");
         DialogLibrary.LoadDialogOptions();
     }
@@ -41,6 +40,8 @@ public class GlobalControl : MonoBehaviour
     {
         paused = false;
         SetPlayer(HelpFunc.FindPlayerInScene());
+        // Open standard UI
+        UIControl.ShowCombatUI();
     }
 
     void Update()
@@ -118,6 +119,7 @@ public class GlobalControl : MonoBehaviour
             LoadEntities(scene.entities);
             SetPlayer(HelpFunc.FindPlayerInScene());
             cameraControl.Load(scene.cameraData);
+            UIControl.ShowCombatUI();
         }
         nextID = save.nextID;
     }

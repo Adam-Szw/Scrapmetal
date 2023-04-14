@@ -8,6 +8,7 @@ public class HealthbarBehaviour : MonoBehaviour
     public float minX;
     public GameObject frame;
     public GameObject filler;
+    public bool playerBar = false;
 
     private Transform fillTransform = null;
     private SpriteRenderer fillRenderer = null;
@@ -16,6 +17,7 @@ public class HealthbarBehaviour : MonoBehaviour
     void Awake()
     {
         fillTransform = filler.transform;
+        if (playerBar) return;
         fillRenderer = filler.GetComponent<SpriteRenderer>();
         frameRenderer = frame.GetComponent<SpriteRenderer>();
         Enable(false);
@@ -35,6 +37,7 @@ public class HealthbarBehaviour : MonoBehaviour
 
     public void Enable(bool enabled)
     {
+        if (playerBar) return;
         if (fillRenderer) fillRenderer.enabled = enabled;
         if (frameRenderer) frameRenderer.enabled = enabled;
     }

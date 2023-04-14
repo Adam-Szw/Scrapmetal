@@ -11,36 +11,59 @@ public class UIControl : MonoBehaviour
     private static string menuPrefabPath = "Prefabs/UI/Menu";
     private static string dialogPrefabPath = "Prefabs/UI/Dialog";
     private static string inventoryPrefabPath = "Prefabs/UI/Inventory";
+    private static string combatUIPrefabPath = "Prefabs/UI/CombatUI";
     private static GameObject menu = null;
     private static GameObject dialog = null;
     private static GameObject inventory = null;
+    private static GameObject combatUI = null;
 
     public void Update()
     {
+        // React to keystrokes
         if (PlayerInput.esc)
         {
+            // Inventory open - close it
             if (inventory)
             {
-                destroyInventory();
+                DestroyInventory();
+                ShowCombatUI();
                 return;
             }
-            if (!menu) showMenu();
-            else destroyMenu();
+            // Open menu
+            if (!menu)
+            {
+                DestroyCombatUI();
+                ShowMenu();
+            }
+            // Close menu
+            else
+            {
+                DestroyMenu();
+                ShowCombatUI();
+            }
         }
         if (PlayerInput.tab)
         {
-            if (!inventory) showInventory();
-            else destroyInventory();
+            if (!inventory)
+            {
+                DestroyCombatUI();
+                ShowInventory();
+            }
+            else
+            {
+                DestroyInventory();
+                ShowCombatUI();
+            }
         }
     }
 
-    public static void showMenu()
+    public static void ShowMenu()
     {
         GlobalControl.PauseGame();
         menu = Instantiate(Resources.Load<GameObject>(menuPrefabPath));
     }
 
-    public static void destroyMenu()
+    public static void DestroyMenu()
     {
         Destroy(menu);
         menu = null;
@@ -54,24 +77,36 @@ public class UIControl : MonoBehaviour
         dialog.GetComponent<DialogControl>().Initialize(initialOption, dialogRespondentName);
     }
 
-    public static void destroyDialog()
+    public static void DestroyDialog()
     {
         Destroy(dialog);
         dialog = null;
         GlobalControl.UnpauseGame();
     }
 
-    public static void showInventory()
+    public static void ShowInventory()
     {
         GlobalControl.PauseGame();
         inventory = Instantiate(Resources.Load<GameObject>(inventoryPrefabPath));
         inventory.GetComponent<InventoryControl>().LoadInventoryPanel(GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>());
     }
 
-    public static void destroyInventory()
+    public static void DestroyInventory()
     {
         Destroy(inventory);
         inventory = null;
         GlobalControl.UnpauseGame();
+    }
+
+    public static void ShowCombatUI()
+    {
+        combatUI = Instantiate(Resources.Load<GameObject>(combatUIPrefabPath));
+        GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().SetHealthbar(combatUI.GetComponent<CombatUIControl>().healthbarBehaviour);
+    }
+
+    public static void DestroyCombatUI()
+    {
+        if (combatUI) Destroy(combatUI);
+        combatUI = null;
     }
 }

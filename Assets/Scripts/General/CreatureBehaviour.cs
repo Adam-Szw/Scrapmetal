@@ -49,7 +49,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     protected new void Awake()
     {
         base.Awake();
-        // Record healthbar
+        // Get healthbar
         if (healthbar) healthbarBehaviour = healthbar.GetComponent<HealthbarBehaviour>();
         AddVisionCollider();
     }
@@ -79,6 +79,12 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public float GetHealth() { return health; }
 
     public float GetMaxHealth() { return maxHealth; }
+
+    public void SetHealthbar(HealthbarBehaviour behaviour)
+    {
+        healthbarBehaviour = behaviour;
+        healthbarBehaviour.UpdateHealthbar(health, maxHealth);
+    }
 
     public void DealDamage(float amount)
     {
@@ -243,6 +249,7 @@ public class CreatureData : EntityData
         scale = data.scale;
         velocity = data.velocity;
         speed = data.speed;
+        active = data.active;
     }
 
     public FactionAllegiance faction;

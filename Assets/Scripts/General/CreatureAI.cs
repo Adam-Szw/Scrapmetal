@@ -417,7 +417,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         Vector2 targetVec = targetLoc - originLoc;
         originLoc = originLoc + targetVec.normalized * 0.2f;
         RaycastHit2D hit = Physics2D.Raycast(originLoc, targetVec, detectionRangeCurrent, 1 << 9);
-        Debug.DrawRay(originLoc, targetVec.normalized * detectionRangeCurrent, Color.yellow);
+        // Enable this for testing
+        //Debug.DrawRay(originLoc, targetVec.normalized * detectionRangeCurrent, Color.yellow);
         return hit;
     }
 

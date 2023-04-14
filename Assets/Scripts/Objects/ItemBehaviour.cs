@@ -66,6 +66,7 @@ public class ItemData : EntityData
         scale = data.scale;
         velocity = data.velocity;
         speed = data.speed;
+        active = data.active;
     }
 
     public ulong ownerID;
