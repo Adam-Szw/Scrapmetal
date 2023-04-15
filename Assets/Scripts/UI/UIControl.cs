@@ -12,16 +12,24 @@ public class UIControl : MonoBehaviour
     private static string dialogPrefabPath = "Prefabs/UI/Dialog";
     private static string inventoryPrefabPath = "Prefabs/UI/Inventory";
     private static string combatUIPrefabPath = "Prefabs/UI/CombatUI";
+    private static string popupPrefabPath = "Prefabs/UI/Popup";
     [HideInInspector] public static GameObject menu = null;
     [HideInInspector] public static GameObject dialog = null;
     [HideInInspector] public static GameObject inventory = null;
     [HideInInspector] public static GameObject combatUI = null;
+    [HideInInspector] public static GameObject popup = null;
 
     public void Update()
     {
         // React to keystrokes
         if (PlayerInput.esc)
         {
+            // Popup open - close it
+            if (popup)
+            {
+                DestroyPopup();
+                return;
+            }
             // Dialog open - close it
             if (dialog)
             {
@@ -52,6 +60,12 @@ public class UIControl : MonoBehaviour
         }
         if (PlayerInput.tab)
         {
+            // Popup open - close it
+            if (popup)
+            {
+                DestroyPopup();
+                return;
+            }
             if (!inventory)
             {
                 DestroyCombatUI();
@@ -118,5 +132,17 @@ public class UIControl : MonoBehaviour
     {
         if (combatUI) Destroy(combatUI);
         combatUI = null;
+    }
+
+    public static void ShowPopup(string text, string imageLink)
+    {
+        popup = Instantiate(Resources.Load<GameObject>(popupPrefabPath));
+        popup.GetComponent<PopupControl>().Initialize(text, imageLink);
+    }
+
+    public static void DestroyPopup()
+    {
+        if (popup) popup.GetComponent<PopupControl>().SelfDestruct();
+        popup = null;
     }
 }
