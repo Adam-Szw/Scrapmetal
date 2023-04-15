@@ -81,7 +81,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/head
+    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/Head_Bone
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -458,7 +458,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/head
+    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/Head_Bone
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -495,7 +495,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/head
+    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/Head_Bone
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -532,7 +532,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/head
+    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/Head_Bone
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -687,7 +687,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/head
+    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/Head_Bone
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -697,7 +697,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/head
+    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/Head_Bone
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -707,7 +707,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/head
+    path: Pelvis_Parent/Pelvis/Pelvis_Bone/Torso_Parent/Torso/Torso_Bone/Head_Parent/Head/Head_Bone
     classID: 4
     script: {fileID: 0}
   m_HasGenericRootTransform: 0
