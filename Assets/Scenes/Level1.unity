@@ -5470,6 +5470,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5803311590039766116, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
+      propertyPath: m_SpriteKey
+      value: -4.5510904e-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7003460952475850918, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
+      propertyPath: m_SpriteLibraryAsset
+      value: 
+      objectReference: {fileID: 7108339969198208228, guid: f30cf07884a21b740835f1e2c79dc5d8, type: 3}
+    - target: {fileID: 7614720721989438232, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
+      propertyPath: slot
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614720721989438232, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
+      propertyPath: label
+      value: Body4_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614720721989438232, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
+      propertyPath: category
+      value: Torso
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614720721989438232, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
+      propertyPath: colorRGBA
+      value: (1, 1, 1, 1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614720721989438232, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
+      propertyPath: labelIndex
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614720721989438232, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
+      propertyPath: speedMultiplier
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678095252579137960, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 166628920, guid: 0860d39ffc97da044a709fff91ec7d98, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cebf4743ddde5247a5f03e20944799b, type: 3}
 --- !u!1 &1906471508

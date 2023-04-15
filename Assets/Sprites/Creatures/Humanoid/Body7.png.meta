@@ -2377,7 +2377,7 @@ TextureImporter:
         boneIndex[2]: 0
         boneIndex[3]: 0
     - serializedVersion: 2
-      name: Body7_8
+      name: Body7_10
       rect:
         serializedVersion: 2
         x: 65
@@ -2677,7 +2677,7 @@ TextureImporter:
         boneIndex[2]: 0
         boneIndex[3]: 0
     - serializedVersion: 2
-      name: Body7_9
+      name: Body7_11
       rect:
         serializedVersion: 2
         x: 116
@@ -2977,7 +2977,7 @@ TextureImporter:
         boneIndex[2]: 0
         boneIndex[3]: 0
     - serializedVersion: 2
-      name: Body7_10
+      name: Body7_8
       rect:
         serializedVersion: 2
         x: 157
@@ -3177,7 +3177,7 @@ TextureImporter:
         boneIndex[2]: 0
         boneIndex[3]: 0
     - serializedVersion: 2
-      name: Body7_11
+      name: Body7_9
       rect:
         serializedVersion: 2
         x: 26
@@ -3467,7 +3467,7 @@ TextureImporter:
         boneIndex[2]: 0
         boneIndex[3]: 0
     - serializedVersion: 2
-      name: Body7_12
+      name: Body7_13
       rect:
         serializedVersion: 2
         x: 63
@@ -3707,7 +3707,7 @@ TextureImporter:
         boneIndex[2]: 0
         boneIndex[3]: 0
     - serializedVersion: 2
-      name: Body7_13
+      name: Body7_14
       rect:
         serializedVersion: 2
         x: 112
@@ -3947,7 +3947,7 @@ TextureImporter:
         boneIndex[2]: 0
         boneIndex[3]: 0
     - serializedVersion: 2
-      name: Body7_14
+      name: Body7_12
       rect:
         serializedVersion: 2
         x: 156
@@ -4248,20 +4248,20 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Body7_5: 2145597031
-      Body7_9: -930511916
-      Body7_10: 2041985644
+      Body7_10: 823913051
+      Body7_9: 770755217
       Body7_2: 56984084
-      Body7_14: 1318359962
-      Body7_13: -314974717
+      Body7_14: -314974717
+      Body7_13: 572377218
       Body7_0: -720337753
-      Body7_6: 280055991
       Body7_7: -1239277442
+      Body7_6: 280055991
       Body7_1: -1191768666
       Body7_4: -1314601345
       Body7_3: -1195986702
-      Body7_11: 770755217
-      Body7_12: 572377218
-      Body7_8: 823913051
+      Body7_11: -930511916
+      Body7_12: 1318359962
+      Body7_8: 2041985644
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -15,8 +15,10 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
     [HideInInspector] public HumanoidAnimations animations;
     public float backwardSpeedMultiplier = 0.5f;
 
-    public static string[] BODYPARTS = new string[] { "Pelvis", "Torso", "Head", "Arm_Up_R", "Arm_Low_R",
-    "Hand_R", "Arm_Up_L", "Arm_Low_L", "Hand_L", "Leg_Up_R", "Leg_Low_R", "Foot_R", "Leg_Up_L", "Leg_Low_L", "Foot_L", "Face"};
+    public static string[] BODYPARTS = new string[] { "Face", "Head", "Torso", "Pelvis", "Arm_Up_R", "Arm_Low_R",
+    "Hand_R", "Arm_Up_L", "Arm_Low_L", "Hand_L", "Leg_Up_R", "Leg_Low_R", "Foot_R", "Leg_Up_L", "Leg_Low_L", "Foot_L", };
+    public static String[] BODYPART_LABELS_INDEX = new string[] { "", "_0", "_2", "_5", "_1", "_4",
+        "_7", "_3", "_6", "_8", "_10", "_9", "_13", "_11", "_12", "_14" };
 
     protected ItemBehaviour activeItemBehaviour = null;
 
@@ -96,8 +98,11 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         return weapons;
     }
 
-    protected void SetBodypart(string partName, string category, string label, string colorRGBA)
+    protected void SetBodypart(int labelIndex, int setChoice, string colorRGBA)
     {
+        string partName = BODYPARTS[labelIndex];
+        string category = BODYPARTS[labelIndex];
+        string label = "Body" + setChoice + BODYPART_LABELS_INDEX[labelIndex];
         SpriteResolver spR = HelpFunc.RecursiveFindChild(this.gameObject, partName).GetComponent<SpriteResolver>();
         SpriteRenderer spRD = HelpFunc.RecursiveFindChild(this.gameObject, partName).GetComponent<SpriteRenderer>();
         spR.SetCategoryAndLabel(category, label);

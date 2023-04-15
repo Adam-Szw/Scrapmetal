@@ -15,39 +15,6 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     public static float PLAYER_BASE_MAX_HP = 100f;
     public static float PLAYER_BASE_SPEED = 5f;
     public static string PLAYER_BASE_COLOR_RGBA = "(1, 1, 1, 1)";
-    public static string PLAYER_BASE_CATEGORY_FACE = "Face";
-    public static string PLAYER_BASE_LABEL_FACE = "Face1";
-    public static string PLAYER_BASE_CATEGORY_HEAD = "Head";
-    public static string PLAYER_BASE_LABEL_HEAD = "Body1_0";
-    public static string PLAYER_BASE_CATEGORY_TORSO = "Torso";
-    public static string PLAYER_BASE_LABEL_TORSO = "Body1_2";
-    public static string PLAYER_BASE_CATEGORY_PELVIS = "Pelvis";
-    public static string PLAYER_BASE_LABEL_PELVIS = "Body1_5";
-    public static string PLAYER_BASE_CATEGORY_ARM_UP_R = "Arm_Right_Up";
-    public static string PLAYER_BASE_LABEL_ARM_UP_R = "Body1_1";
-    public static string PLAYER_BASE_CATEGORY_ARM_UP_L = "Arm_Left_Up";
-    public static string PLAYER_BASE_LABEL_ARM_UP_L = "Body1_3";
-    public static string PLAYER_BASE_CATEGORY_ARM_LOW_R = "Arm_Right_Low";
-    public static string PLAYER_BASE_LABEL_ARM_LOW_R = "Body1_4";
-    public static string PLAYER_BASE_CATEGORY_ARM_LOW_L = "Arm_Left_Low";
-    public static string PLAYER_BASE_LABEL_ARM_LOW_L = "Body1_6";
-    public static string PLAYER_BASE_CATEGORY_HAND_R = "Hand_Right";
-    public static string PLAYER_BASE_LABEL_HAND_R = "Body1_7";
-    public static string PLAYER_BASE_CATEGORY_HAND_L = "Hand_Left";
-    public static string PLAYER_BASE_LABEL_HAND_L = "Body1_8";
-    public static string PLAYER_BASE_CATEGORY_LEG_UP_R = "Leg_Right_Up";
-    public static string PLAYER_BASE_LABEL_LEG_UP_R = "Body1_10";
-    public static string PLAYER_BASE_CATEGORY_LEG_UP_L = "Leg_Left_Up";
-    public static string PLAYER_BASE_LABEL_LEG_UP_L = "Body1_11";
-    public static string PLAYER_BASE_CATEGORY_LEG_LOW_R = "Leg_Right_Low";
-    public static string PLAYER_BASE_LABEL_LEG_LOW_R = "Body1_9";
-    public static string PLAYER_BASE_CATEGORY_LEG_LOW_L = "Leg_Left_Low";
-    public static string PLAYER_BASE_LABEL_LEG_LOW_L = "Body1_12";
-    public static string PLAYER_BASE_CATEGORY_FOOT_R = "Foot_Right";
-    public static string PLAYER_BASE_LABEL_FOOT_R = "Body1_13";
-    public static string PLAYER_BASE_CATEGORY_FOOT_L = "Foot_Left";
-    public static string PLAYER_BASE_LABEL_FOOT_L = "Body1_14";
-
 
     [HideInInspector] public int currencyCount = 0;
 
@@ -81,7 +48,6 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     protected void Start()
     {
         UIRefresh();
-        RefreshPlayerLimbs();
     }
 
     new protected void Awake()
@@ -168,6 +134,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         }
         if (toRemove.HasValue) armors.Remove(toRemove.Value);
         RefreshPlayerStats();
+        RefreshPlayerLimbs();
     }
 
     public void EquipWeapon(WeaponSlot wSlot)
@@ -184,6 +151,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         armors.Add(aSlot);
         if (inventory.Contains(aSlot.armor)) inventory.Remove(aSlot.armor);
         RefreshPlayerStats();
+        RefreshPlayerLimbs();
     }
 
     public void UIRefresh() 
@@ -319,22 +287,22 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     private void RefreshPlayerLimbs()
     {
         // Reset player graphics
-        SetBodypart("Face", PLAYER_BASE_CATEGORY_FACE, PLAYER_BASE_LABEL_FACE, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Head", PLAYER_BASE_CATEGORY_HEAD, PLAYER_BASE_LABEL_HEAD, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Torso", PLAYER_BASE_CATEGORY_TORSO, PLAYER_BASE_LABEL_TORSO, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Pelvis", PLAYER_BASE_CATEGORY_PELVIS, PLAYER_BASE_LABEL_PELVIS, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Arm_Up_R", PLAYER_BASE_CATEGORY_ARM_UP_R, PLAYER_BASE_LABEL_ARM_UP_R, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Arm_Low_R", PLAYER_BASE_CATEGORY_ARM_LOW_R, PLAYER_BASE_LABEL_ARM_LOW_R, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Hand_R", PLAYER_BASE_CATEGORY_HAND_R, PLAYER_BASE_LABEL_HAND_R, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Arm_Up_L", PLAYER_BASE_CATEGORY_ARM_UP_L, PLAYER_BASE_LABEL_ARM_UP_L, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Arm_Low_L", PLAYER_BASE_CATEGORY_ARM_LOW_L, PLAYER_BASE_LABEL_ARM_LOW_L, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Hand_L", PLAYER_BASE_CATEGORY_HAND_L, PLAYER_BASE_LABEL_HAND_L, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Leg_Up_R", PLAYER_BASE_CATEGORY_LEG_UP_R, PLAYER_BASE_LABEL_LEG_UP_R, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Leg_Low_R", PLAYER_BASE_CATEGORY_LEG_LOW_R, PLAYER_BASE_LABEL_LEG_LOW_R, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Foot_R", PLAYER_BASE_CATEGORY_FOOT_R, PLAYER_BASE_LABEL_FOOT_R, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Leg_Up_L", PLAYER_BASE_CATEGORY_LEG_UP_L, PLAYER_BASE_LABEL_LEG_UP_L, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Leg_Low_L", PLAYER_BASE_CATEGORY_LEG_LOW_L, PLAYER_BASE_LABEL_LEG_LOW_L, PLAYER_BASE_COLOR_RGBA);
-        SetBodypart("Foot_L", PLAYER_BASE_CATEGORY_FOOT_L, PLAYER_BASE_LABEL_FOOT_L, PLAYER_BASE_COLOR_RGBA);
+        for (int i = 1; i < BODYPARTS.Length; i++) SetBodypart(i, 1, PLAYER_BASE_COLOR_RGBA);
+        // Apply armor parts
+        foreach (ArmorSlot armor in armors)
+        {
+            if (armor.slot == Slot.head)
+            {
+                SetBodypart(1, armor.armor.labelIndex, armor.armor.colorRGBA);
+            }
+            if (armor.slot == Slot.torso)
+            {
+                SetBodypart(2, armor.armor.labelIndex, armor.armor.colorRGBA);
+                SetBodypart(3, armor.armor.labelIndex, armor.armor.colorRGBA);
+            }
+            if (armor.slot == Slot.arms) for (int i = 4; i < 10; i++) SetBodypart(i, armor.armor.labelIndex, armor.armor.colorRGBA);
+            if (armor.slot == Slot.legs) for (int i = 10; i < 16; i++) SetBodypart(i, armor.armor.labelIndex, armor.armor.colorRGBA);
+        }
     }
 
     // Updates behaviour and animations of humanoid that are part of state machine
@@ -387,6 +355,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         armors = data.armors;
         weaponSelected = data.weaponSelected;
         SetWeaponFromSlot(weaponSelected);
+        RefreshPlayerLimbs();
         UpdateState();
     }
 

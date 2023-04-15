@@ -34,8 +34,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
 
     // Graphical data - where the armor goes and which sprite from library to use
     public ArmorSlot.Slot slot;
-    public string category;
-    public string label;
+    public int labelIndex;
     public string colorRGBA;
 
     protected new void Awake()
@@ -56,8 +55,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         data.speedMultiplier = speedMultiplier;
         data.buffsScrapGeneration = buffsScrapGeneration;
         data.buffsChestOpening = buffsChestOpening;
-        data.category = category;
-        data.label = label;
+        data.labelIndex = labelIndex;
         data.colorRGBA = colorRGBA;
         return data;
     }
@@ -70,14 +68,13 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         speedMultiplier = data.speedMultiplier;
         buffsScrapGeneration = data.buffsScrapGeneration;
         buffsChestOpening = data.buffsChestOpening;
-        category = data.category;
-        label = data.label;
+        labelIndex = data.labelIndex;
         colorRGBA = data.colorRGBA;
     }
 
     public static ArmorData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable,
      bool removeOnPick, ArmorSlot.Slot slot, float hpIncrease, float speedMultiplier, bool buffsScrapGeneration, bool buffsChestOpening,
-     string category, string label, string colorRGBA)
+     int labelIndex, string colorRGBA)
     {
         ArmorData data = new ArmorData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable, removeOnPick));
         data.slot = slot;
@@ -85,8 +82,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         data.speedMultiplier = speedMultiplier;
         data.buffsScrapGeneration = buffsScrapGeneration;
         data.buffsChestOpening = buffsChestOpening;
-        data.category = category;
-        data.label = label;
+        data.labelIndex = labelIndex;
         data.colorRGBA = colorRGBA;
         return data;
     }
@@ -125,8 +121,7 @@ public class ArmorData : ItemData
     public float speedMultiplier;
     public bool buffsScrapGeneration;
     public bool buffsChestOpening;
-    public string category;
-    public string label;
+    public int labelIndex;
     public string colorRGBA;
 
 }
