@@ -218,17 +218,21 @@ MonoBehaviour:
   interactAttachment: {fileID: 0}
   ID: 0
   ownerFaction: 5
-  descriptionText: No description
   inventoryIconLink: Icons/Icon_Test
+  descriptionTextLinkID: 0
   value: 0
   pickable: 0
+  removeOnPick: 0
   ownerID: 0
   spriteObject: {fileID: 3122470777355908165}
-  speedInitial: 20
-  acceleration: -1
-  lifespan: 3
-  lifeRemaining: 3
+  speedInitial: 5
+  acceleration: -0.2
+  lifespan: 5
+  lifeRemaining: 5
   damage: 1
-  guidanceStep: 0
+  guidanceStep: 60
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}
+  sendTargetBerserk: 1
+  explosionRadius: 1
+  guideOnPointer: 1

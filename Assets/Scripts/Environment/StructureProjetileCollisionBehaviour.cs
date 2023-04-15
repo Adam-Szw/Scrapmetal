@@ -11,6 +11,6 @@ public class StructureProjetileCollisionBehaviour : MonoBehaviour
         ProjectileTrigger t = other.gameObject.GetComponent<ProjectileTrigger>();
         if (!t) return;
         ProjectileBehaviour b = t.behaviour;
-        Destroy(b.gameObject);
+        b.RunEffect(b, null);
     }
 }

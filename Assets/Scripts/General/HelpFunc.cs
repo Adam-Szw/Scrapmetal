@@ -143,6 +143,18 @@ public static class HelpFunc
         return distanceCurr <= range;
     }
 
+    public static List<CreatureBehaviour> GetCreaturesInRadius(Vector2 position, float radius)
+    {
+        List<CreatureBehaviour> creatures = new List<CreatureBehaviour>();
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, radius);
+        foreach (Collider2D collider in colliders)
+        {
+            CreatureBehaviour b = collider.GetComponentInParent<CreatureBehaviour>();
+            if (b != null && !creatures.Contains(b)) creatures.Add(b);
+        }
+        return creatures;
+    }
+
     // Recursively disables all colliders in the object
     public static void DisableColliders(Transform parent)
     {

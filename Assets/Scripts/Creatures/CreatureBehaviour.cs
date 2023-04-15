@@ -71,12 +71,9 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         if (b.ownerFaction == faction && faction != FactionAllegiance.berserk) return;
         // Do nothing if this was already registered
         if (other.gameObject == lastDealer) return;
-        // Apply changes
+        // Lock this projectile from triggering entity again
         lastDealer = other.gameObject;
-        if (aiControl) aiControl.NotifyTakingDamage();
-        DealDamage(b.damage);
-        Destroy(b.gameObject);
-        if (GetAlive()) GetAnimations().PlayFlinch();
+        b.RunEffect(b, this);
     }
 
     public float GetHealth() { return health; }
@@ -102,6 +99,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         SpawnFloatingText(Color.red, "-" + amount, 0.35f);
         if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
         if (health <= 0) SetAlive(false);
+        if (GetAlive()) GetAnimations().PlayFlinch();
     }
 
     public void Heal(float amount)

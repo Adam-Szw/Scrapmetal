@@ -111,8 +111,9 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         entities.Remove(entity);
     }
 
-    public void NotifyTakingDamage()
+    public void NotifyTakingDamage(FactionAllegiance fromFaction = FactionAllegiance.berserk)
     {
+        // Raise caution level
         if (state == aiState.idle)
         {
             state = aiState.caution;
@@ -120,6 +121,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
             locationGoal = null;
             StartTimer(cautionTime);
         }
+        // If player attacking town - turn hostile
+        if (fromFaction == FactionAllegiance.player && behaviour.faction == FactionAllegiance.NPC) behaviour.faction = FactionAllegiance.NPCaggro;
     }
 
     // Get distance to each entity in list and sort it by those distances

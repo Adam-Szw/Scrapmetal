@@ -3,15 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEditor;
+using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.U2D.Animation;
 using static CreatureAnimations;
+using static UnityEditor.Progress;
 
 /* Handles both dumb bullets and guided missiles
  */
 public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spawnable<ProjectileData>
 {
+    public delegate void Effect(ProjectileBehaviour projectile, CreatureBehaviour targetHit);
+
     public GameObject spriteObject;
 
     public float speedInitial;
@@ -19,19 +23,24 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
     public float lifespan;
     public float lifeRemaining;
     public float damage;
+    // Special effects can be caused here that are triggered on projectile destroy
+    [HideInInspector] public Effect effect;
 
-    // guided missile behaviour
-    /* Value here indicates how quickly the missile will turn to hit a target. For example
-     * value 360 means it will turn a full circle within a second to hit a target.
-     */
+    // How many degrees per second the missile is allowed to turn to guide
     public float guidanceStep = 0;
     [HideInInspector] public ulong guidanceTargetID = 0;
     [HideInInspector] public GameObject guidanceTarget = null;
+
+    // These values are used to setup special effects
+    public bool sendTargetBerserk = false;
+    public float explosionRadius = 0f;
+    public bool guideOnPointer = false;
 
     new protected void Awake()
     {
         base.Awake();
         SetSpeed(speedInitial);
+        SetupSpecialEffect();
     }
 
     new protected void Update()
@@ -39,15 +48,30 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         base.Update();
         if (GlobalControl.paused) return;
         // If guidance used, turn missile accordingly
-        if (guidanceTarget != null && guidanceStep > 0) TurnMissile();
-        // Acquire target if ID is given but target not found
-        else if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindEntityByID(guidanceTargetID);
+        if (guideOnPointer)
+        {
+            Vector2 targetPos = PlayerInput.mousePos;
+            TurnMissile(targetPos);
+        }
+        else
+        {
+            Vector2 targetPos = guidanceTarget.transform.position;
+            if (guidanceTarget != null && guidanceStep > 0) TurnMissile(targetPos);
+            // Acquire target if ID is given but target not found
+            else if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindEntityByID(guidanceTargetID);
+        }
         // Update speed
         SetSpeed(Mathf.Max(GetSpeed() + acceleration * Time.deltaTime, 0.0f));
         // Update lifetime
         lifeRemaining -= Time.deltaTime;
-        if (lifeRemaining < 0.0f) Destroy(gameObject);
+        if (lifeRemaining < 0.0f) RunEffect(this, null);
     }
+
+    public void RunEffect(ProjectileBehaviour projectile, CreatureBehaviour targetHit)
+    {
+        effect?.Invoke(projectile, targetHit);
+    }
+
     public static GameObject Spawn(ProjectileData data)
     {
         GameObject obj = Instantiate(Resources.Load<GameObject>(data.prefabPath));
@@ -77,9 +101,8 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         SetMoveVector(HelpFunc.EulerToVec2(spriteObject.transform.rotation.eulerAngles.z));
     }
 
-    private void TurnMissile()
+    private void TurnMissile(Vector2 targetPos)
     {
-        Vector2 targetPos = guidanceTarget.transform.position;
         Vector2 missilePos = transform.position;
         Vector2 targetVec = targetPos - missilePos;
         float targetAngle = HelpFunc.Vec2ToAngle(targetVec);
@@ -91,6 +114,36 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         RotateSprite(step);
     }
 
+    private void SetupSpecialEffect()
+    {
+        effect = (ProjectileBehaviour projectile, CreatureBehaviour target) => {
+            if (target)
+            {
+                if (target.aiControl) target.aiControl.NotifyTakingDamage(projectile.ownerFaction);
+                target.DealDamage(projectile.damage);
+            }
+            if (projectile.explosionRadius > 0)
+            {
+                SpawnExplosion(projectile.transform.position, explosionRadius * 0.1f);
+                List<CreatureBehaviour> inRange = HelpFunc.GetCreaturesInRadius(projectile.transform.position, explosionRadius);
+                foreach (CreatureBehaviour creature in inRange)
+                {
+                    if (creature.aiControl) creature.aiControl.NotifyTakingDamage(projectile.ownerFaction);
+                    creature.DealDamage(projectile.damage);
+                }
+            }
+            if (target && projectile.sendTargetBerserk) target.faction = CreatureBehaviour.FactionAllegiance.berserk;
+            Destroy(projectile.gameObject);
+        };
+    }
+
+    private void SpawnExplosion(Vector2 location, float scale)
+    {
+        GameObject expl = Instantiate(Resources.Load<GameObject>("Prefabs/Effects/Explosion"));
+        expl.transform.localScale = new Vector3(scale, scale, 1f);
+        expl.transform.position = location;
+    }
+
     new public ProjectileData Save()
     {
         ProjectileData data = new ProjectileData(base.Save());
@@ -100,6 +153,8 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         data.damage = damage;
         data.lifeRemaining = lifeRemaining;
         data.projectileRotation = spriteObject.transform.localEulerAngles.z;
+        data.sendTargetBerserk = sendTargetBerserk;
+        data.explosionRadius = explosionRadius;
         return data;
     }
 
@@ -113,6 +168,8 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         ownerID = data.ownerID;
         lifeRemaining = data.lifeRemaining;
         spriteObject.transform.localEulerAngles = new Vector3(0f, 0f, data.projectileRotation);
+        sendTargetBerserk = data.sendTargetBerserk;
+        explosionRadius = data.explosionRadius;
     }
 
     public static GameObject Spawn(ProjectileData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -152,4 +209,6 @@ public class ProjectileData : ItemData
     public float damage;
     public float lifeRemaining;
     public float projectileRotation;
+    public bool sendTargetBerserk;
+    public float explosionRadius;
 }
