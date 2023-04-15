@@ -10,6 +10,7 @@ public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spaw
 {
 
     public bool isAvailable = true;
+    public bool requiresOpeningSkill = false;
 
     [HideInInspector] public List<ItemData> loot = new List<ItemData>();
 
@@ -26,6 +27,12 @@ public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spaw
     {
         // If we are already opening container, do nothing
         if (interacting) return;
+        // If we cant open the container, play text
+        if ((user is PlayerBehaviour) && requiresOpeningSkill && !((PlayerBehaviour)user).hasChestOpening)
+        {
+            user.SpawnFloatingText(Color.red, "Container is locked!", 0.5f);
+            return;
+        }
         if (aura) Destroy(aura);
         aura = null;
         if (hText) Destroy(hText);
@@ -72,6 +79,7 @@ public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spaw
     {
         ContainerData data = new ContainerData(base.Save());
         data.isAvailable = isAvailable;
+        data.requiresOpeningSkill = requiresOpeningSkill;
         return data;
     }
 
@@ -79,6 +87,7 @@ public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spaw
     {
         base.Load(data, loadTransform);
         isAvailable = data.isAvailable;
+        requiresOpeningSkill = data.requiresOpeningSkill;
     }
 
     public static GameObject Spawn(ContainerData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -114,5 +123,6 @@ public class ContainerData : EntityData
     }
 
     public bool isAvailable;
+    public bool requiresOpeningSkill = false;
 
 }

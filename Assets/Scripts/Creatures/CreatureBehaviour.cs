@@ -81,6 +81,13 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     public float GetHealth() { return health; }
 
+    public void SetMaxHealth(float value)
+    {
+        maxHealth = value;
+        if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
+        if (health <= 0) SetAlive(false);
+    }
+
     public float GetMaxHealth() { return maxHealth; }
 
     public void SetHealthbar(HealthbarBehaviour behaviour)

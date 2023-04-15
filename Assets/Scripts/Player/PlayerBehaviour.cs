@@ -11,11 +11,53 @@ using static PlayerBehaviour;
  */
 public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnable<PlayerData>
 {
+    // Default stats and player look. Used when changing looks using armor
+    public static float PLAYER_BASE_MAX_HP = 100f;
+    public static float PLAYER_BASE_SPEED = 5f;
+    public static string PLAYER_BASE_COLOR_RGBA = "(1, 1, 1, 1)";
+    public static string PLAYER_BASE_CATEGORY_FACE = "Face";
+    public static string PLAYER_BASE_LABEL_FACE = "Face1";
+    public static string PLAYER_BASE_CATEGORY_HEAD = "Head";
+    public static string PLAYER_BASE_LABEL_HEAD = "Body1_0";
+    public static string PLAYER_BASE_CATEGORY_TORSO = "Torso";
+    public static string PLAYER_BASE_LABEL_TORSO = "Body1_2";
+    public static string PLAYER_BASE_CATEGORY_PELVIS = "Pelvis";
+    public static string PLAYER_BASE_LABEL_PELVIS = "Body1_5";
+    public static string PLAYER_BASE_CATEGORY_ARM_UP_R = "Arm_Right_Up";
+    public static string PLAYER_BASE_LABEL_ARM_UP_R = "Body1_1";
+    public static string PLAYER_BASE_CATEGORY_ARM_UP_L = "Arm_Left_Up";
+    public static string PLAYER_BASE_LABEL_ARM_UP_L = "Face1";
+    public static string PLAYER_BASE_CATEGORY_ARM_LOW_R = "Arm_Right_Low";
+    public static string PLAYER_BASE_LABEL_ARM_LOW_R = "Face1";
+    public static string PLAYER_BASE_CATEGORY_ARM_LOW_L = "Arm_Left_Low";
+    public static string PLAYER_BASE_LABEL_ARM_LOW_L = "Face1";
+    public static string PLAYER_BASE_CATEGORY_HAND_R = "Hand_Right";
+    public static string PLAYER_BASE_LABEL_HAND_R = "Face1";
+    public static string PLAYER_BASE_CATEGORY_HAND_L = "Hand_Left";
+    public static string PLAYER_BASE_LABEL_HAND_L = "Face1";
+    public static string PLAYER_BASE_LABEL_LEG_UP_R = "Face1";
+    public static string PLAYER_BASE_CATEGORY_LEG_UP_L = "Leg_Left_Up";
+    public static string PLAYER_BASE_LABEL_LEG_UP_L = "Face1";
+    public static string PLAYER_BASE_CATEGORY_LEG_LOW_R = "Leg_Right_Low";
+    public static string PLAYER_BASE_LABEL_LEG_LOW_R = "Face1";
+    public static string PLAYER_BASE_CATEGORY_LEG_LOW_L = "Leg_Left_Low";
+    public static string PLAYER_BASE_LABEL_LEG_LOW_L = "Face1";
+    public static string PLAYER_BASE_CATEGORY_FOOT_R = "Foot_Right";
+    public static string PLAYER_BASE_LABEL_FOOT_R = "Face1";
+    public static string PLAYER_BASE_CATEGORY_FOOT_L = "Foot_Left";
+    public static string PLAYER_BASE_LABEL_FOOT_L = "Face1";
+
+
     [HideInInspector] public int currencyCount = 0;
 
     private int weaponSelected = -1;
     private Dictionary<GameObject, float> interactibles = new Dictionary<GameObject, float>();
     private GameObject selectedInteractible = null;
+
+    private float bonusHP = 0f;
+    private float bonusSpeedMult = 0f;
+    [HideInInspector] public bool hasScrapGeneration = false;
+    [HideInInspector] public bool hasChestOpening = false;
 
     [Serializable]
     public struct WeaponSlot
@@ -123,6 +165,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
             }
         }
         if (toRemove.HasValue) armors.Remove(toRemove.Value);
+        RefreshPlayerStats();
     }
 
     public void EquipWeapon(WeaponSlot wSlot)
@@ -138,6 +181,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         UnequipArmor(aSlot.slot);
         armors.Add(aSlot);
         if (inventory.Contains(aSlot.armor)) inventory.Remove(aSlot.armor);
+        RefreshPlayerStats();
     }
 
     public void UIRefresh() 
@@ -246,6 +290,32 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         // Now try to save in assigned weapons
         for (int i = 0; i < weapons.Count; i++) { if (weapons[i].weapon.ID == item.ID) indToReplace = i; }
         if (indToReplace != -1) weapons[indToReplace] = new WeaponSlot((WeaponData)item, weapons[indToReplace].index);
+
+    }
+
+    private void RefreshPlayerStats()
+    {
+        // Reset to base stats
+        bonusHP = 0f;
+        bonusSpeedMult = 1f;
+        hasScrapGeneration = false;
+        hasChestOpening = false;
+        // Get armor buffs
+        foreach (ArmorSlot aSlot in armors)
+        {
+            ArmorData armor = aSlot.armor;
+            if (armor.buffsScrapGeneration) hasScrapGeneration = true;
+            if (armor.buffsChestOpening) hasChestOpening = true;
+            bonusHP += armor.hpIncrease;
+            bonusSpeedMult += armor.speedMultiplier;
+        }
+        // Apply new stats
+        SetMaxHealth(PLAYER_BASE_MAX_HP + bonusHP);
+        moveSpeed = PLAYER_BASE_SPEED * bonusSpeedMult;
+    }
+
+    private void RefreshPlayerLimbs()
+    {
 
     }
 
