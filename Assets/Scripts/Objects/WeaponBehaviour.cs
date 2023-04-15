@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static AmmoBehaviour;
 using static HumanoidAnimations;
 using static WeaponBehaviour;
 using Random = UnityEngine.Random;
@@ -16,9 +17,11 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
     public int maxAmmo = 0;
     public int currAmmo = 0;
     public float cooldown = 0;
+    public float reloadCooldown = 0;
     public float spread = 0;
     public float snapMaxAngle = 0;
     public handsState animationType = handsState.empty;    // Used only by humanoid users
+    public AmmoLink ammoLink = AmmoLink.empty;
 
     [HideInInspector] public Vector2 target = Vector2.zero;   // Targeting location
     [HideInInspector] public ulong guidanceTargetID = 0;
@@ -124,15 +127,17 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
     }
 
     public static WeaponData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable,
-        bool removeOnPick, float cooldown, int maxAmmo, handsState animationType)
+        bool removeOnPick, float cooldown, float reloadCooldown, int maxAmmo, handsState animationType, AmmoLink link)
     {
         WeaponData data = new WeaponData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable, removeOnPick));
         data.cooldown = cooldown;
+        data.reloadCooldown = reloadCooldown;
         data.maxAmmo = maxAmmo;
         data.target = HelpFunc.VectorToArray(Vector2.zero);
         data.currAmmo = maxAmmo;
         data.cooldownCurrent = 0f;
         data.animationType = animationType;
+        data.ammoLink = link;
         return data;
     }
 
@@ -140,11 +145,13 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
     {
         WeaponData data = new WeaponData(base.Save());
         data.cooldown = cooldown;
+        data.reloadCooldown = reloadCooldown;
         data.maxAmmo = maxAmmo;
         data.target = HelpFunc.VectorToArray(target);
         data.currAmmo = currAmmo;
         data.cooldownCurrent = cooldownCurrent;
         data.animationType = animationType;
+        data.ammoLink = ammoLink;
         return data;
     }
 
@@ -152,11 +159,13 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
     {
         base.Load(data, loadTransform);
         cooldown = data.cooldown;
+        reloadCooldown = data.reloadCooldown;
         maxAmmo = data.maxAmmo;
         target = HelpFunc.DataToVec2(data.target);
         currAmmo = data.currAmmo;
         cooldownCurrent = data.cooldownCurrent;
         animationType = data.animationType;
+        ammoLink = data.ammoLink;
     }
 
     public static GameObject Spawn(WeaponData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -193,10 +202,12 @@ public class WeaponData : ItemData
     public float damage;
     public float delay;
     public float cooldown;
+    public float reloadCooldown = 0;
     public int maxAmmo;
     public float[] target;
     public bool firing;
     public int currAmmo;
     public float cooldownCurrent = 0.0f;
     public handsState animationType;
+    public AmmoLink ammoLink;
 }

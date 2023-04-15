@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library:
+  - m_Name: 1-Handed
+    m_Hash: 50649925
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Icon_Taser
+      m_Hash: 1970169446
+      m_Sprite: {fileID: 21300000, guid: b62134edd87057d4db1be2415b52a0ea, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: b62134edd87057d4db1be2415b52a0ea, type: 3}
+    - m_Name: Icon_RivetGun
+      m_Hash: 654785965
+      m_Sprite: {fileID: 21300000, guid: c9aea159a93776e4fa2d1c5222797c02, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: c9aea159a93776e4fa2d1c5222797c02, type: 3}
+    - m_Name: Icon_Tranquilizer
+      m_Hash: -1116645142
+      m_Sprite: {fileID: 21300000, guid: 2b23fd3b72567724fb58befd88924fa3, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 2b23fd3b72567724fb58befd88924fa3, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  - m_Name: 2-Handed
+    m_Hash: -1920213850
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Icon_MissileLauncher
+      m_Hash: 1046977744
+      m_Sprite: {fileID: 21300000, guid: 3dbd38cfb1cf1fa4f936e57b16cc43f1, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 3dbd38cfb1cf1fa4f936e57b16cc43f1, type: 3}
+    - m_Name: Icon_Tube
+      m_Hash: 1129947690
+      m_Sprite: {fileID: 21300000, guid: a9ccbc3fc8cf9054c9faa2d212614cf1, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: a9ccbc3fc8cf9054c9faa2d212614cf1, type: 3}
+    - m_Name: Icon_Laser
+      m_Hash: 637450789
+      m_Sprite: {fileID: 21300000, guid: 05c2fd06a17d5fa43a5899a28d6cd344, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 05c2fd06a17d5fa43a5899a28d6cd344, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  m_PrimaryLibraryGUID: 

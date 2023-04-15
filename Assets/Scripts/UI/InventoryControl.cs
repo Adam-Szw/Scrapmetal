@@ -161,6 +161,7 @@ public class InventoryControl : MonoBehaviour
         descriptionText.text = ItemLibrary.itemLocalization.TryGetValue(item.descriptionTextLinkID, out string val) ? val : "No description";
         if (status != ItemStatus.equipped && item is WeaponData) descriptionText.text += "\n\nAmmo: " +
                 ((WeaponData)item).currAmmo + "/" + ((WeaponData)item).maxAmmo;
+        if (item is AmmoData) descriptionText.text += "\n\nQuantity: " + ((AmmoData)item).quantity;
         if (status == ItemStatus.equipped) descriptionText.text += "\n\nClick to unequip the item";
         else if (!isShopOpen && status == ItemStatus.inventory && (item is WeaponData || item is ArmorData))
             descriptionText.text += "\n\nClick to equip the item";
@@ -308,7 +309,7 @@ public class InventoryControl : MonoBehaviour
                 s = "Legs module";
                 break;
         }
-        SetButtonText(button, "Assign armor to slot: " + s);
+        SetButtonText(button, "Assign to: " + s);
         button.onClick.AddListener(() =>
         {
             ArmorSlot a = new ArmorSlot(armor, armor.slot);

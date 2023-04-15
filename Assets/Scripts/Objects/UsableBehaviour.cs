@@ -4,12 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using UnityEngine.U2D.Animation;
-using static CreatureAnimations;
 
-/* Handles both dumb bullets and guided missiles
- */
+
 public class UsableBehaviour : ItemBehaviour, Saveable<UsableData>, Spawnable<UsableData>
 {
 
@@ -60,6 +56,6 @@ public class UsableData : ItemData
         removeOnPick = data.removeOnPick;
     }
 
-    public float restoration = 0f;
+    public float restoration;
 
 }

@@ -10,7 +10,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
 {
     // Stats data
     public float hpIncrease = 0f;
-    public float speedMultiplier = 1f;
+    public float speedMultiplierBonus = 0f;
     public bool buffsScrapGeneration = false;
     public bool buffsChestOpening = false;
 
@@ -52,7 +52,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         ArmorData data = new ArmorData(base.Save());
         data.slot = slot;
         data.hpIncrease = hpIncrease;
-        data.speedMultiplier = speedMultiplier;
+        data.speedMultiplierBonus = speedMultiplierBonus;
         data.buffsScrapGeneration = buffsScrapGeneration;
         data.buffsChestOpening = buffsChestOpening;
         data.labelIndex = labelIndex;
@@ -65,7 +65,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         base.Load(data, loadTransform);
         slot = data.slot;
         hpIncrease = data.hpIncrease;
-        speedMultiplier = data.speedMultiplier;
+        speedMultiplierBonus = data.speedMultiplierBonus;
         buffsScrapGeneration = data.buffsScrapGeneration;
         buffsChestOpening = data.buffsChestOpening;
         labelIndex = data.labelIndex;
@@ -79,7 +79,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         ArmorData data = new ArmorData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable, removeOnPick));
         data.slot = slot;
         data.hpIncrease = hpIncrease;
-        data.speedMultiplier = speedMultiplier;
+        data.speedMultiplierBonus = speedMultiplier;
         data.buffsScrapGeneration = buffsScrapGeneration;
         data.buffsChestOpening = buffsChestOpening;
         data.labelIndex = labelIndex;
@@ -90,14 +90,14 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
     public static GameObject Spawn(ArmorData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
     {
         GameObject obj = ItemBehaviour.Spawn(data, position, rotation, scale, parent);
-        obj.GetComponent<WeaponBehaviour>().Load(data, false);
+        obj.GetComponent<ArmorBehaviour>().Load(data, false);
         return obj;
     }
 
     public static GameObject Spawn(ArmorData data, Transform parent = null)
     {
         GameObject obj = ItemBehaviour.Spawn(data, parent);
-        obj.GetComponent<WeaponBehaviour>().Load(data);
+        obj.GetComponent<ArmorBehaviour>().Load(data);
         return obj;
     }
 }
@@ -118,7 +118,7 @@ public class ArmorData : ItemData
 
     public ArmorSlot.Slot slot;
     public float hpIncrease;
-    public float speedMultiplier;
+    public float speedMultiplierBonus;
     public bool buffsScrapGeneration;
     public bool buffsChestOpening;
     public int labelIndex;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static AmmoBehaviour;
 using static ArmorBehaviour;
 using static ArmorBehaviour.ArmorSlot;
 using static PlayerBehaviour;
@@ -22,10 +23,12 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     private Dictionary<GameObject, float> interactibles = new Dictionary<GameObject, float>();
     private GameObject selectedInteractible = null;
 
-    private float bonusHP = 0f;
-    private float bonusSpeedMult = 0f;
     [HideInInspector] public bool hasScrapGeneration = false;
     [HideInInspector] public bool hasChestOpening = false;
+
+    private float bonusHP = 0f;
+    private float bonusSpeedMult = 0f;
+    private float reloadTimer = 0f;
 
     [Serializable]
     public struct WeaponSlot
@@ -56,6 +59,12 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         StartCoroutine(PickableHighlightLoop());
     }
 
+    private new void OnDestroy()
+    {
+        base.OnDestroy();
+        StopAllCoroutines();
+    }
+
     new protected void Update()
     {
         base.Update();
@@ -76,6 +85,8 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         // Send attack message
         if (PlayerInput.leftclick)
         {
+            // Do nothing if currently reloading
+            if (reloadTimer > 0) return;
             SetAttackTarget(PlayerInput.mousePos);
             bool attackExecuted = Attack();
             // If attack executed then we must have weapon selected. Update UI accordingly
@@ -90,7 +101,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         if (PlayerInput.e) UseInteractible();
 
         // Reload currently selected weapon
-        //if (PlayerInput.r)
+        if (PlayerInput.r) ReloadCurrentWeapon();
     }
 
     public void NotifyDetectedInteractible(GameObject obj)
@@ -263,6 +274,53 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
 
     }
 
+    private void ReloadCurrentWeapon()
+    {
+        // Do nothing if on cooldown
+        if (reloadTimer > 0f) return;
+
+        // If we dont have weapon do nothing
+        if (!activeItemBehaviour || (activeItemBehaviour && (activeItemBehaviour is not WeaponBehaviour))) return;
+
+        // Get currently active weapon
+        WeaponBehaviour weapon = (WeaponBehaviour)activeItemBehaviour;
+        // Search inventory to find ammo
+        List<ItemData> toRemove = new List<ItemData>();
+        bool reloadWasNeeded = false;
+        foreach (ItemData item in inventory)
+        {
+            // Break if ammo satisfied
+            if (weapon.currAmmo >= weapon.maxAmmo) break;
+            // Do nothing if not ammo or wrong link
+            if (item is not AmmoData) continue;
+            AmmoData ammo = (AmmoData)item;
+            if (ammo.link != weapon.ammoLink) continue;
+            // Drain as much ammo as possible
+            reloadWasNeeded = true;
+            int ammoNeeded = Mathf.Max(weapon.maxAmmo - weapon.currAmmo, 0);
+            int ammoReceivedMax = ammo.quantity;
+            int ammoDrained = Mathf.Min(ammoNeeded, ammoReceivedMax);
+            weapon.currAmmo = weapon.currAmmo + ammoDrained;
+            ammo.quantity -= ammoDrained;
+            // Remove ammo item if fully drained
+            if (ammo.quantity <= 0) toRemove.Add(item);
+        }
+        foreach (ItemData item in toRemove) inventory.Remove(item);
+        if (reloadWasNeeded) SpawnFloatingText(Color.blue, "Reloading: " + weapon.reloadCooldown + "s", 0.5f);
+        if (reloadWasNeeded) StartCoroutine(ReloadTimerCoroutine(weapon.reloadCooldown));
+        UIRefresh();
+    }
+
+    private IEnumerator ReloadTimerCoroutine(float time)
+    {
+        reloadTimer = time;
+        while (reloadTimer > 0)
+        {
+            yield return new WaitForSeconds(.2f);
+            reloadTimer -= 0.2f;
+        }
+    }
+
     private void RefreshPlayerStats()
     {
         // Reset to base stats
@@ -277,7 +335,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
             if (armor.buffsScrapGeneration) hasScrapGeneration = true;
             if (armor.buffsChestOpening) hasChestOpening = true;
             bonusHP += armor.hpIncrease;
-            bonusSpeedMult += armor.speedMultiplier;
+            bonusSpeedMult += armor.speedMultiplierBonus;
         }
         // Apply new stats
         SetMaxHealth(PLAYER_BASE_MAX_HP + bonusHP);
@@ -343,6 +401,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         data.weaponSelected = weaponSelected;
         data.weapons = weapons;
         data.armors = armors;
+        data.reloadTimer = reloadTimer;
         return data;
     }
 
@@ -354,6 +413,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         weapons = data.weapons;
         armors = data.armors;
         weaponSelected = data.weaponSelected;
+        reloadTimer = data.reloadTimer;
         SetWeaponFromSlot(weaponSelected);
         RefreshPlayerLimbs();
         UpdateState();
@@ -390,5 +450,6 @@ public class PlayerData : HumanoidData
     public int weaponSelected;
     public List<WeaponSlot> weapons;
     public List<ArmorSlot> armors;
+    public float reloadTimer = 0f;
 
 }

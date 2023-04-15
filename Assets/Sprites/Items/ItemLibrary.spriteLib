@@ -13,8 +13,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library:
-  - m_Name: Item
-    m_Hash: -1087796704
+  - m_Name: Ammo
+    m_Hash: 1337839892
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: CapacitorCharge
+      m_Hash: -868868431
+      m_Sprite: {fileID: 21300000, guid: 12e135ac315a5824cbea2bf9187bf152, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 12e135ac315a5824cbea2bf9187bf152, type: 3}
+    - m_Name: GrenadeAmmo
+      m_Hash: 877814383
+      m_Sprite: {fileID: 21300000, guid: fd88629a0c207e94ab83456d5fd1313c, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: fd88629a0c207e94ab83456d5fd1313c, type: 3}
+    - m_Name: RivetAmmo
+      m_Hash: -1071385295
+      m_Sprite: {fileID: 21300000, guid: dc4a3ef09cb7c9f429d6d06e7828ce6b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: dc4a3ef09cb7c9f429d6d06e7828ce6b, type: 3}
+    - m_Name: RocketsAmmo
+      m_Hash: 442512378
+      m_Sprite: {fileID: 21300000, guid: 368448ce517b68049a9546de0d7b7df7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 368448ce517b68049a9546de0d7b7df7, type: 3}
+    - m_Name: TranquilizerDartAmmo
+      m_Hash: -1266069656
+      m_Sprite: {fileID: 21300000, guid: 2dbd15515cebde2468ab8d439cbade0f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 2dbd15515cebde2468ab8d439cbade0f, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 5
+  - m_Name: Usable
+    m_Hash: 1873452204
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: FixKit
+      m_Hash: -839724425
+      m_Sprite: {fileID: 21300000, guid: 50dc42c519bd93a4a94c8c89cdf26ee0, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 50dc42c519bd93a4a94c8c89cdf26ee0, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 1
+  - m_Name: Other
+    m_Hash: 412686884
     m_CategoryList: []
     m_OverrideEntries:
     - m_Name: Scrap
@@ -22,11 +64,6 @@ MonoBehaviour:
       m_Sprite: {fileID: 21300000, guid: 47c572ec4d8feb748ab6130a00a800b6, type: 3}
       m_FromMain: 0
       m_SpriteOverride: {fileID: 21300000, guid: 47c572ec4d8feb748ab6130a00a800b6, type: 3}
-    - m_Name: FixKit
-      m_Hash: -839724425
-      m_Sprite: {fileID: 21300000, guid: 50dc42c519bd93a4a94c8c89cdf26ee0, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: 21300000, guid: 50dc42c519bd93a4a94c8c89cdf26ee0, type: 3}
     m_FromMain: 0
-    m_EntryOverrideCount: 2
+    m_EntryOverrideCount: 1
   m_PrimaryLibraryGUID: 

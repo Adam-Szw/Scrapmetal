@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library:
+  - m_Name: Head
+    m_Hash: 130111906
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Icon_Head_Actuator
+      m_Hash: -1380590992
+      m_Sprite: {fileID: 21300000, guid: 804bcae8e1cb96a4aa86e6d641c85e5d, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 804bcae8e1cb96a4aa86e6d641c85e5d, type: 3}
+    - m_Name: Icon_Head_Armored
+      m_Hash: -1651690823
+      m_Sprite: {fileID: 21300000, guid: a753861e01f9ddb42a41562d30357d2b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: a753861e01f9ddb42a41562d30357d2b, type: 3}
+    - m_Name: Icon_Head_Sensoric
+      m_Hash: 89031092
+      m_Sprite: {fileID: 21300000, guid: 13587b5003c7ebc428eb86eeb93aabc0, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 13587b5003c7ebc428eb86eeb93aabc0, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  - m_Name: Body
+    m_Hash: 2073732236
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Icon_Body_Actuator
+      m_Hash: -556076499
+      m_Sprite: {fileID: 21300000, guid: c21a81592bc804043804762af8677ae0, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: c21a81592bc804043804762af8677ae0, type: 3}
+    - m_Name: Icon_Body_Armored
+      m_Hash: 783543358
+      m_Sprite: {fileID: 21300000, guid: 5ecad4b705cd2b54781c849eafa14cc6, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 5ecad4b705cd2b54781c849eafa14cc6, type: 3}
+    - m_Name: Icon_Body_Sensoric
+      m_Hash: 1981917673
+      m_Sprite: {fileID: 21300000, guid: 91e0d0b43f70c454ca2646cc76d32185, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 91e0d0b43f70c454ca2646cc76d32185, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  - m_Name: Arms
+    m_Hash: 1288071446
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Icon_Arms_Actuator
+      m_Hash: -1647780675
+      m_Sprite: {fileID: 21300000, guid: f45b68a38f163b245ae1bc0b2b1f39e6, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: f45b68a38f163b245ae1bc0b2b1f39e6, type: 3}
+    - m_Name: Icon_Arms_Armored
+      m_Hash: 1433671254
+      m_Sprite: {fileID: 21300000, guid: c35b587962c98ef49a1df6ce9590971a, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: c35b587962c98ef49a1df6ce9590971a, type: 3}
+    - m_Name: Icon_Arms_Sensoric
+      m_Hash: 892569465
+      m_Sprite: {fileID: 21300000, guid: 3e83c23a2f731434899285c46977b4f4, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 3e83c23a2f731434899285c46977b4f4, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  - m_Name: Legs
+    m_Hash: 1563094196
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Icon_Legs_Actuator
+      m_Hash: 1087103028
+      m_Sprite: {fileID: 21300000, guid: 9d357be5cd7be054193082673a3ed8f2, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 9d357be5cd7be054193082673a3ed8f2, type: 3}
+    - m_Name: Icon_Legs_Sensoric
+      m_Hash: -399459344
+      m_Sprite: {fileID: 21300000, guid: d0cb528278812124ba7bc8d5ae70c95a, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: d0cb528278812124ba7bc8d5ae70c95a, type: 3}
+    - m_Name: Icon_Legs_Armored
+      m_Hash: 1530156601
+      m_Sprite: {fileID: 21300000, guid: 01fa1a2221654ac45ad723888ad411c0, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 21300000, guid: 01fa1a2221654ac45ad723888ad411c0, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  m_PrimaryLibraryGUID: 

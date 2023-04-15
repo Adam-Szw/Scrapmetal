@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5684202536283468193}
-  - component: {fileID: 7614720721989438232}
+  - component: {fileID: 7629942265934686138}
   m_Layer: 0
-  m_Name: TestAmor
+  m_Name: AmmoRivetgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7614720721989438232
+--- !u!114 &7629942265934686138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,25 +42,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2300210682344453543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b8f111eff796b2479c0126c311c42f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 7592a7973f69e5d42be46b583760e1c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabPath: Prefabs/Items/Armors/TestArmor
+  prefabPath: Prefabs/Items/Ammo/AmmoRivetgun
   targetBone: {fileID: 2300210682344453543}
   interactAttachment: {fileID: 2300210682344453543}
   ID: 0
   ownerFaction: 1
-  inventoryIconLink: Icons/Icon_Test
+  inventoryIconLink: Icons/Icon_RivetAmmo
   descriptionTextLinkID: 0
   value: 0
   pickable: 1
   removeOnPick: 0
   ownerID: 0
-  hpIncrease: 10
-  speedMultiplier: 2.5
-  buffsScrapGeneration: 0
-  buffsChestOpening: 1
-  slot: 1
+  quantity: 3
+  link: 1
 --- !u!1 &3554906992047203862
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +177,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 47c572ec4d8feb748ab6130a00a800b6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dc4a3ef09cb7c9f429d6d06e7828ce6b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -219,4 +216,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -2.9407534e-30
+  m_SpriteKey: 1.3179259e+19

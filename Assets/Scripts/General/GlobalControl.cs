@@ -13,6 +13,24 @@ using Scene = UnityEngine.SceneManagement.Scene;
  */
 public class GlobalControl : MonoBehaviour
 {
+
+    private static readonly Dictionary<Type, Action<EntityData>> SpawnMethods = new Dictionary<Type, Action<EntityData>>()
+    {
+        { typeof(PlayerData), d => PlayerBehaviour.Spawn((PlayerData)d) },
+        { typeof(NPCData), d => NPCBehaviour.Spawn((NPCData)d) },
+        { typeof(HumanoidData), d => HumanoidBehaviour.Spawn((HumanoidData)d) },
+        { typeof(SpiderbotData), d => SpiderbotBehaviour.Spawn((SpiderbotData)d) },
+        { typeof(CreatureData), d => CreatureBehaviour.Spawn((CreatureData)d) },
+        { typeof(ArmorData), d => ArmorBehaviour.Spawn((ArmorData)d) },
+        { typeof(WeaponData), d => WeaponBehaviour.Spawn((WeaponData)d) },
+        { typeof(ProjectileData), d => ProjectileBehaviour.Spawn((ProjectileData)d) },
+        { typeof(UsableData), d => UsableBehaviour.Spawn((UsableData)d) },
+        { typeof(AmmoData), d => AmmoBehaviour.Spawn((AmmoData)d) },
+        { typeof(ItemData), d => ItemBehaviour.Spawn((ItemData)d) },
+        { typeof(ContainerData), d => ContainerBehaviour.Spawn((ContainerData)d) },
+        { typeof(EntityData), d => EntityBehaviour.Spawn(d) }
+    };
+
     // Global variables
     public static Camera currentCamera;
     public static CameraControl cameraControl;
@@ -124,22 +142,6 @@ public class GlobalControl : MonoBehaviour
         UIControl.ShowCombatUI();
         nextID = save.nextID;
     }
-
-    private static readonly Dictionary<Type, Action<EntityData>> SpawnMethods = new Dictionary<Type, Action<EntityData>>()
-    {
-        { typeof(PlayerData), d => PlayerBehaviour.Spawn((PlayerData)d) },
-        { typeof(NPCData), d => NPCBehaviour.Spawn((NPCData)d) },
-        { typeof(HumanoidData), d => HumanoidBehaviour.Spawn((HumanoidData)d) },
-        { typeof(SpiderbotData), d => SpiderbotBehaviour.Spawn((SpiderbotData)d) },
-        { typeof(CreatureData), d => CreatureBehaviour.Spawn((CreatureData)d) },
-        { typeof(ArmorData), d => ArmorBehaviour.Spawn((ArmorData)d) },
-        { typeof(WeaponData), d => WeaponBehaviour.Spawn((WeaponData)d) },
-        { typeof(ProjectileData), d => ProjectileBehaviour.Spawn((ProjectileData)d) },
-        { typeof(UsableData), d => UsableBehaviour.Spawn((UsableData)d) },
-        { typeof(ItemData), d => ItemBehaviour.Spawn((ItemData)d) },
-        { typeof(ContainerData), d => ContainerBehaviour.Spawn((ContainerData)d) },
-        { typeof(EntityData), d => EntityBehaviour.Spawn(d) }
-    };
 
     private static List<EntityData> SaveEntities(string sceneName)
     {
