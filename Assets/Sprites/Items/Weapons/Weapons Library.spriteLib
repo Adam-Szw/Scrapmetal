@@ -104,6 +104,11 @@ MonoBehaviour:
       m_Sprite: {fileID: -847032186, guid: 14daa2fd03b45e245a0249c90a2e87b8, type: 3}
       m_FromMain: 0
       m_SpriteOverride: {fileID: -847032186, guid: 14daa2fd03b45e245a0249c90a2e87b8, type: 3}
+    - m_Name: Zapper_5
+      m_Hash: 1323869327
+      m_Sprite: {fileID: 1913565174, guid: 7d2e38a9205d31f418b97b60d676ff6b, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1913565174, guid: 7d2e38a9205d31f418b97b60d676ff6b, type: 3}
     m_FromMain: 0
-    m_EntryOverrideCount: 9
+    m_EntryOverrideCount: 10
   m_PrimaryLibraryGUID: 

@@ -28,7 +28,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public CreatureAI aiControl = null;
 
     public float moveSpeed = 0.0f;
-    public GameObject weaponAttachmentBone = null;
+    public List<GameObject> weaponAttachmentBones = new List<GameObject>();
     public GameObject groundReferenceObject = null;
     [SerializeField] private float maxHealth = 100.0f;
     [SerializeField] private float health = 100.0f;
@@ -41,6 +41,9 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     private HealthbarBehaviour healthbarBehaviour = null;
     private GameObject lastDealer = null;
+
+    // Populate this list to have AI use it
+    protected List<WeaponBehaviour> AIweapons = new List<WeaponBehaviour>();
 
     new protected void Update()
     {
@@ -193,7 +196,19 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     protected virtual CreatureAnimations GetAnimations() { return null; }
 
-    protected virtual List<WeaponBehaviour> GetWeapons() { return null; }
+    protected virtual List<WeaponBehaviour> GetWeapons() { return AIweapons; }
+
+    protected void SpawnAIWeapon(GameObject bone, string prefabPath)
+    {
+        Vector3 position = bone.transform.position;
+        Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+        GameObject weapon = WeaponBehaviour.Spawn(prefabPath, position, rotation, bone.transform);
+        WeaponBehaviour weaponBehaviour = weapon.GetComponent<WeaponBehaviour>();
+        weaponBehaviour.ownerID = ID;
+        weaponBehaviour.ownerFaction = faction;
+        weaponBehaviour.groundReferenceObject = groundReferenceObject;
+        AIweapons.Add(weaponBehaviour);
+    }
 
     private void RunDeathActions()
     {

@@ -28,7 +28,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
         Animator armsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Arms").GetComponent<Animator>();
         Animator legsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Legs").GetComponent<Animator>();
-        animations = new HumanoidAnimations(transform, new List<Animator>() { bodyAnimator, armsAnimator, legsAnimator }, BODYPARTS, weaponAttachmentBone);
+        animations = new HumanoidAnimations(transform, new List<Animator>() { bodyAnimator, armsAnimator, legsAnimator }, BODYPARTS, weaponAttachmentBones[0]);
     }
 
     new protected void Update()
@@ -58,7 +58,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
             Destroy(activeItemBehaviour.gameObject);
             activeItemBehaviour = null;
         }
-        animations.aimingReferenceBone = weaponAttachmentBone;
+        animations.aimingReferenceBone = weaponAttachmentBones[0];
         animations.SetStateHands(handsState.empty);
         animations.ResetJoints();
         // Finish here if no new item provided
@@ -66,9 +66,9 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
 
         // Spawn new item in hand/bone
         // We have to specify extra details so spawning process is more manual than usual here
-        Vector3 position = weaponAttachmentBone.transform.position + (Vector3)weaponAttachmentOffset;
+        Vector3 position = weaponAttachmentBones[0].transform.position + (Vector3)weaponAttachmentOffset;
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-        GameObject obj = ItemBehaviour.Spawn(item.prefabPath, position, rotation, weaponAttachmentBone.transform);
+        GameObject obj = ItemBehaviour.Spawn(item.prefabPath, position, rotation, weaponAttachmentBones[0].transform);
         // Load item's details but not its transform
         if (item.GetType() == typeof(WeaponData))
         {

@@ -633,7 +633,9 @@ MonoBehaviour:
   faction: 4
   aiControl: {fileID: 5291230762624573668}
   moveSpeed: 2.7
-  weaponAttachmentBone: {fileID: 8109489427493512261}
+  weaponAttachmentBones:
+  - {fileID: 8109489427493512261}
+  - {fileID: 1731808231861850036}
   groundReferenceObject: {fileID: 8025869341345888668}
   maxHealth: 300
   health: 300

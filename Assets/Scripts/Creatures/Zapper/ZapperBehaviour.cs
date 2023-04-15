@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.U2D.Animation;
 
 // This class is very similar to spiderbot - but separation is on purpose so in the future these 2 enemies can be more distinct
-public class TankbotBehaviour : CreatureBehaviour, Saveable<TankbotData>, Spawnable<TankbotData>
+public class ZapperBehaviour : CreatureBehaviour, Saveable<ZapperData>, Spawnable<ZapperData>
 {
-    public TankbotAnimations animations;
+    public ZapperAnimations animations;
 
     public static string[] BODYPARTS = new string[] { "Sensor", "Turret" };
 
@@ -16,10 +16,9 @@ public class TankbotBehaviour : CreatureBehaviour, Saveable<TankbotData>, Spawna
         base.Awake();
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
         GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Turret_Parent");
-        animations = new TankbotAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, aimBone);
+        animations = new ZapperAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, aimBone);
         animations.movementDeterminesFlip = true;
-        SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/RifleTankbot");
-        SpawnAIWeapon(weaponAttachmentBones[1], "Prefabs/Items/Weapons/RifleTankbot");
+        SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/ZapperWeapon");
     }
 
     new protected void Update()
@@ -33,41 +32,41 @@ public class TankbotBehaviour : CreatureBehaviour, Saveable<TankbotData>, Spawna
         return animations;
     }
 
-    new public TankbotData Save()
+    new public ZapperData Save()
     {
-        TankbotData data = new TankbotData(base.Save());
+        ZapperData data = new ZapperData(base.Save());
         data.animationData = animations.Save();
         return data;
     }
 
-    public void Load(TankbotData data, bool loadTransform = true)
+    public void Load(ZapperData data, bool loadTransform = true)
     {
         base.Load(data, loadTransform);
         SetAlive(GetAlive());
         animations.Load(data.animationData);
     }
 
-    public static GameObject Spawn(TankbotData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
+    public static GameObject Spawn(ZapperData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
     {
         GameObject obj = CreatureBehaviour.Spawn(data, position, rotation, scale, parent);
-        obj.GetComponent<TankbotBehaviour>().Load(data, false);
+        obj.GetComponent<ZapperBehaviour>().Load(data, false);
         return obj;
     }
 
-    public static GameObject Spawn(SpiderbotData data, Transform parent = null)
+    public static GameObject Spawn(ZapperData data, Transform parent = null)
     {
         GameObject obj = CreatureBehaviour.Spawn(data, parent);
-        obj.GetComponent<TankbotBehaviour>().Load(data);
+        obj.GetComponent<ZapperBehaviour>().Load(data);
         return obj;
     }
 }
 
 [Serializable]
-public class TankbotData : CreatureData
+public class ZapperData : CreatureData
 {
-    public TankbotData() { }
+    public ZapperData() { }
 
-    public TankbotData(CreatureData data) : base(data)
+    public ZapperData(CreatureData data) : base(data)
     {
         this.faction = data.faction;
         this.aiData = data.aiData;
@@ -78,6 +77,6 @@ public class TankbotData : CreatureData
         this.inventory = data.inventory;
     }
 
-    public TankbotAnimationData animationData;
+    public ZapperAnimationData animationData;
 
 }

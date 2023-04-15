@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 2012167021715772540}
   - component: {fileID: 7194358951515551220}
   m_Layer: 3
-  m_Name: MissileLauncherSpiderbot
+  m_Name: ZapperWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469dedd87cc55884789be4752c929b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabPath: Prefabs/Items/Weapons/MissileLauncherSpiderbot
+  prefabPath: Prefabs/Items/Weapons/ZapperWeapon
   targetBone: {fileID: 8289283381652960123}
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
@@ -87,13 +87,13 @@ MonoBehaviour:
   pickable: 0
   removeOnPick: 0
   ownerID: 0
-  projectilePrefab: {fileID: 8289283381652960123, guid: 39965df7c7fb6a9449a84c11555f4ca3, type: 3}
+  projectilePrefab: {fileID: 8289283381652960123, guid: ef80df135b2888e48a94ce17e20dc439, type: 3}
   maxAmmo: 9999
   currAmmo: 9999
-  cooldown: 1
+  cooldown: 0.6
   reloadCooldown: 0
   spread: 0
-  snapMaxAngle: 20
+  snapMaxAngle: 5
   animationType: 0
   ammoLink: 0
   target: {x: 0, y: 0}

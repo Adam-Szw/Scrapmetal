@@ -10,8 +10,6 @@ public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Sp
 
     public static string[] BODYPARTS = new string[] { "Sensor", "Turret" };
 
-    private WeaponBehaviour weaponBehaviour;
-
     new protected void Awake()
     {
         base.Awake();
@@ -19,13 +17,7 @@ public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Sp
         GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Turret_Parent");
         animations = new SpiderbotAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, aimBone);
         animations.movementDeterminesFlip = true;
-        Vector3 position = weaponAttachmentBone.transform.position;
-        Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-        GameObject weapon = WeaponBehaviour.Spawn("Prefabs/Items/Weapons/MissileLauncherSpiderbot", position, rotation, weaponAttachmentBone.transform);
-        weaponBehaviour = weapon.GetComponent<WeaponBehaviour>();
-        weaponBehaviour.ownerID = ID;
-        weaponBehaviour.ownerFaction = faction;
-        weaponBehaviour.groundReferenceObject = groundReferenceObject;
+        SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/MissileLauncherSpiderbot");
     }
 
     new protected void Update()
@@ -39,16 +31,10 @@ public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Sp
         return animations;
     }
 
-    protected override List<WeaponBehaviour> GetWeapons()
-    {
-        return new List<WeaponBehaviour>(){ weaponBehaviour };
-    }
-
     new public SpiderbotData Save()
     {
         SpiderbotData data = new SpiderbotData(base.Save());
         data.animationData = animations.Save();
-        data.weaponData = weaponBehaviour.Save();
         return data;
     }
 
@@ -57,7 +43,6 @@ public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Sp
         base.Load(data, loadTransform);
         SetAlive(GetAlive());
         animations.Load(data.animationData);
-        weaponBehaviour.Load(data.weaponData);
     }
 
     public static GameObject Spawn(SpiderbotData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -92,6 +77,5 @@ public class SpiderbotData : CreatureData
     }
 
     public SpiderbotAnimationData animationData;
-    public WeaponData weaponData;
 
 }

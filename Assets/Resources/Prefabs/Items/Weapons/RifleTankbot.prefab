@@ -88,8 +88,8 @@ MonoBehaviour:
   removeOnPick: 0
   ownerID: 0
   projectilePrefab: {fileID: 8289283381652960123, guid: b8eae584d41b2cc4f9bab5f5be71ff7f, type: 3}
-  maxAmmo: 999
-  currAmmo: 999
+  maxAmmo: 9999
+  currAmmo: 9999
   cooldown: 0.2
   reloadCooldown: 0
   spread: 0

@@ -165,8 +165,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 2764125531553067213}
   m_Bounds:
-    m_Center: {x: -0.00064992905, y: -0.0030741245, z: 0}
-    m_Extent: {x: 0.17003, y: 0.16940501, z: 0}
+    m_Center: {x: 0.0063450783, y: -0.008494154, z: 0}
+    m_Extent: {x: 0.160885, y: 0.159615, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -366,7 +366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6867522891542710802}
-  - component: {fileID: 5169631290420692917}
+  - component: {fileID: 2410921550181646686}
   - component: {fileID: 5291230762624573668}
   - component: {fileID: 2978790146387656399}
   - component: {fileID: 3580721524377681868}
@@ -395,7 +395,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5169631290420692917
+--- !u!114 &2410921550181646686
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -404,25 +404,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 4070046796214033033}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82ae5960bbde2f04eba4d1e382e449c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 7662c816bec72784099b9354e8628fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabPath: Prefabs/Creatures/Tankbot
+  prefabPath: Prefabs/Creatures/Zapper
   targetBone: {fileID: 4224721772167164810}
   interactAttachment: {fileID: 1010068221656279094}
   ID: 0
   healthbar: {fileID: 4699295782675156808}
   faction: 4
   aiControl: {fileID: 5291230762624573668}
-  moveSpeed: 2.7
-  weaponAttachmentBone: {fileID: 8109489427493512261}
+  moveSpeed: 3.3
+  weaponAttachmentBones:
+  - {fileID: 8109489427493512261}
   groundReferenceObject: {fileID: 8025869341345888668}
-  maxHealth: 300
-  health: 300
+  maxHealth: 125
+  health: 125
   visionCollider: {fileID: 0}
   inventory: []
   loot: []
-  weaponAttachmentSecondary: {fileID: 0}
 --- !u!114 &5291230762624573668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,17 +435,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0544082cec4688d48b0f95f3d4abe5b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behaviour: {fileID: 5169631290420692917}
-  detectionRange: 7
+  behaviour: {fileID: 2410921550181646686}
+  detectionRange: 6
   detectionRangeCaution: 18
-  attackDistance: 12
-  accuracyAllowance: 35
-  preferredFightDistance: 5
-  cautionTime: 0.5
-  searchTime: 5
+  attackDistance: 3
+  accuracyAllowance: 360
+  preferredFightDistance: 1.5
+  cautionTime: 0.2
+  searchTime: 4
   chaseTime: 7
   idleRoutine: []
-  distanceMaxOffset: 3
+  distanceMaxOffset: 1.5
   locationMaxOffset: 0.5
   targetID: 0
 --- !u!50 &2978790146387656399
@@ -728,7 +728,7 @@ Transform:
   - {fileID: 7343203351385855843}
   m_Father: {fileID: 7113395538907551942}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.19542265}
 --- !u!212 &8828904608405065635
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -797,8 +797,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 7343203351385855843}
   m_Bounds:
-    m_Center: {x: 0.64260435, y: 0.05670151, z: 0}
-    m_Extent: {x: 0.7601204, y: 0.41613162, z: 0}
+    m_Center: {x: 0.6437022, y: 0.05789289, z: 0}
+    m_Extent: {x: 0.75906456, y: 0.4149442, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -812,7 +812,7 @@ Animator:
   m_GameObject: {fileID: 6054607511198424344}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4a5f8058dff3f2144bf0eced8e6b96c5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -922,7 +922,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8109489427493512261}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.499, y: -0.098, z: 0}
+  m_LocalPosition: {x: 0.999, y: -0.046, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1064,8 +1064,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 8043324387524509294}
   m_Bounds:
-    m_Center: {x: 0.008409321, y: 0.0056838244, z: 0}
-    m_Extent: {x: 0.17070088, y: 0.16810508, z: 0}
+    m_Center: {x: 0.008598313, y: 0.0059860647, z: 0}
+    m_Extent: {x: 0.16170794, y: 0.15698752, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -1171,8 +1171,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 4111320108016120585}
   m_Bounds:
-    m_Center: {x: 0.14448029, y: 0.4081817, z: 0}
-    m_Extent: {x: 0.6303742, y: 0.26195556, z: 0}
+    m_Center: {x: 0.14233065, y: 0.40810332, z: 0}
+    m_Extent: {x: 0.63252383, y: 0.26237538, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0

@@ -956,11 +956,11 @@ MonoBehaviour:
   faction: 0
   aiControl: {fileID: 0}
   moveSpeed: 5
-  weaponAttachmentBone: {fileID: 4415601639827162915}
+  weaponAttachmentBones:
+  - {fileID: 4415601639827162915}
   groundReferenceObject: {fileID: 8155264429366595155}
   maxHealth: 100
   health: 100
-  alive: 1
   visionCollider: {fileID: 0}
   inventory: []
   loot: []
