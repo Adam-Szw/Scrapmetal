@@ -28,7 +28,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public CreatureAI aiControl = null;
 
     public float moveSpeed = 0.0f;
-    [HideInInspector] public GameObject weaponAttachmentBone = null;
+    public GameObject weaponAttachmentBone = null;
     [HideInInspector] public GameObject groundReferenceObject = null;
     [SerializeField] private float maxHealth = 100.0f;
     [SerializeField] private float health = 100.0f;
@@ -93,6 +93,15 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     {
         health -= amount;
         SpawnFloatingText(Color.red, "-" + amount, 0.35f);
+        if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
+        if (health <= 0) SetAlive(false);
+    }
+
+    public void Heal(float amount)
+    {
+        health += amount;
+        if (health > maxHealth) health = maxHealth;
+        SpawnFloatingText(Color.green, "+" + amount, 0.35f);
         if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
         if (health <= 0) SetAlive(false);
     }

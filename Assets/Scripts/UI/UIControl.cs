@@ -22,6 +22,14 @@ public class UIControl : MonoBehaviour
         // React to keystrokes
         if (PlayerInput.esc)
         {
+            // Dialog open - close it
+            if (dialog)
+            {
+                DestroyDialog();
+                ShowCombatUI();
+                return;
+            }
+
             // Inventory open - close it
             if (inventory)
             {
@@ -70,9 +78,10 @@ public class UIControl : MonoBehaviour
         GlobalControl.UnpauseGame();
     }
 
-    public static void showDialog(DialogOption initialOption, string dialogRespondentName)
+    public static void showDialog(ulong initialOptionID, string dialogRespondentName)
     {
         GlobalControl.PauseGame();
+        DialogOption initialOption = DialogLibrary.getDialogOptionByID(initialOptionID);
         dialog = Instantiate(Resources.Load<GameObject>(dialogPrefabPath));
         dialog.GetComponent<DialogControl>().Initialize(initialOption, dialogRespondentName);
     }
@@ -102,7 +111,7 @@ public class UIControl : MonoBehaviour
     {
         combatUI = Instantiate(Resources.Load<GameObject>(combatUIPrefabPath));
         GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().SetHealthbar(combatUI.GetComponent<CombatUIControl>().healthbarBehaviour);
-        combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().weaponEnabled);
+        GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().UIRefresh();
     }
 
     public static void DestroyCombatUI()

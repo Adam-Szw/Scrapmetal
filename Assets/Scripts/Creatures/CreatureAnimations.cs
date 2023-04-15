@@ -21,7 +21,7 @@ public class CreatureAnimations : Saveable<CreatureAnimationData>
     // When should the run animation reach maximum multiplier
     public float speedMaxAnimationSpeed = 0.0f;
 
-    [HideInInspector] public GameObject aimingReferenceBone;
+    public GameObject aimingReferenceBone;
 
     protected Transform transform;
     protected List<Animator> animators;

@@ -2204,13 +2204,13 @@ MonoBehaviour:
   detectionRange: 9
   detectionRangeCaution: 13
   attackDistance: 10
-  preferredFightDistance: 8
+  preferredFightDistance: 7
   cautionTime: 2
   searchTime: 8
   chaseTime: 6
   idleRoutine: []
   LOCATION_MAX_OFFSET: 0.1
-  DISTANCE_MAX_OFFSET: 4
+  DISTANCE_MAX_OFFSET: 3
   targetID: 0
 --- !u!50 &2978790146387656399
 Rigidbody2D:

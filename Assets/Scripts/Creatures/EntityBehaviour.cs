@@ -25,6 +25,8 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     [HideInInspector] public InteractionEffect interactionEnterEffect = null;
     // Effect to be triggered when this entity is interacted with
     [HideInInspector] public InteractionEffect interactionUseEffect = null;
+    protected GameObject aura = null;
+    protected GameObject hText = null;
 
     protected void Update()
     {
@@ -37,6 +39,13 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         rb = this.gameObject.GetComponent<Rigidbody2D>();
         ID = ++GlobalControl.nextID;
         HelpFunc.DisableInternalCollision(transform);
+    }
+
+    protected void OnDestroy()
+    {
+        if (aura) Destroy(aura);
+        if (hText) Destroy(hText);
+        StopAllCoroutines();
     }
 
     // Adds collider for interactible detection by the player, essentially making this object detectable for interactions
@@ -81,16 +90,38 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     public void UpdateRigidBody()
     {
         if (!rb) return;
-        rb.velocity = moveVector * speed;
+        if (rb.bodyType != RigidbodyType2D.Static) rb.velocity = moveVector * speed;
     }
 
-    // Spawn a text above entity for given time. The text will move slightly in its duration
     public void SpawnFloatingText(Color color, string text, float time)
     {
         StartCoroutine(SpawnFloatingTextCoroutine(color, text, time));
     }
 
-    private IEnumerator SpawnFloatingTextCoroutine(Color color, string text, float time)
+    // Spawn a text in interaction area for a given amount of time
+    protected IEnumerator SpawnInteractionTextCoroutine(string text, float time, float yOffset)
+    {
+        hText = Instantiate(Resources.Load<GameObject>("Prefabs/UI/TextObject"));
+        hText.GetComponentInChildren<TextMeshProUGUI>().text = text;
+        hText.transform.position = interactAttachment.transform.position + new Vector3(0f, yOffset, 0f);
+        yield return new WaitForSeconds(time);
+        Destroy(hText);
+        hText = null;
+    }
+
+    // Envelop entity in aura for given time
+    protected IEnumerator HighlightEntityCoroutine(float time)
+    {
+        aura = Instantiate(Resources.Load<GameObject>("Prefabs/UI/HighlightAura"));
+        aura.transform.parent = transform;
+        aura.transform.localPosition = Vector3.zero;
+        yield return new WaitForSeconds(time);
+        Destroy(aura);
+        aura = null;
+    }
+
+    // Spawn a text above entity for given time. The text will move slightly in its duration
+    protected IEnumerator SpawnFloatingTextCoroutine(Color color, string text, float time)
     {
         GameObject txt = Instantiate(Resources.Load<GameObject>("Prefabs/UI/TextObjectLight"));
         txt.GetComponentInChildren<TextMeshProUGUI>().text = text;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8151393122861713825}
   - component: {fileID: 3004433874769377208}
   m_Layer: 0
-  m_Name: Barrel
+  m_Name: Box_Small
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,8 +68,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.2846864}
-  m_Size: {x: 0.406429, y: 0.272101}
+  m_Offset: {x: 0.03292713, y: -0.2635189}
+  m_Size: {x: 0.66984797, y: 0.314436}
   m_Direction: 1
 --- !u!1 &3554906992047203862
 GameObject:
@@ -190,7 +190,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 222ecc03330536841ab4f9c8dd3d9e06, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bd8ab0062d89a3b44bc8b99f3fae8a4f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -229,4 +229,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 1.1393376e+11
+  m_SpriteKey: 0.000005067124

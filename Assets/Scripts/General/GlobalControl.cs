@@ -120,20 +120,24 @@ public class GlobalControl : MonoBehaviour
             LoadEntities(scene.entities);
             SetPlayer(HelpFunc.FindPlayerInScene());
             cameraControl.Load(scene.cameraData);
-            UIControl.ShowCombatUI();
         }
+        UIControl.ShowCombatUI();
         nextID = save.nextID;
     }
 
     private static readonly Dictionary<Type, Action<EntityData>> SpawnMethods = new Dictionary<Type, Action<EntityData>>()
     {
         { typeof(PlayerData), d => PlayerBehaviour.Spawn((PlayerData)d) },
+        { typeof(NPCData), d => NPCBehaviour.Spawn((NPCData)d) },
         { typeof(HumanoidData), d => HumanoidBehaviour.Spawn((HumanoidData)d) },
         { typeof(SpiderbotData), d => SpiderbotBehaviour.Spawn((SpiderbotData)d) },
         { typeof(CreatureData), d => CreatureBehaviour.Spawn((CreatureData)d) },
+        { typeof(ArmorData), d => ArmorBehaviour.Spawn((ArmorData)d) },
         { typeof(WeaponData), d => WeaponBehaviour.Spawn((WeaponData)d) },
         { typeof(ProjectileData), d => ProjectileBehaviour.Spawn((ProjectileData)d) },
+        { typeof(UsableData), d => UsableBehaviour.Spawn((UsableData)d) },
         { typeof(ItemData), d => ItemBehaviour.Spawn((ItemData)d) },
+        { typeof(ContainerData), d => ContainerBehaviour.Spawn((ContainerData)d) },
         { typeof(EntityData), d => EntityBehaviour.Spawn(d) }
     };
 
@@ -171,6 +175,8 @@ public class GlobalControl : MonoBehaviour
         {
             EntityBehaviour eB = obj.GetComponent<EntityBehaviour>();
             if (eB) Destroy(obj);
+            TextMarker tm = obj.GetComponent<TextMarker>();
+            if (tm) Destroy(obj);
         }
     }
 

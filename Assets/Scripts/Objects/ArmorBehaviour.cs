@@ -53,11 +53,11 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
     }
 
     public static ArmorData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable,
-     ArmorSlot.Slot slot)
+     bool removeOnPick, ArmorSlot.Slot slot)
     {
-        ArmorData data = new ArmorData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable));
+        ArmorData data = new ArmorData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable, removeOnPick));
         data.slot = slot;
-        return null;
+        return data;
     }
 
     public static GameObject Spawn(ArmorData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)

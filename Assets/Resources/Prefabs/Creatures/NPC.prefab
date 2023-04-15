@@ -846,11 +846,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5684202536283468193}
-  - component: {fileID: 1766864077643462106}
+  - component: {fileID: 2047150132106021230}
+  - component: {fileID: 6062211383785325316}
   - component: {fileID: 8151393122861713825}
   - component: {fileID: 3004433874769377208}
   m_Layer: 0
-  m_Name: Humanoid
+  m_Name: NPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -874,7 +875,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1766864077643462106
+--- !u!114 &2047150132106021230
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -883,19 +884,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2300210682344453543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5239badd15024fe49a3ae2d7748f16f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 285faec29b1e86240841d5dc8caecf85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabPath: Prefabs/Creatures/Humanoid
+  prefabPath: Prefabs/Creatures/NPC
   targetBone: {fileID: 3900115423345690400}
   interactAttachment: {fileID: 4398082579037113846}
   ID: 0
   healthbar: {fileID: 2184009108772949476}
   faction: 1
-  aiControl: {fileID: 0}
-  moveSpeed: 5
+  aiControl: {fileID: 6062211383785325316}
+  moveSpeed: 2.5
   weaponAttachmentBone: {fileID: 4415601639827162915}
-  groundReferenceObject: {fileID: 3478333812917388545}
+  groundReferenceObject: {fileID: 0}
   maxHealth: 100
   health: 100
   alive: 1
@@ -905,6 +906,32 @@ MonoBehaviour:
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 14
   backwardSpeedMultiplier: 0.5
+  interactible: 1
+  dialogStartID: 1
+--- !u!114 &6062211383785325316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2300210682344453543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0544082cec4688d48b0f95f3d4abe5b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviour: {fileID: 2047150132106021230}
+  detectionRange: 12
+  detectionRangeCaution: 18
+  attackDistance: 10
+  preferredFightDistance: 5
+  cautionTime: 3
+  searchTime: 10
+  chaseTime: 6
+  idleRoutine: []
+  LOCATION_MAX_OFFSET: 0.5
+  DISTANCE_MAX_OFFSET: 4
+  targetID: 0
 --- !u!50 &8151393122861713825
 Rigidbody2D:
   serializedVersion: 4

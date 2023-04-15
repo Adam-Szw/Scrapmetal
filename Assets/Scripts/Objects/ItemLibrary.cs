@@ -27,8 +27,8 @@ public static class ItemLibrary
     public static void LoadItemLocalization(string filename)
     {
         TextAsset textAsset = Resources.Load<TextAsset>("Localization/" + filename);
-        ItemLoadList dialogLoadList = JsonUtility.FromJson<ItemLoadList>(textAsset.text);
-        foreach (ItemLocalData load in dialogLoadList.itemLocalData) itemLocalization.Add(load.id, load.text);
+        ItemLoadList itemLoadList = JsonUtility.FromJson<ItemLoadList>(textAsset.text);
+        foreach (ItemLocalData load in itemLoadList.itemLocalData) itemLocalization.Add(load.id, load.text);
     }
 
     public static void LoadItems()

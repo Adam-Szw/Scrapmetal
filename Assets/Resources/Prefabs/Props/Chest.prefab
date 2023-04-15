@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 5684202536283468193}
   - component: {fileID: 8151393122861713825}
   - component: {fileID: 3004433874769377208}
+  - component: {fileID: 2592985560264113882}
   m_Layer: 0
-  m_Name: Barrel
+  m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,9 +69,27 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.2846864}
-  m_Size: {x: 0.406429, y: 0.272101}
+  m_Offset: {x: -0.00252196, y: -0.23267889}
+  m_Size: {x: 0.7073142, y: 0.2654204}
   m_Direction: 1
+--- !u!114 &2592985560264113882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2300210682344453543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 641f50f3883e09348bf93fc6a1b8dce2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabPath: Prefabs/Props/Chest
+  targetBone: {fileID: 2300210682344453543}
+  interactAttachment: {fileID: 2300210682344453543}
+  ID: 0
+  isAvailable: 1
+  loot: []
 --- !u!1 &3554906992047203862
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +115,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3554906992047203862}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.399, z: 0}
+  m_LocalPosition: {x: 0, y: -0.362, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -142,7 +161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5570753797193697992}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.704, z: 0}
+  m_LocalPosition: {x: 0, y: 0.362, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -190,7 +209,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 222ecc03330536841ab4f9c8dd3d9e06, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 348f71dd945e0054d8c4d4be945f364c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -229,4 +248,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 1.1393376e+11
+  m_SpriteKey: 4.4987322e-10

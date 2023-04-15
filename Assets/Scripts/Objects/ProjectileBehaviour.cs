@@ -143,6 +143,7 @@ public class ProjectileData : ItemData
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;
         pickable = data.pickable;
+        removeOnPick = data.removeOnPick;
     }
 
     public float speedInitial;
@@ -150,6 +151,5 @@ public class ProjectileData : ItemData
     public float lifespan;
     public float damage;
     public float lifeRemaining;
-    public List<string> graphicsData;
     public float projectileRotation;
 }

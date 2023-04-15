@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEditor.Progress;
 using static WeaponBehaviour;
 
@@ -17,9 +18,6 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
     public bool removeOnPick = false;
 
     [HideInInspector] public ulong ownerID = 0;
-
-    private GameObject aura = null;
-    private GameObject hText = null;
 
     protected void Start()
     {
@@ -35,69 +33,56 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
 
     private void InteractionUse(CreatureBehaviour user)
     {
-        // Do nothing if we cant pick up item due to inventory being full
-        if (user.inventory.Count >= CreatureBehaviour.inventoryLimit) return;
+        // Send text if inventory is full and we cant pick up item
+        if (user.inventory.Count >= CreatureBehaviour.inventoryLimit && !removeOnPick)
+        {
+            user.SpawnFloatingText(Color.red, "Inventory full!", 0.5f);
+            return;
+        }
         if (aura) Destroy(aura);
         aura = null;
         if (hText) Destroy(hText);
         hText = null;
-        // Actions for normal items
-        if (!removeOnPick)
-        {
-            // Give the item to the user and destroy entity
-            pickable = false;   // Make sure that item is no longer interactible while in inventory
-            MethodInfo saveMethod = this.GetType().GetMethod("Save");
-            user.inventory.Add((ItemData)saveMethod.Invoke(this, null));
-            Destroy(gameObject);
-            // Spawn pickup text
-            user.SpawnFloatingText(Color.green, "Item picked up", 0.5f);
-        }
-        // Actions for scrap/currency or other things that get liquidated instantly
-        else
-        {
-            // Add value to the player's currency count if picked up by player
-            if (user is PlayerBehaviour) ((PlayerBehaviour)user).currencyCount += value;
-            // Destroy item
-            Destroy(gameObject);
-            // Spawn text
-            user.SpawnFloatingText(Color.green, "Scrap +" + value, 0.5f);
-        }
+        // Give the item to the user and destroy entity
+        pickable = false;   // Make sure that item is no longer interactible while in inventory
+        MethodInfo saveMethod = GetType().GetMethod("Save");
+        ItemData item = (ItemData)saveMethod.Invoke(this, null);
+        GiveItem(item, user);
+        Destroy(gameObject);
     }
 
     private void InteractionEnter(CreatureBehaviour user)
     {
         // Do nothing if the user is not player
         if (user is not PlayerBehaviour) return;
-        StartCoroutine(HighlightItem(PlayerBehaviour.interactibleInteravalTime));
-        StartCoroutine(SpawnPickupText(PlayerBehaviour.interactibleInteravalTime));
+        StartCoroutine(HighlightEntityCoroutine(PlayerBehaviour.interactibleInteravalTime));
+        StartCoroutine(SpawnInteractionTextCoroutine("Press (E) to pick up item", PlayerBehaviour.interactibleInteravalTime, 0.7f));
     }
 
-    // Envelop item in aura for given time
-    private IEnumerator HighlightItem(float time)
+    // Give item to a creature with inventory
+    public static void GiveItem(ItemData item, CreatureBehaviour receiver)
     {
-        aura = Instantiate(Resources.Load<GameObject>("Prefabs/UI/HighlightAura"));
-        aura.transform.parent = transform;
-        aura.transform.localPosition = Vector3.zero;
-        yield return new WaitForSeconds(time);
-        Destroy(aura);
-        aura = null;
-    }
-
-    // Spawn a pickup text above item for given time
-    private IEnumerator SpawnPickupText(float time)
-    {
-        hText = Instantiate(Resources.Load<GameObject>("Prefabs/UI/TextObject"));
-        hText.GetComponentInChildren<TextMeshProUGUI>().text = "Press (E) to pick up item";
-        hText.transform.position = interactAttachment.transform.position + new Vector3(0f, 0.7f, 0f);
-        yield return new WaitForSeconds(time);
-        Destroy(hText);
-        hText = null;
+        if (!item.removeOnPick)
+        {
+            // Add to creature's inventory
+            receiver.inventory.Add(item);
+            // Spawn pickup text
+            receiver.SpawnFloatingText(Color.green, "Item picked up", 0.5f);
+        }
+        // Actions for scrap/currency or other things that get liquidated instantly
+        else
+        {
+            // Add value to the player's currency count if picked up by player
+            if (receiver is PlayerBehaviour) ((PlayerBehaviour)receiver).currencyCount += item.value;
+            // Spawn text
+            receiver.SpawnFloatingText(Color.green, "Scrap +" + item.value, 0.5f);
+        }
     }
 
     /* Get data for a new item with given parameters. It replicates spawning proces without
      * actually creating any entity, as such it will for example allocate a new ID correctly.
      */
-    public static ItemData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable)
+    public static ItemData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable, bool removeOnPick)
     {
         ItemData data = new ItemData();
         data.active = true;
@@ -105,7 +90,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
         data.prefabPath = prefabPath;
         data.location = HelpFunc.VectorToArray(Vector3.zero);
         data.rotation = HelpFunc.QuaternionToArray(Quaternion.identity);
-        data.scale = HelpFunc.VectorToArray(Vector3.zero);
+        data.scale = HelpFunc.VectorToArray(Vector3.one);
         data.velocity = HelpFunc.VectorToArray(Vector2.zero);
         data.speed = 0f;
         data.ownerID = 0;
@@ -114,6 +99,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
         data.inventoryIconLink = iconLink;
         data.value = value;
         data.pickable = pickable;
+        data.removeOnPick = removeOnPick;
         return data;
     }
 
@@ -127,6 +113,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
         data.inventoryIconLink = inventoryIconLink;
         data.value = value;
         data.pickable = pickable;
+        data.removeOnPick = removeOnPick;
         return data;
     }
 
@@ -139,6 +126,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;
         pickable = data.pickable;
+        removeOnPick = data.removeOnPick;
     }
 
     public static GameObject Spawn(ItemData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -189,4 +177,5 @@ public class ItemData : EntityData
     public ulong descriptionTextLinkID;
     public int value;
     public bool pickable;
+    public bool removeOnPick;
 }

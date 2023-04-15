@@ -166,6 +166,7 @@ public class InventoryControl : MonoBehaviour
             descriptionText.text += "\n\nClick to equip the item";
         else if (status == ItemStatus.shop) descriptionText.text += "\n\nClick to purchase the item.\nPrice: " + item.value;
         else if (isShopOpen && status == ItemStatus.inventory) descriptionText.text += "\n\nClick to sell the item.\nPrice: " + (int)Mathf.Round(item.value / 2);
+        else if (!isShopOpen && (item is UsableData)) descriptionText.text += "\n\nClick to use the item";
     }
 
     // Setup actions panel to have actions that are dependant on item type, when item is pressed
@@ -204,7 +205,11 @@ public class InventoryControl : MonoBehaviour
                     SetupAssignArmorButton(actionButtons[0], (ArmorData)item);
                     hoverLocked = true;
                 }
-                // consumables will go here
+                if (item is UsableData)
+                {
+                    SetupUsableButton(actionButtons[0], (UsableData)item);
+                    hoverLocked = true;
+                }
             }
             else
             {
@@ -308,6 +313,19 @@ public class InventoryControl : MonoBehaviour
         {
             ArmorSlot a = new ArmorSlot(armor, armor.slot);
             playerBehaviour.EquipArmor(a);
+            LoadInventoryPanel(playerBehaviour, shopItems);
+        });
+    }
+
+    private void SetupUsableButton(Button button, ItemData item)
+    {
+        ClearButtonActions(button);
+        EnableButton(true, button);
+        SetButtonText(button, "Confirm use item");
+        button.onClick.AddListener(() =>
+        {
+            playerBehaviour.Heal(((UsableData)item).restoration);
+            playerBehaviour.inventory.Remove(item);
             LoadInventoryPanel(playerBehaviour, shopItems);
         });
     }

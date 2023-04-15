@@ -67,9 +67,9 @@ public static class DialogLibrary
     {
         //dialog test
         DialogOption o = new DialogOption(1, new List<ulong>() { 2 });
-        DialogLibrary.options.Add(o);
+        options.Add(o);
         o = new DialogOption(2, new List<ulong>());
-        DialogLibrary.options.Add(o);
+        options.Add(o);
     }
 
 }

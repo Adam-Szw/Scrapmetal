@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using UnityEngine;
 using static ArmorBehaviour;
 using static ArmorBehaviour.ArmorSlot;
@@ -13,12 +12,10 @@ using static PlayerBehaviour;
 public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnable<PlayerData>
 {
     [HideInInspector] public int currencyCount = 0;
-    private int weaponSelected = -1;
 
+    private int weaponSelected = -1;
     private Dictionary<GameObject, float> interactibles = new Dictionary<GameObject, float>();
     private GameObject selectedInteractible = null;
-
-    [HideInInspector] public bool weaponEnabled = false;
 
     [Serializable]
     public struct WeaponSlot
@@ -37,6 +34,11 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     [HideInInspector] public List<ArmorSlot> armors = new List<ArmorSlot>();
 
     public static float interactibleInteravalTime = 0.2f;
+
+    protected void Start()
+    {
+        UIRefresh();
+    }
 
     new protected void Awake()
     {
@@ -138,6 +140,23 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         if (inventory.Contains(aSlot.armor)) inventory.Remove(aSlot.armor);
     }
 
+    public void UIRefresh() 
+    {
+        ItemBehaviour b = activeItemBehaviour;
+        if (b is WeaponBehaviour)
+        {
+            if (UIControl.combatUI)
+            {
+                UIControl.combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(true);
+                UIControl.combatUI.GetComponent<CombatUIControl>().UpdateAmmoCounter(((WeaponBehaviour)b).currAmmo, ((WeaponBehaviour)b).maxAmmo);
+            }
+        }
+        else
+        {
+            if (UIControl.combatUI) UIControl.combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(false);
+        }
+    }
+
     // Continuously run highlight code every 0.2 seconds for closest object
     private IEnumerator PickableHighlightLoop()
     {
@@ -184,22 +203,9 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         ItemData toStore = SetItemActive(weapon);
         if (toStore != null) StoreItem(toStore);
         weaponSelected = index;
+        if (weapon == null) weaponSelected = -1;
         // Show or hide UI ammo counter if applicable
-        if (weapon != null) 
-        {
-            weaponEnabled = true;
-            if (UIControl.combatUI)
-            {
-                UIControl.combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(true);
-                UIControl.combatUI.GetComponent<CombatUIControl>().UpdateAmmoCounter(weapon.currAmmo, weapon.maxAmmo);
-            }
-        }
-        else
-        {
-            weaponEnabled = false;
-            weaponSelected = -1;
-            if (UIControl.combatUI) UIControl.combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(false);
-        }
+        UIRefresh();
     }
 
     private WeaponData GetWeaponBySlot(int index)
@@ -292,7 +298,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         weapons = data.weapons;
         armors = data.armors;
         weaponSelected = data.weaponSelected;
-        GetWeaponBySlot(weaponSelected);
+        SetWeaponFromSlot(weaponSelected);
         UpdateState();
     }
 

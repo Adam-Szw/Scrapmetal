@@ -124,16 +124,16 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
     }
 
     public static WeaponData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable,
-        float cooldown, int maxAmmo, handsState animationType)
+        bool removeOnPick, float cooldown, int maxAmmo, handsState animationType)
     {
-        WeaponData data = new WeaponData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable));
+        WeaponData data = new WeaponData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable, removeOnPick));
         data.cooldown = cooldown;
         data.maxAmmo = maxAmmo;
         data.target = HelpFunc.VectorToArray(Vector2.zero);
         data.currAmmo = maxAmmo;
         data.cooldownCurrent = 0f;
         data.animationType = animationType;
-        return null;
+        return data;
     }
 
     public new WeaponData Save()
@@ -187,6 +187,7 @@ public class WeaponData : ItemData
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;
         pickable = data.pickable;
+        removeOnPick = data.removeOnPick;
     }
 
     public float damage;

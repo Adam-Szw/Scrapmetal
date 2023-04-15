@@ -2,14 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.U2D.Animation;
-using UnityEngine.UIElements;
 using static HumanoidAnimations;
-using static UnityEngine.GraphicsBuffer;
 using ColorUtility = UnityEngine.ColorUtility;
 
 public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spawnable<HumanoidData>
