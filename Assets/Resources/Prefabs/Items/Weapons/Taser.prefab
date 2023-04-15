@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2123385013767443871}
   - component: {fileID: 4204339932415728036}
   m_Layer: 3
-  m_Name: Rivetgun_Sprite
+  m_Name: Taser_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 960301571262056655}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.341, y: 0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1445578271, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
+  m_Sprite: {fileID: -1293419554, guid: ed8b5555db15b9c4b98cbba8a84501cc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -2.5416266e-11
+  m_SpriteKey: 1.0072317e-24
 --- !u!95 &4204339932415728036
 Animator:
   serializedVersion: 4
@@ -127,7 +127,7 @@ Animator:
   m_GameObject: {fileID: 960301571262056655}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3ccc2824f39aa7944a2e386b7a11385e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 73ed04fd47c5a3e4fb494fe59133b6f9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -161,7 +161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3484931087228209276}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.679, y: 0.118, z: 0}
+  m_LocalPosition: {x: 0.525, y: 0.096, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 7194358951515551220}
   - component: {fileID: 7695863947780370617}
   m_Layer: 3
-  m_Name: Rivetgun
+  m_Name: Taser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -214,26 +214,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469dedd87cc55884789be4752c929b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabPath: Prefabs/Items/Weapons/Rivetgun
+  prefabPath: Prefabs/Items/Weapons/Taser
   targetBone: {fileID: 8289283381652960123}
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
   ownerFaction: 1
-  inventoryIconLink: Icons/Icon_RivetGun
-  descriptionTextLinkID: 1
+  inventoryIconLink: Icons/Icon_Taser
+  descriptionTextLinkID: 2
   value: 20
   pickable: 1
   removeOnPick: 0
   ownerID: 0
-  projectilePrefab: {fileID: 8289283381652960123, guid: 7385c1a77b1573749b2a7f6a0d556713, type: 3}
-  maxAmmo: 25
-  currAmmo: 25
-  cooldown: 0.1
+  projectilePrefab: {fileID: 8289283381652960123, guid: 06beac263fbe3284091a3c3cbfbde6d2, type: 3}
+  maxAmmo: 6
+  currAmmo: 6
+  cooldown: 0.75
   reloadCooldown: 2
-  spread: 3
+  spread: 0
   snapMaxAngle: 5
   animationType: 1
-  ammoLink: 1
+  ammoLink: 2
   target: {x: 0, y: 0}
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}

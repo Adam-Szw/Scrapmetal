@@ -81,19 +81,21 @@ MonoBehaviour:
   interactAttachment: {fileID: 0}
   ID: 0
   ownerFaction: 1
-  descriptionText: No description
   inventoryIconLink: Icons/Icon_Test
+  descriptionTextLinkID: 0
   value: 0
   pickable: 0
   removeOnPick: 0
   ownerID: 0
   projectilePrefab: {fileID: 8289283381652960123, guid: 39965df7c7fb6a9449a84c11555f4ca3, type: 3}
-  maxAmmo: 100
-  currAmmo: 100
+  maxAmmo: 999
+  currAmmo: 999
   cooldown: 1
+  reloadCooldown: 0
   spread: 0
   snapMaxAngle: 60
   animationType: 0
+  ammoLink: 0
   target: {x: 0, y: 0}
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}

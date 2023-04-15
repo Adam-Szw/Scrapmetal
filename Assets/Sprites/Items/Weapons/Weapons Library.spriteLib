@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library:
-  - m_Name: 1-Handed Weapon
-    m_Hash: 74668685
+  - m_Name: 1-Handed
+    m_Hash: 50649925
     m_CategoryList: []
     m_OverrideEntries:
     - m_Name: RivetGun_Weapon
@@ -22,22 +22,88 @@ MonoBehaviour:
       m_Sprite: {fileID: 1445578271, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
       m_FromMain: 0
       m_SpriteOverride: {fileID: 1445578271, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
+    - m_Name: Taser_0
+      m_Hash: 2002492930
+      m_Sprite: {fileID: -1293419554, guid: ed8b5555db15b9c4b98cbba8a84501cc, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1293419554, guid: ed8b5555db15b9c4b98cbba8a84501cc, type: 3}
+    - m_Name: Tranquilizer_0
+      m_Hash: 2013458478
+      m_Sprite: {fileID: -403308496, guid: aa00f5a24adba984893061bd69952145, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -403308496, guid: aa00f5a24adba984893061bd69952145, type: 3}
     m_FromMain: 0
-    m_EntryOverrideCount: 1
-  - m_Name: Projectile
-    m_Hash: 1940275645
+    m_EntryOverrideCount: 3
+  - m_Name: 2-Handed
+    m_Hash: -1920213850
     m_CategoryList: []
     m_OverrideEntries:
-    - m_Name: RivetGun_Projectile
-      m_Hash: -635407427
+    - m_Name: Laser_0
+      m_Hash: 594169003
+      m_Sprite: {fileID: 2120281987, guid: 036705776d22c3d41a8c03c6760404b4, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 2120281987, guid: 036705776d22c3d41a8c03c6760404b4, type: 3}
+    - m_Name: MissileLauncher_0
+      m_Hash: -246609719
+      m_Sprite: {fileID: 1711607571, guid: baa6e04ab8115c34786470cc2b7cb4ad, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1711607571, guid: baa6e04ab8115c34786470cc2b7cb4ad, type: 3}
+    - m_Name: Tube_0
+      m_Hash: -752434295
+      m_Sprite: {fileID: 364785048, guid: 14daa2fd03b45e245a0249c90a2e87b8, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 364785048, guid: 14daa2fd03b45e245a0249c90a2e87b8, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  - m_Name: Projectiles
+    m_Hash: -1364351365
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: RivetGun_1
+      m_Hash: 355454466
       m_Sprite: {fileID: 1389838604, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
       m_FromMain: 0
       m_SpriteOverride: {fileID: 1389838604, guid: 2e06863cd99e6784292eb2e9fa9128d8, type: 3}
-    - m_Name: Spiderbot_2
-      m_Hash: 1630325384
+    - m_Name: Spiderbot_4
+      m_Hash: -2008059971
       m_Sprite: {fileID: 1511170464, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
       m_FromMain: 0
       m_SpriteOverride: {fileID: 1511170464, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
+    - m_Name: Spiderbot_3
+      m_Hash: 371980830
+      m_Sprite: {fileID: 1187920879, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1187920879, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
+    - m_Name: Spiderbot_6
+      m_Hash: 1715539601
+      m_Sprite: {fileID: -1650438687, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1650438687, guid: 6a390ecd553f8ad47ae9bf3a984a75d6, type: 3}
+    - m_Name: Laser_1
+      m_Hash: 1416461373
+      m_Sprite: {fileID: 661935612, guid: 036705776d22c3d41a8c03c6760404b4, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 661935612, guid: 036705776d22c3d41a8c03c6760404b4, type: 3}
+    - m_Name: MissileLauncher_1
+      m_Hash: -2041956257
+      m_Sprite: {fileID: -1289364052, guid: baa6e04ab8115c34786470cc2b7cb4ad, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1289364052, guid: baa6e04ab8115c34786470cc2b7cb4ad, type: 3}
+    - m_Name: Taser_1
+      m_Hash: 6074004
+      m_Sprite: {fileID: 1484862159, guid: ed8b5555db15b9c4b98cbba8a84501cc, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1484862159, guid: ed8b5555db15b9c4b98cbba8a84501cc, type: 3}
+    - m_Name: Tranquilizer_1
+      m_Hash: 252035256
+      m_Sprite: {fileID: -488053517, guid: aa00f5a24adba984893061bd69952145, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -488053517, guid: aa00f5a24adba984893061bd69952145, type: 3}
+    - m_Name: Tube_1
+      m_Hash: -1541278945
+      m_Sprite: {fileID: -847032186, guid: 14daa2fd03b45e245a0249c90a2e87b8, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -847032186, guid: 14daa2fd03b45e245a0249c90a2e87b8, type: 3}
     m_FromMain: 0
-    m_EntryOverrideCount: 2
+    m_EntryOverrideCount: 9
   m_PrimaryLibraryGUID: 

@@ -277,7 +277,11 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     private void ReloadCurrentWeapon()
     {
         // Do nothing if on cooldown
-        if (reloadTimer > 0f) return;
+        if (reloadTimer > 0f)
+        {
+            SpawnFloatingText(Color.blue, "Reloading" + reloadTimer + "s", 0.3f);
+            return;
+        }
 
         // If we dont have weapon do nothing
         if (!activeItemBehaviour || (activeItemBehaviour && (activeItemBehaviour is not WeaponBehaviour))) return;

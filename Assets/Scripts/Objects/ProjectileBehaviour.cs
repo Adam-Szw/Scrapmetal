@@ -23,6 +23,7 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
     public float lifespan;
     public float lifeRemaining;
     public float damage;
+    public bool piercing = false;
     // Special effects can be caused here that are triggered on projectile destroy
     [HideInInspector] public Effect effect;
 
@@ -55,8 +56,11 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         }
         else
         {
-            Vector2 targetPos = guidanceTarget.transform.position;
-            if (guidanceTarget != null && guidanceStep > 0) TurnMissile(targetPos);
+            if (guidanceTarget != null && guidanceStep > 0)
+            {
+                Vector2 targetPos = guidanceTarget.transform.position;
+                TurnMissile(targetPos);
+            }
             // Acquire target if ID is given but target not found
             else if (guidanceTargetID != 0) guidanceTarget = HelpFunc.FindEntityByID(guidanceTargetID);
         }
@@ -133,7 +137,7 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
                 }
             }
             if (target && projectile.sendTargetBerserk) target.faction = CreatureBehaviour.FactionAllegiance.berserk;
-            Destroy(projectile.gameObject);
+            if (!projectile.piercing || (projectile.lifeRemaining <= 0f)) Destroy(projectile.gameObject);
         };
     }
 
@@ -151,10 +155,12 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         data.acceleration = acceleration;
         data.lifespan = lifespan;
         data.damage = damage;
+        data.piercing = piercing;
         data.lifeRemaining = lifeRemaining;
         data.projectileRotation = spriteObject.transform.localEulerAngles.z;
         data.sendTargetBerserk = sendTargetBerserk;
         data.explosionRadius = explosionRadius;
+        data.guideOnPointer = guideOnPointer;
         return data;
     }
 
@@ -165,11 +171,13 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         acceleration = data.acceleration;
         lifespan = data.lifespan;
         damage = data.damage;
+        piercing = data.piercing;
         ownerID = data.ownerID;
         lifeRemaining = data.lifeRemaining;
         spriteObject.transform.localEulerAngles = new Vector3(0f, 0f, data.projectileRotation);
         sendTargetBerserk = data.sendTargetBerserk;
         explosionRadius = data.explosionRadius;
+        guideOnPointer = data.guideOnPointer;
     }
 
     public static GameObject Spawn(ProjectileData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -211,4 +219,6 @@ public class ProjectileData : ItemData
     public float projectileRotation;
     public bool sendTargetBerserk;
     public float explosionRadius;
+    public bool guideOnPointer;
+    public bool piercing;
 }

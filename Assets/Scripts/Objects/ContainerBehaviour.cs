@@ -21,6 +21,7 @@ public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spaw
         AddInteractionCollider();
         interactionEnterEffect = (CreatureBehaviour user) => { InteractionEnter(user); };
         interactionUseEffect = (CreatureBehaviour user) => { InteractionUse(user); };
+        if (loot.Count == 0) isAvailable = false;
     }
 
     private void InteractionUse(CreatureBehaviour user)
