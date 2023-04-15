@@ -6,8 +6,6 @@ using UnityEngine.U2D.Animation;
 
 public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Spawnable<SpiderbotData>
 {
-    public GameObject target;
-
     public SpiderbotAnimations animations;
 
     public static string[] BODYPARTS = new string[] { "Sensor", "Turret" };

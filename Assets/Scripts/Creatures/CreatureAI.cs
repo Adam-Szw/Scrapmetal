@@ -17,13 +17,14 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     [SerializeField] private float detectionRange = 0.0f;
     [SerializeField] private float detectionRangeCaution = 0.0f;
     [SerializeField] private float attackDistance = 0.0f;
+    [SerializeField] private float accuracyAllowance = 0.0f;
     [SerializeField] private float preferredFightDistance = 0.0f;
     [SerializeField] private float cautionTime = 0.0f;
     [SerializeField] private float searchTime = 0.0f;
     [SerializeField] private float chaseTime = 0.0f;
     [SerializeField] private List<Vector2> idleRoutine = new List<Vector2>();
-    [SerializeField] private float LOCATION_MAX_OFFSET = 0.5f;
-    [SerializeField] private float DISTANCE_MAX_OFFSET = 2.0f;
+    [SerializeField] private float distanceMaxOffset = 2.0f;
+    [SerializeField] private float locationMaxOffset = 0.5f;
 
     // Handled by detection system
     [HideInInspector] public ulong targetID = 0;
@@ -383,12 +384,12 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                     // set attack target for weapons and execute the attack
                     ObtainTargetLocation();
                     behaviour.SetAttackTarget(target);
-                    if (behaviour.AnyWeaponOnTarget()) behaviour.Attack();
+                    if (behaviour.AnyWeaponOnTarget(accuracyAllowance)) behaviour.Attack();
                     // path to preferred distance
                     Vector2 currLocation = transform.position;
                     float currDistance = (targetLastPos.Value - currLocation).magnitude;
-                    if (currDistance > preferredFightDistance + DISTANCE_MAX_OFFSET ||
-                        currDistance < preferredFightDistance - DISTANCE_MAX_OFFSET) 
+                    if (currDistance > preferredFightDistance + distanceMaxOffset ||
+                        currDistance < preferredFightDistance - distanceMaxOffset) 
                         locationGoal = HelpFunc.GetPointAtDistance(currLocation, targetLastPos.Value, preferredFightDistance);
                     break;
                 }
@@ -405,8 +406,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         float currY = currLocation.y;
         float goalX = locationGoal.Value.x;
         float goalY = locationGoal.Value.y;
-        bool xMatching = Mathf.Abs(goalX - currX) < LOCATION_MAX_OFFSET;
-        bool yMatching = Mathf.Abs(goalY - currY) < LOCATION_MAX_OFFSET;
+        bool xMatching = Mathf.Abs(goalX - currX) < locationMaxOffset;
+        bool yMatching = Mathf.Abs(goalY - currY) < locationMaxOffset;
         return xMatching && yMatching;
     }
 
@@ -471,8 +472,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         data.searchTime = searchTime;
         data.chaseTime = chaseTime;
         data.idleRoutine = HelpFunc.VectorListToArrayList(idleRoutine);
-        data.LOCATION_MAX_OFFSET = LOCATION_MAX_OFFSET;
-        data.DISTANCE_MAX_OFFSET = DISTANCE_MAX_OFFSET;
+        data.LOCATION_MAX_OFFSET = locationMaxOffset;
+        data.DISTANCE_MAX_OFFSET = distanceMaxOffset;
         data.targetID = targetID;
         data.targetLastPos = targetLastPos.HasValue ? HelpFunc.VectorToArray(targetLastPos.Value) : null;
         data.state = state;
@@ -493,8 +494,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         searchTime = data.searchTime;
         chaseTime = data.chaseTime;
         idleRoutine = HelpFunc.DataToListVec2(data.idleRoutine);
-        LOCATION_MAX_OFFSET = data.LOCATION_MAX_OFFSET;
-        DISTANCE_MAX_OFFSET = data.DISTANCE_MAX_OFFSET;
+        locationMaxOffset = data.LOCATION_MAX_OFFSET;
+        distanceMaxOffset = data.DISTANCE_MAX_OFFSET;
         targetID = data.targetID;
         if (targetID != 0) target = HelpFunc.FindEntityByID(targetID);
         targetLastPos = (data.targetLastPos != null) ? HelpFunc.DataToVec2(data.targetLastPos) : null;

@@ -2178,16 +2178,14 @@ MonoBehaviour:
   healthbar: {fileID: 4699295782675156808}
   faction: 4
   aiControl: {fileID: 5291230762624573668}
-  moveSpeed: 3
+  moveSpeed: 3.5
   weaponAttachmentBone: {fileID: 8109489427493512261}
   groundReferenceObject: {fileID: 8025869341345888668}
-  maxHealth: 100
-  health: 100
-  alive: 1
+  maxHealth: 600
+  health: 600
   visionCollider: {fileID: 0}
   inventory: []
   loot: []
-  target: {fileID: 0}
 --- !u!114 &5291230762624573668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2202,15 +2200,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviour: {fileID: 9011052219695591588}
   detectionRange: 9
-  detectionRangeCaution: 13
+  detectionRangeCaution: 22
   attackDistance: 10
+  accuracyAllowance: 30
   preferredFightDistance: 7
-  cautionTime: 2
+  cautionTime: 0.7
   searchTime: 8
   chaseTime: 6
   idleRoutine: []
-  LOCATION_MAX_OFFSET: 0.1
-  DISTANCE_MAX_OFFSET: 3
+  distanceMaxOffset: 2
+  locationMaxOffset: 0.5
   targetID: 0
 --- !u!50 &2978790146387656399
 Rigidbody2D:

@@ -14,7 +14,7 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
 
     public enum handsState
     {
-        empty, pistol
+        empty, oneHand, twoHand
     }
 
     private Animator bodyAnimator;
@@ -26,6 +26,8 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
     private Joint torso;
     private Joint arm_up_r;
     private Joint arm_low_r;
+    private Joint arm_up_l;
+    private Joint arm_low_l;
     private Joint hand_r;
 
     /* Animators should come in order: body, arms, legs
@@ -44,6 +46,8 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
         torso = GetJointByName("Torso_Parent").GetValueOrDefault();
         arm_up_r = GetJointByName("Arm_Up_R_Parent").GetValueOrDefault();
         arm_low_r = GetJointByName("Arm_Low_R_Parent").GetValueOrDefault();
+        arm_up_l = GetJointByName("Arm_Up_L_Parent").GetValueOrDefault();
+        arm_low_l = GetJointByName("Arm_Low_L_Parent").GetValueOrDefault();
         hand_r = GetJointByName("Hand_R_Parent").GetValueOrDefault();
     }
 
@@ -53,11 +57,12 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
         // Bend head to look at the target
         if (head.obj && torso.obj) UpdateFacing();
         // Bend arm and hand to aim at the target and holding weapon
-        if (stateHands == handsState.pistol)
+        if (stateHands == handsState.oneHand || stateHands == handsState.twoHand)
         {
-            if (arm_up_r.obj && arm_low_r.obj) UpdateArmBend();
+            if (arm_up_r.obj && arm_low_r.obj) UpdateRightArmBend();
             if (hand_r.obj) UpdateHandBend();
         }
+        if (stateHands == handsState.twoHand) UpdateLeftArmBend();
     }
 
     // Update state and cause animation update
@@ -80,15 +85,7 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
     private new void UpdateAnimators()
     {
         base.UpdateAnimators();
-
-        // Change animation to weapon stance
-        if (stateHands != handsState.empty)
-        {
-            if(stateHands == handsState.pistol) armsAnimator.SetInteger("HandsState", 1);
-            // more space for future weapons
-        }
-        // Change to empty hands stance otherwise
-        else armsAnimator.SetInteger("HandsState", 0);
+        armsAnimator.SetInteger("HandsState", (int)stateHands);
 
     }
 
@@ -110,7 +107,7 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
     }
 
     // Updates arm to point towards characters target when wielding weapon
-    private void UpdateArmBend()
+    private void UpdateRightArmBend()
     {
         Vector2 aimingVector = GetAimingVector();
         if (aimingVector.magnitude < 0.7f) return;
@@ -128,9 +125,25 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
         RotateJoint(arm_low_r, (ARM_LOW_R_BEND_MAX_ANGLE * angleFraction) + ARM_LOW_R_BEND_OFFSET_ANGLE, ARM_LOW_R_BEND_STEP);
     }
 
-    // When using weapons, the hand that holds the weapon must point towards the target
+    private void UpdateLeftArmBend()
+    {
+        Vector2 aimingVector = GetAimingVector();
+        if (aimingVector.magnitude < 0.7f) return;
 
-    // TODO - there is a bug if mouse pointer is over the weapon where the hand twists too far
+        const float ARM_UP_L_BEND_MAX_ANGLE = 120.0f;
+        const float ARM_UP_L_BEND_OFFSET_ANGLE = 30.0f;
+        const float ARM_UP_L_BEND_STEP = 240.0f;
+        const float ARM_LOW_L_BEND_MAX_ANGLE = 30.0f;
+        const float ARM_LOW_L_BEND_OFFSET_ANGLE = -30.0f;
+        const float ARM_LOW_L_BEND_STEP = 200.0f;
+
+        float angleFraction = Vector2.SignedAngle(new Vector2(aimingVector.x, 0.0f), aimingVector) / 90.0f;
+        angleFraction *= Mathf.Sign(aimingVector.x);
+        RotateJoint(arm_up_l, (ARM_UP_L_BEND_MAX_ANGLE * angleFraction) + ARM_UP_L_BEND_OFFSET_ANGLE, ARM_UP_L_BEND_STEP);
+        RotateJoint(arm_low_l, (ARM_LOW_L_BEND_MAX_ANGLE * angleFraction) + ARM_LOW_L_BEND_OFFSET_ANGLE, ARM_LOW_L_BEND_STEP);
+    }
+
+    // When using weapons, the hand that holds the weapon must point towards the target
     private void UpdateHandBend()
     {
         Vector2 aimingVector = GetAimingVector();

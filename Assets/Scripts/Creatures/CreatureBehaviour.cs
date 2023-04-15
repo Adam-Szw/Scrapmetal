@@ -29,10 +29,10 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     public float moveSpeed = 0.0f;
     public GameObject weaponAttachmentBone = null;
-    [HideInInspector] public GameObject groundReferenceObject = null;
+    public GameObject groundReferenceObject = null;
     [SerializeField] private float maxHealth = 100.0f;
     [SerializeField] private float health = 100.0f;
-    [SerializeField] private bool alive = true;
+    private bool alive = true;
 
     [HideInInspector] public CircleCollider2D visionCollider;
     [HideInInspector] public List<ItemData> inventory;
@@ -166,10 +166,10 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         }
     }
 
-    public bool AnyWeaponOnTarget()
+    public bool AnyWeaponOnTarget(float allowance)
     {
         if (!alive) return false;
-        foreach (WeaponBehaviour w in GetWeapons()) if (w.IsOnTarget()) return true;
+        foreach (WeaponBehaviour w in GetWeapons()) if (w.IsOnTarget(allowance)) return true;
         return false;
     }
 

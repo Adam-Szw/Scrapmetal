@@ -232,7 +232,7 @@ MonoBehaviour:
   reloadCooldown: 3
   spread: 0
   snapMaxAngle: 25
-  animationType: 1
+  animationType: 2
   ammoLink: 3
   target: {x: 0, y: 0}
   guidanceTargetID: 0

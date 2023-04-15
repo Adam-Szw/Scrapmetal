@@ -81,12 +81,14 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
         currAmmo = maxAmmo;
     }
 
-    public bool IsOnTarget()
+    public bool IsOnTarget(float allowance)
     {
         float angle = GetSnapAngle();
         Vector2 targetVec = target - (Vector2)projectileAttachment.transform.position;
         float desiredAngle = HelpFunc.Vec2ToAngle(targetVec);
-        return Mathf.Round(angle * 10.0f) / 10.0f == Mathf.Round(desiredAngle * 10.0f) / 10.0f;
+        desiredAngle = Mathf.Round(desiredAngle * 10.0f) / 10.0f;
+        float finalAngle = Mathf.Round(angle * 10.0f) / 10.0f;
+        return Mathf.Abs(finalAngle - desiredAngle) < allowance;
     }
 
     private void AcquireTargetLocation()

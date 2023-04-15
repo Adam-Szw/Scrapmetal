@@ -124,7 +124,7 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
             if (target)
             {
                 if (target.aiControl) target.aiControl.NotifyTakingDamage(projectile.ownerFaction);
-                target.DealDamage(projectile.damage);
+                if (projectile.explosionRadius <= 0) target.DealDamage(projectile.damage);
             }
             if (projectile.explosionRadius > 0)
             {
