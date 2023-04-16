@@ -44,6 +44,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     // Populate this list to have AI use it
     protected List<WeaponBehaviour> AIweapons = new List<WeaponBehaviour>();
+    protected List<WeaponData> loadOnWeaponSpawn = null;
 
     new protected void Update()
     {
@@ -241,6 +242,18 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         visionCollider.radius = 0.1f;
     }
 
+    private List<WeaponData> SaveAIWeapons()
+    {
+        List<WeaponData> data = new List<WeaponData>();
+        foreach (WeaponBehaviour weapon in AIweapons) data.Add(weapon.Save());
+        return data;
+    }
+
+    protected void LoadAIWeapons(List<WeaponData> data)
+    {
+        for (int i = 0; i < data.Count; i++) AIweapons[i].Load(data[i]);
+    }
+
     public new CreatureData Save()
     {
         CreatureData data = new CreatureData(base.Save());
@@ -251,6 +264,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         data.maxHealth = maxHealth;
         data.health = health;
         data.inventory = inventory;
+        data.AIweaponsData = SaveAIWeapons();
         return data;
     }
 
@@ -265,6 +279,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         health = data.health;
         if (healthbarBehaviour && alive) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
         inventory = data.inventory;
+        loadOnWeaponSpawn = data.AIweaponsData;
     }
 
     public static GameObject Spawn(CreatureData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -306,4 +321,5 @@ public class CreatureData : EntityData
     public bool alive;
     public float health;
     public List<ItemData> inventory;
+    public List<WeaponData> AIweaponsData;
 }

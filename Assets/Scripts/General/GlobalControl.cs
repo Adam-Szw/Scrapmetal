@@ -20,6 +20,8 @@ public class GlobalControl : MonoBehaviour
         { typeof(NPCData), d => NPCBehaviour.Spawn((NPCData)d) },
         { typeof(HumanoidData), d => HumanoidBehaviour.Spawn((HumanoidData)d) },
         { typeof(SpiderbotData), d => SpiderbotBehaviour.Spawn((SpiderbotData)d) },
+        { typeof(TankbotData), d => TankbotBehaviour.Spawn((TankbotData)d) },
+        { typeof(ZapperData), d => ZapperBehaviour.Spawn((ZapperData)d) },
         { typeof(CreatureData), d => CreatureBehaviour.Spawn((CreatureData)d) },
         { typeof(ArmorData), d => ArmorBehaviour.Spawn((ArmorData)d) },
         { typeof(WeaponData), d => WeaponBehaviour.Spawn((WeaponData)d) },
@@ -41,6 +43,7 @@ public class GlobalControl : MonoBehaviour
     private static GameObject player;
 
     public static bool paused { get; private set; }
+    public static bool trackingPlayer = true;
 
     void Awake()
     {
@@ -65,8 +68,11 @@ public class GlobalControl : MonoBehaviour
 
     void Update()
     {
-        if (!playerTransform) SetPlayer(HelpFunc.FindPlayerInScene());
-        if (!paused) cameraControl.AdjustCameraToPlayer();
+        if (trackingPlayer)
+        {
+            if (!playerTransform) SetPlayer(HelpFunc.FindPlayerInScene());
+            if (!paused) cameraControl.AdjustCameraToPlayer();
+        }
     }
 
     public static Transform GetPlayerTransform() { return playerTransform; }
@@ -76,10 +82,26 @@ public class GlobalControl : MonoBehaviour
     private static void SetPlayer(GameObject player)
     {
         GlobalControl.player = player;
+        if (!player)
+        {
+            playerTransform = null;
+            cameraControl.playerTransform = null;
+            PlayerDeadActions();
+            return;
+        }
         playerTransform = player.transform;
         cameraControl.playerTransform = player.transform;
     }
 
+    public static void PlayerDeadActions()
+    {
+        if (trackingPlayer)
+        {
+            trackingPlayer = false;
+            UIControl.ShowMenu();
+            UIControl.ShowPopup("Game Over!", "", 0f);
+        }
+    }
 
     public static void PauseGame()
     {

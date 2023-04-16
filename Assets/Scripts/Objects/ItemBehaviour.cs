@@ -2,15 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.Progress;
-using static WeaponBehaviour;
+using static CreatureBehaviour;
 
 public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<ItemData>
 {
-    public CreatureBehaviour.FactionAllegiance ownerFaction = CreatureBehaviour.FactionAllegiance.neutral;
+    public FactionAllegiance ownerFaction = FactionAllegiance.neutral;
     public string inventoryIconLink = "Icons/Icon_Test";
     public ulong descriptionTextLinkID = 0;
     public int value = 0;
@@ -94,7 +91,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
         data.velocity = HelpFunc.VectorToArray(Vector2.zero);
         data.speed = 0f;
         data.ownerID = 0;
-        data.ownerFaction = CreatureBehaviour.FactionAllegiance.neutral;
+        data.ownerFaction = FactionAllegiance.neutral;
         data.descriptionTextLinkID = descriptionLink;
         data.inventoryIconLink = iconLink;
         data.value = value;
@@ -172,7 +169,7 @@ public class ItemData : EntityData
     }
 
     public ulong ownerID;
-    public CreatureBehaviour.FactionAllegiance ownerFaction;
+    public FactionAllegiance ownerFaction;
     public string inventoryIconLink;
     public ulong descriptionTextLinkID;
     public int value;

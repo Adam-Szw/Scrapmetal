@@ -50,7 +50,6 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
 
     public override void Use()
     {
-        print("use");
         AcquireTargetLocation();
 
         // Ammo and cooldown checks
@@ -193,6 +192,7 @@ public class WeaponData : ItemData
 
     public WeaponData(ItemData data) : base(data)
     {
+        prefabPath = data.prefabPath;
         ownerID = data.ownerID;
         ownerFaction = data.ownerFaction;
         descriptionTextLinkID = data.descriptionTextLinkID;

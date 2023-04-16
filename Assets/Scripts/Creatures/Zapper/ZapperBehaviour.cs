@@ -11,6 +11,12 @@ public class ZapperBehaviour : CreatureBehaviour, Saveable<ZapperData>, Spawnabl
 
     public static string[] BODYPARTS = new string[] { "Sensor", "Turret" };
 
+    protected void Start()
+    {
+        SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/ZapperWeapon");
+        if (loadOnWeaponSpawn != null) LoadAIWeapons(loadOnWeaponSpawn);
+    }
+
     new protected void Awake()
     {
         base.Awake();
@@ -18,7 +24,6 @@ public class ZapperBehaviour : CreatureBehaviour, Saveable<ZapperData>, Spawnabl
         GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Turret_Parent");
         animations = new ZapperAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, aimBone);
         animations.movementDeterminesFlip = true;
-        SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/ZapperWeapon");
     }
 
     new protected void Update()
@@ -68,13 +73,14 @@ public class ZapperData : CreatureData
 
     public ZapperData(CreatureData data) : base(data)
     {
-        this.faction = data.faction;
-        this.aiData = data.aiData;
-        this.moveSpeed = data.moveSpeed;
-        this.alive = data.alive;
-        this.maxHealth = data.maxHealth;
-        this.health = data.health;
-        this.inventory = data.inventory;
+        faction = data.faction;
+        aiData = data.aiData;
+        moveSpeed = data.moveSpeed;
+        alive = data.alive;
+        maxHealth = data.maxHealth;
+        health = data.health;
+        inventory = data.inventory;
+        AIweaponsData = data.AIweaponsData;
     }
 
     public ZapperAnimationData animationData;

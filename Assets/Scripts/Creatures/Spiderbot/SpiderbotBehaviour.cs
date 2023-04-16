@@ -10,6 +10,12 @@ public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Sp
 
     public static string[] BODYPARTS = new string[] { "Sensor", "Turret" };
 
+    protected void Start()
+    {
+        SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/MissileLauncherSpiderbot");
+        if (loadOnWeaponSpawn != null) LoadAIWeapons(loadOnWeaponSpawn);
+    }
+
     new protected void Awake()
     {
         base.Awake();
@@ -17,8 +23,8 @@ public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Sp
         GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Turret_Parent");
         animations = new SpiderbotAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, aimBone);
         animations.movementDeterminesFlip = true;
-        SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/MissileLauncherSpiderbot");
     }
+
 
     new protected void Update()
     {
@@ -67,13 +73,14 @@ public class SpiderbotData : CreatureData
 
     public SpiderbotData(CreatureData data) : base(data)
     {
-        this.faction = data.faction;
-        this.aiData = data.aiData;
-        this.moveSpeed = data.moveSpeed;
-        this.alive = data.alive;
-        this.maxHealth = data.maxHealth;
-        this.health = data.health;
-        this.inventory = data.inventory;
+        faction = data.faction;
+        aiData = data.aiData;
+        moveSpeed = data.moveSpeed;
+        alive = data.alive;
+        maxHealth = data.maxHealth;
+        health = data.health;
+        inventory = data.inventory;
+        AIweaponsData = data.AIweaponsData;
     }
 
     public SpiderbotAnimationData animationData;

@@ -12,8 +12,6 @@ public class PopupControl : MonoBehaviour
     public GameObject overlayPanel;
 
     private float timer = 0f;
-
-    private static float fadeInTime = 0.5f;
     private static float fadeOutTime = 0.25f;
 
     private void Start()
@@ -22,7 +20,6 @@ public class PopupControl : MonoBehaviour
         {
             UIControl.DestroyPopup();
         });
-        StartCoroutine(PopupFadeIn());
     }
 
     private void OnDestroy()
@@ -35,13 +32,14 @@ public class PopupControl : MonoBehaviour
         StartCoroutine(PopupFadeOut());
     }
 
-    public void Initialize(string text, string imageLink)
+    public void Initialize(string text, string imageLink, float fadeInTime)
     {
         popupTextObj.text = text;
         imageObj.sprite = Resources.Load<Sprite>(imageLink);
+        StartCoroutine(PopupFadeIn(fadeInTime));
     }
 
-    private IEnumerator PopupFadeIn()
+    private IEnumerator PopupFadeIn(float fadeInTime)
     {
         SetElementsAlpha(0f);
         timer = fadeInTime;

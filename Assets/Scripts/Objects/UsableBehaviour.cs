@@ -49,6 +49,7 @@ public class UsableData : ItemData
     {
         prefabPath = data.prefabPath;
         ownerID = data.ownerID;
+        ownerFaction = data.ownerFaction;
         descriptionTextLinkID = data.descriptionTextLinkID;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;

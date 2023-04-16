@@ -11,6 +11,13 @@ public class TankbotBehaviour : CreatureBehaviour, Saveable<TankbotData>, Spawna
 
     public static string[] BODYPARTS = new string[] { "Sensor", "Turret" };
 
+    protected void Start()
+    {
+        SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/RifleTankbot");
+        SpawnAIWeapon(weaponAttachmentBones[1], "Prefabs/Items/Weapons/RifleTankbot");
+        if (loadOnWeaponSpawn != null) LoadAIWeapons(loadOnWeaponSpawn);
+    }
+
     new protected void Awake()
     {
         base.Awake();
@@ -18,8 +25,6 @@ public class TankbotBehaviour : CreatureBehaviour, Saveable<TankbotData>, Spawna
         GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Turret_Parent");
         animations = new TankbotAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, aimBone);
         animations.movementDeterminesFlip = true;
-        SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/RifleTankbot");
-        SpawnAIWeapon(weaponAttachmentBones[1], "Prefabs/Items/Weapons/RifleTankbot");
     }
 
     new protected void Update()
@@ -54,7 +59,7 @@ public class TankbotBehaviour : CreatureBehaviour, Saveable<TankbotData>, Spawna
         return obj;
     }
 
-    public static GameObject Spawn(SpiderbotData data, Transform parent = null)
+    public static GameObject Spawn(TankbotData data, Transform parent = null)
     {
         GameObject obj = CreatureBehaviour.Spawn(data, parent);
         obj.GetComponent<TankbotBehaviour>().Load(data);
@@ -69,13 +74,14 @@ public class TankbotData : CreatureData
 
     public TankbotData(CreatureData data) : base(data)
     {
-        this.faction = data.faction;
-        this.aiData = data.aiData;
-        this.moveSpeed = data.moveSpeed;
-        this.alive = data.alive;
-        this.maxHealth = data.maxHealth;
-        this.health = data.health;
-        this.inventory = data.inventory;
+        faction = data.faction;
+        aiData = data.aiData;
+        moveSpeed = data.moveSpeed;
+        alive = data.alive;
+        maxHealth = data.maxHealth;
+        health = data.health;
+        inventory = data.inventory;
+        AIweaponsData = data.AIweaponsData;
     }
 
     public TankbotAnimationData animationData;

@@ -192,6 +192,7 @@ public class HumanoidData : CreatureData
         maxHealth = data.maxHealth;
         health = data.health;
         inventory = data.inventory;
+        AIweaponsData = data.AIweaponsData;
     }
 
     public ItemData itemActive;

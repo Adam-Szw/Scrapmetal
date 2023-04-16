@@ -172,7 +172,6 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         lifespan = data.lifespan;
         damage = data.damage;
         piercing = data.piercing;
-        ownerID = data.ownerID;
         lifeRemaining = data.lifeRemaining;
         spriteObject.transform.localEulerAngles = new Vector3(0f, 0f, data.projectileRotation);
         sendTargetBerserk = data.sendTargetBerserk;
@@ -193,6 +192,11 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         obj.GetComponent<ProjectileBehaviour>().Load(data);
         return obj;
     }
+
+    internal void SetOwnerFaction(CreatureBehaviour.FactionAllegiance factionAllegiance)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 [Serializable]
@@ -204,6 +208,7 @@ public class ProjectileData : ItemData
     {
         prefabPath = data.prefabPath;
         ownerID = data.ownerID;
+        ownerFaction = data.ownerFaction;
         descriptionTextLinkID = data.descriptionTextLinkID;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;

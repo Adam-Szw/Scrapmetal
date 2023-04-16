@@ -87,6 +87,7 @@ public class UIControl : MonoBehaviour
 
     public static void DestroyMenu()
     {
+        if (!GlobalControl.GetPlayer()) return;
         Destroy(menu);
         menu = null;
         GlobalControl.UnpauseGame();
@@ -94,6 +95,7 @@ public class UIControl : MonoBehaviour
 
     public static void showDialog(ulong initialOptionID, string dialogRespondentName)
     {
+        if (!GlobalControl.GetPlayer()) return;
         GlobalControl.PauseGame();
         DialogOption initialOption = DialogLibrary.getDialogOptionByID(initialOptionID);
         dialog = Instantiate(Resources.Load<GameObject>(dialogPrefabPath));
@@ -109,6 +111,7 @@ public class UIControl : MonoBehaviour
 
     public static void ShowInventory()
     {
+        if (!GlobalControl.GetPlayer()) return;
         GlobalControl.PauseGame();
         inventory = Instantiate(Resources.Load<GameObject>(inventoryPrefabPath));
         inventory.GetComponent<InventoryControl>().LoadInventoryPanel(GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>());
@@ -123,6 +126,7 @@ public class UIControl : MonoBehaviour
 
     public static void ShowCombatUI()
     {
+        if (!GlobalControl.GetPlayer()) return;
         combatUI = Instantiate(Resources.Load<GameObject>(combatUIPrefabPath));
         GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().SetHealthbar(combatUI.GetComponent<CombatUIControl>().healthbarBehaviour);
         GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().UIRefresh();
@@ -134,10 +138,10 @@ public class UIControl : MonoBehaviour
         combatUI = null;
     }
 
-    public static void ShowPopup(string text, string imageLink)
+    public static void ShowPopup(string text, string imageLink, float fadeInTime)
     {
         popup = Instantiate(Resources.Load<GameObject>(popupPrefabPath));
-        popup.GetComponent<PopupControl>().Initialize(text, imageLink);
+        popup.GetComponent<PopupControl>().Initialize(text, imageLink, fadeInTime);
     }
 
     public static void DestroyPopup()
