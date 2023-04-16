@@ -1,30 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PopupControl : MonoBehaviour
 {
+    public delegate void Effect();
+
     public TextMeshProUGUI popupTextObj;
     public Button okButton;
-    public Image imageObj;
     public GameObject overlayPanel;
 
     private float timer = 0f;
     private static float fadeOutTime = 0.25f;
-
-    private void Start()
-    {
-        okButton.onClick.AddListener(() =>
-        {
-            UIControl.DestroyPopup();
-        });
-    }
+    private Effect effect = null;
 
     private void OnDestroy()
     {
         StopAllCoroutines();
+        effect?.Invoke();
     }
 
     public void SelfDestruct()
@@ -32,10 +28,14 @@ public class PopupControl : MonoBehaviour
         StartCoroutine(PopupFadeOut());
     }
 
-    public void Initialize(string text, string imageLink, float fadeInTime)
+    public void Initialize(string text, string imageLink, float fadeInTime, Effect specialEffect = null)
     {
+        effect = specialEffect;
+        okButton.onClick.AddListener(() =>
+        {
+            UIControl.DestroyPopup();
+        });
         popupTextObj.text = text;
-        imageObj.sprite = Resources.Load<Sprite>(imageLink);
         StartCoroutine(PopupFadeIn(fadeInTime));
     }
 
@@ -49,6 +49,7 @@ public class PopupControl : MonoBehaviour
             yield return new WaitForSecondsRealtime(.01f);
             timer -= 0.01f;
         }
+        SetElementsAlpha(1f);
     }
 
     private IEnumerator PopupFadeOut()
@@ -62,6 +63,8 @@ public class PopupControl : MonoBehaviour
             timer -= 0.01f;
         }
         Destroy(gameObject);
+        effect?.Invoke();
+        effect = null;
     }
 
     private void SetElementsAlpha(float alpha)
@@ -71,9 +74,6 @@ public class PopupControl : MonoBehaviour
         c = okButton.image.color;
         c.a = alpha;
         okButton.image.color = c;
-        c = imageObj.color;
-        c.a = alpha;
-        imageObj.color = c;
         c = overlayPanel.GetComponent<Image>().color;
         c.a = alpha;
         overlayPanel.GetComponent<Image>().color = c;

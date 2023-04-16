@@ -48,11 +48,6 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
 
     public static float interactibleInteravalTime = 0.2f;
 
-    protected void Start()
-    {
-        UIRefresh();
-    }
-
     new protected void Awake()
     {
         base.Awake();
@@ -88,13 +83,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
             // Do nothing if currently reloading
             if (reloadTimer > 0) return;
             SetAttackTarget(PlayerInput.mousePos);
-            bool attackExecuted = Attack();
-            // If attack executed then we must have weapon selected. Update UI accordingly
-            if (attackExecuted && UIControl.combatUI)
-            {
-                WeaponBehaviour weapon = (WeaponBehaviour)activeItemBehaviour;
-                UIControl.combatUI.GetComponent<CombatUIControl>().UpdateAmmoCounter(weapon.currAmmo, weapon.maxAmmo);
-            }
+            Attack();
         }
 
         // Interact with selected interactible
@@ -165,21 +154,20 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         RefreshPlayerLimbs();
     }
 
-    public void UIRefresh() 
+    public int? GetCurrWeaponAmmo()
     {
         ItemBehaviour b = activeItemBehaviour;
-        if (b is WeaponBehaviour)
-        {
-            if (UIControl.combatUI)
-            {
-                UIControl.combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(true);
-                UIControl.combatUI.GetComponent<CombatUIControl>().UpdateAmmoCounter(((WeaponBehaviour)b).currAmmo, ((WeaponBehaviour)b).maxAmmo);
-            }
-        }
-        else
-        {
-            if (UIControl.combatUI) UIControl.combatUI.GetComponent<CombatUIControl>().EnableAmmoPanel(false);
-        }
+        if (!b) return null;
+        if (b is WeaponBehaviour) return ((WeaponBehaviour)b).currAmmo;
+        return null;
+    }
+
+    public int? GetCurrWeaponMaxAmmo()
+    {
+        ItemBehaviour b = activeItemBehaviour;
+        if (!b) return null;
+        if (b is WeaponBehaviour) return ((WeaponBehaviour)b).maxAmmo;
+        return null;
     }
 
     // Continuously run highlight code every 0.2 seconds for closest object
@@ -229,31 +217,17 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         if (toStore != null) StoreItem(toStore);
         weaponSelected = index;
         if (weapon == null) weaponSelected = -1;
-        // Show or hide UI ammo counter if applicable
-        UIRefresh();
     }
 
     private WeaponData GetWeaponBySlot(int index)
     {
-        foreach (WeaponSlot slot in weapons)
-        {
-            if (slot.index == index)
-            {
-                return slot.weapon;
-            }
-        }
+        foreach (WeaponSlot slot in weapons) if (slot.index == index) return slot.weapon;
         return null;
     }
 
     private ArmorData GetArmorBySlot(Slot slot)
     {
-        foreach (ArmorSlot aSlot in armors)
-        {
-            if (slot == aSlot.slot)
-            {
-                return aSlot.armor;
-            }
-        }
+        foreach (ArmorSlot aSlot in armors) if (slot == aSlot.slot) return aSlot.armor;
         return null;
     }
 
@@ -310,19 +284,19 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
             if (ammo.quantity <= 0) toRemove.Add(item);
         }
         foreach (ItemData item in toRemove) inventory.Remove(item);
-        if (reloadWasNeeded) SpawnFloatingText(Color.blue, "Reloading: " + weapon.reloadCooldown + "s", 0.5f);
         if (reloadWasNeeded) StartCoroutine(ReloadTimerCoroutine(weapon.reloadCooldown));
-        UIRefresh();
     }
 
     private IEnumerator ReloadTimerCoroutine(float time)
     {
-        reloadTimer = time;
+        reloadTimer = Mathf.Max(time, 0f);
+        if (time > 0) SpawnFloatingText(Color.blue, "Reloading: " + time + "s", 0.5f);
         while (reloadTimer > 0)
         {
             yield return new WaitForSeconds(.2f);
             reloadTimer -= 0.2f;
         }
+        reloadTimer = 0f;
     }
 
     private void RefreshPlayerStats()
@@ -421,6 +395,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         SetWeaponFromSlot(weaponSelected);
         RefreshPlayerLimbs();
         UpdateState();
+        StartCoroutine(ReloadTimerCoroutine(reloadTimer));
     }
 
     public static GameObject Spawn(PlayerData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)

@@ -129,7 +129,7 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
             if (projectile.explosionRadius > 0)
             {
                 SpawnExplosion(projectile.transform.position, explosionRadius * 0.1f);
-                List<CreatureBehaviour> inRange = HelpFunc.GetCreaturesInRadius(projectile.transform.position, explosionRadius);
+                List<CreatureBehaviour> inRange = HelpFunc.GetCreaturesInRadius(projectile.transform.position, projectile.explosionRadius);
                 foreach (CreatureBehaviour creature in inRange)
                 {
                     if (creature.aiControl) creature.aiControl.NotifyTakingDamage(projectile.ownerFaction);

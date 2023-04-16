@@ -82,14 +82,21 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     public float GetHealth() { return health; }
 
-    public void SetMaxHealth(float value)
+    public void SetHealth(float value)
     {
-        maxHealth = value;
-        if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
+        health = value;
+        if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(GetHealth(), GetMaxHealth());
         if (health <= 0) SetAlive(false);
     }
 
     public float GetMaxHealth() { return maxHealth; }
+
+    public void SetMaxHealth(float value)
+    {
+        maxHealth = value;
+        if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(GetHealth(), GetMaxHealth());
+        if (GetHealth() <= 0) SetAlive(false);
+    }
 
     public void SetHealthbar(HealthbarBehaviour behaviour)
     {
@@ -99,20 +106,16 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     public void DealDamage(float amount)
     {
-        health -= amount;
+        SetHealth(GetHealth() - amount);
         SpawnFloatingText(Color.red, "-" + amount, 0.35f);
-        if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
-        if (health <= 0) SetAlive(false);
         if (GetAlive()) GetAnimations().PlayFlinch();
     }
 
     public void Heal(float amount)
     {
-        health += amount;
-        if (health > maxHealth) health = maxHealth;
+        float newHealth = Mathf.Min(GetHealth() + amount, GetMaxHealth());
+        SetHealth(newHealth);
         SpawnFloatingText(Color.green, "+" + amount, 0.35f);
-        if (healthbarBehaviour) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
-        if (health <= 0) SetAlive(false);
     }
 
     public void SetAlive(bool alive)
@@ -215,7 +218,6 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     {
         HelpFunc.DisableColliders(transform);
         base.SetSpeed(0.0f);
-        if (healthbarBehaviour) healthbarBehaviour.Enable(false);
         StartCoroutine(DestroyInTime(5));
         foreach (ItemData item in loot)
         {
@@ -260,9 +262,9 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         data.faction = faction;
         data.aiData = aiControl ? aiControl.Save() : null;
         data.moveSpeed = moveSpeed;
-        data.alive = alive;
-        data.maxHealth = maxHealth;
-        data.health = health;
+        data.alive = GetAlive();
+        data.maxHealth = GetMaxHealth();
+        data.health = GetHealth();
         data.inventory = inventory;
         data.AIweaponsData = SaveAIWeapons();
         return data;
@@ -275,9 +277,8 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         if (data.aiData != null) aiControl.Load(data.aiData);
         moveSpeed = data.moveSpeed;
         SetAlive(data.alive);
-        maxHealth = data.maxHealth;
-        health = data.health;
-        if (healthbarBehaviour && alive) healthbarBehaviour.UpdateHealthbar(health, maxHealth);
+        SetMaxHealth(data.maxHealth);
+        SetHealth(data.health);
         inventory = data.inventory;
         loadOnWeaponSpawn = data.AIweaponsData;
     }

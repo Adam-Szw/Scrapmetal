@@ -146,7 +146,7 @@ public static class HelpFunc
     public static List<CreatureBehaviour> GetCreaturesInRadius(Vector2 position, float radius)
     {
         List<CreatureBehaviour> creatures = new List<CreatureBehaviour>();
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, radius);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, radius, 1 << 7);
         foreach (Collider2D collider in colliders)
         {
             CreatureBehaviour b = collider.GetComponentInParent<CreatureBehaviour>();

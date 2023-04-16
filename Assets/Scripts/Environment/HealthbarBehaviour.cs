@@ -8,7 +8,7 @@ public class HealthbarBehaviour : MonoBehaviour
     public float minX;
     public GameObject frame;
     public GameObject filler;
-    public bool playerBar = false;
+    public bool isUI = false;
 
     private Transform fillTransform = null;
     private SpriteRenderer fillRenderer = null;
@@ -17,7 +17,7 @@ public class HealthbarBehaviour : MonoBehaviour
     void Awake()
     {
         fillTransform = filler.transform;
-        if (playerBar) return;
+        if (isUI) return;
         fillRenderer = filler.GetComponent<SpriteRenderer>();
         frameRenderer = frame.GetComponent<SpriteRenderer>();
         Enable(false);
@@ -31,14 +31,17 @@ public class HealthbarBehaviour : MonoBehaviour
     public void UpdateHealthbar(float health, float maxHealth)
     {
         float hpPercentage = GetHealthPercentage(health, maxHealth);
-        if (hpPercentage < 100.0f) Enable(true);
+        if (hpPercentage < 1.0f) Enable(true);
+        if (hpPercentage >= 1.0f) Enable(false);
+        if (hpPercentage <= 0f) Enable(false);
         if (fillTransform) fillTransform.localPosition = new Vector3(minX + hpPercentage * (maxX - minX), 0f, 0f);
     }
 
-    public void Enable(bool enabled)
+    private void Enable(bool enabled)
     {
-        if (playerBar) return;
+        if (isUI) return;
         if (fillRenderer) fillRenderer.enabled = enabled;
         if (frameRenderer) frameRenderer.enabled = enabled;
     }
+
 }

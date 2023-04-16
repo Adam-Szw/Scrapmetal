@@ -22,7 +22,9 @@ public static class ItemLibrary
     }
 
     public static Dictionary<ulong, string> itemLocalization = new Dictionary<ulong, string>();
-    public static List<ItemData> items = new List<ItemData>();
+    private static string ITEM_PREFABS_PATH = "Prefabs/Items/";
+    // to fill
+    private static string[] ITEM_RESOURCES = new string[] { "FixKit", "Scrap", "Ammo/AmmoRivetgun" };
 
     public static void LoadItemLocalization(string filename)
     {
@@ -31,9 +33,10 @@ public static class ItemLibrary
         foreach (ItemLocalData load in itemLoadList.itemLocalData) itemLocalization.Add(load.id, load.text);
     }
 
+    // Tells the game to load item resources
     public static void LoadItems()
     {
-
+        for (int i = 0; i < ITEM_RESOURCES.Length; i++) Resources.Load(ITEM_PREFABS_PATH + ITEM_RESOURCES[i]);
     }
 
 }

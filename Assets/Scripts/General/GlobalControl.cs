@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static PopupControl;
 using Scene = UnityEngine.SceneManagement.Scene;
 
 /* This class is in charge of global variables and functionality such as pausing the game
@@ -39,45 +40,47 @@ public class GlobalControl : MonoBehaviour
 
     [HideInInspector] public static ulong nextID = 1;
 
-    private static Transform playerTransform;
     private static GameObject player;
+    private static Transform playerTransform;
+    private static PlayerBehaviour playerBehaviour;
 
     public static bool paused { get; private set; }
     public static bool trackingPlayer = true;
 
     void Awake()
     {
-        // Setup main camera
+        // Setup camera
         currentCamera = Camera.main;
         cameraControl = new CameraControl();
         cameraControl.currentCamera = currentCamera;
-        PlayerInput.currCamera = currentCamera;
         // Load dialog localization
         DialogLibrary.LoadDialogLocalization("DialogText_EN");
         DialogLibrary.LoadDialogOptions();
         ItemLibrary.LoadItemLocalization("ItemDescriptions_EN");
+        ItemLibrary.LoadItems();
     }
 
     void Start()
     {
-        paused = false;
         SetPlayer(HelpFunc.FindPlayerInScene());
-        // Open standard UI
-        UIControl.ShowCombatUI();
+        UIControl.DefaultUI();
+        paused = false;
     }
 
     void Update()
     {
         if (trackingPlayer)
         {
-            if (!playerTransform) SetPlayer(HelpFunc.FindPlayerInScene());
+            if (!player) SetPlayer(HelpFunc.FindPlayerInScene());
             if (!paused) cameraControl.AdjustCameraToPlayer();
         }
     }
 
+    public static GameObject GetPlayer() { return player; }
+
     public static Transform GetPlayerTransform() { return playerTransform; }
 
-    public static GameObject GetPlayer() { return player; }
+    public static PlayerBehaviour GetPlayerBehaviour() { return playerBehaviour; }
 
     private static void SetPlayer(GameObject player)
     {
@@ -85,22 +88,23 @@ public class GlobalControl : MonoBehaviour
         if (!player)
         {
             playerTransform = null;
-            cameraControl.playerTransform = null;
+            playerBehaviour = null;
             PlayerDeadActions();
             return;
         }
+        playerBehaviour = player.GetComponent<PlayerBehaviour>();
         playerTransform = player.transform;
-        cameraControl.playerTransform = player.transform;
     }
 
     public static void PlayerDeadActions()
     {
-        if (trackingPlayer)
-        {
-            trackingPlayer = false;
-            UIControl.ShowMenu();
-            UIControl.ShowPopup("Game Over!", "", 0f);
-        }
+        trackingPlayer = false;
+        UIControl.DestroyCombatUI();
+        UIControl.DestroyDialog();
+        UIControl.DestroyPopup();
+        UIControl.DestroyMenu();
+        Effect effect = () => { UIControl.ShowMenu(); };
+        UIControl.ShowPopup("Game Over!", "", 0.05f, effect);
     }
 
     public static void PauseGame()
@@ -154,15 +158,18 @@ public class GlobalControl : MonoBehaviour
         if (scene != null)
         {
             // Destroy entities in current scene
-            playerTransform = null;
             DestroyEntities(sceneCurr);
             // Load entities using save file
             LoadEntities(scene.entities);
-            SetPlayer(HelpFunc.FindPlayerInScene());
             cameraControl.Load(scene.cameraData);
         }
-        UIControl.ShowCombatUI();
+        player = null;
+        playerTransform = null;
+        playerBehaviour = null;
+        SetPlayer(HelpFunc.FindPlayerInScene());
+        trackingPlayer = true;
         nextID = save.nextID;
+        UIControl.DefaultUI();
     }
 
     private static List<EntityData> SaveEntities(string sceneName)

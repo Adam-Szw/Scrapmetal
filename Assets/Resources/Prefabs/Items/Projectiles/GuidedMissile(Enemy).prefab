@@ -230,9 +230,10 @@ MonoBehaviour:
   lifespan: 3
   lifeRemaining: 3
   damage: 20
+  piercing: 0
   guidanceStep: 60
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}
   sendTargetBerserk: 0
-  explosionRadius: 1
+  explosionRadius: 0.5
   guideOnPointer: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PopupControl;
 
 /* This class is responsible for opening/closing/interacting with main menu
  */
@@ -21,32 +22,28 @@ public class UIControl : MonoBehaviour
 
     public void Update()
     {
-        // React to keystrokes
+        // Go thorugh hierarchy of closing things - then open menu if everything closed
         if (PlayerInput.esc)
         {
             // Popup open - close it
             if (popup)
             {
                 DestroyPopup();
-                return;
             }
             // Dialog open - close it
-            if (dialog)
+            else if (dialog)
             {
                 DestroyDialog();
                 ShowCombatUI();
-                return;
             }
-
             // Inventory open - close it
-            if (inventory)
+            else if (inventory)
             {
                 DestroyInventory();
                 ShowCombatUI();
-                return;
             }
             // Open menu
-            if (!menu)
+            else if (!menu)
             {
                 DestroyCombatUI();
                 ShowMenu();
@@ -61,22 +58,29 @@ public class UIControl : MonoBehaviour
         if (PlayerInput.tab)
         {
             // Popup open - close it
-            if (popup)
-            {
-                DestroyPopup();
-                return;
-            }
-            if (!inventory)
+            if (popup) DestroyPopup();
+            // Open inventory
+            else if (!inventory)
             {
                 DestroyCombatUI();
                 ShowInventory();
             }
+            // CLose inventory
             else
             {
                 DestroyInventory();
                 ShowCombatUI();
             }
         }
+    }
+
+    public static void DefaultUI()
+    {
+        DestroyCombatUI();
+        DestroyDialog();
+        DestroyPopup();
+        DestroyMenu();
+        ShowCombatUI();
     }
 
     public static void ShowMenu()
@@ -87,8 +91,7 @@ public class UIControl : MonoBehaviour
 
     public static void DestroyMenu()
     {
-        if (!GlobalControl.GetPlayer()) return;
-        Destroy(menu);
+        if (menu) Destroy(menu);
         menu = null;
         GlobalControl.UnpauseGame();
     }
@@ -104,7 +107,7 @@ public class UIControl : MonoBehaviour
 
     public static void DestroyDialog()
     {
-        Destroy(dialog);
+        if (dialog) Destroy(dialog);
         dialog = null;
         GlobalControl.UnpauseGame();
     }
@@ -119,7 +122,7 @@ public class UIControl : MonoBehaviour
 
     public static void DestroyInventory()
     {
-        Destroy(inventory);
+        if (inventory) Destroy(inventory);
         inventory = null;
         GlobalControl.UnpauseGame();
     }
@@ -128,8 +131,6 @@ public class UIControl : MonoBehaviour
     {
         if (!GlobalControl.GetPlayer()) return;
         combatUI = Instantiate(Resources.Load<GameObject>(combatUIPrefabPath));
-        GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().SetHealthbar(combatUI.GetComponent<CombatUIControl>().healthbarBehaviour);
-        GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().UIRefresh();
     }
 
     public static void DestroyCombatUI()
@@ -138,10 +139,10 @@ public class UIControl : MonoBehaviour
         combatUI = null;
     }
 
-    public static void ShowPopup(string text, string imageLink, float fadeInTime)
+    public static void ShowPopup(string text, string imageLink, float fadeInTime, Effect effect)
     {
         popup = Instantiate(Resources.Load<GameObject>(popupPrefabPath));
-        popup.GetComponent<PopupControl>().Initialize(text, imageLink, fadeInTime);
+        popup.GetComponent<PopupControl>().Initialize(text, imageLink, fadeInTime, effect);
     }
 
     public static void DestroyPopup()

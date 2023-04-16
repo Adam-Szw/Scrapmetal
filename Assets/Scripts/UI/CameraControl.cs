@@ -8,7 +8,6 @@ using UnityEngine;
 public class CameraControl
 {
     public Camera currentCamera;
-    public Transform playerTransform;
 
     private float minSize = 5.0f;
     private float maxSize = 20.0f;
@@ -17,8 +16,8 @@ public class CameraControl
 
     public void AdjustCameraToPlayer()
     {
-        if (!playerTransform) return;
-        Vector2 playerPos = playerTransform.position;
+        if (!GlobalControl.GetPlayerTransform()) return;
+        Vector2 playerPos = GlobalControl.GetPlayerTransform().position;
         Vector2 newPos = (PlayerInput.GetMousePositionRelative() + playerPos) / 2.0f;
         currentCamera.transform.position = new Vector3(newPos.x, newPos.y, -10.0f);
 

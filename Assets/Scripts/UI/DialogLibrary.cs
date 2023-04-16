@@ -63,6 +63,7 @@ public static class DialogLibrary
         else return data.response;
     }
 
+    // All of dialog logic is contained here. This could potentially be moved to a JSON file if i had more time
     public static void LoadDialogOptions()
     {
         //dialog test
