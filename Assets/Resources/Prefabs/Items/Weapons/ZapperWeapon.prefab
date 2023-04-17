@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2012167021715772540}
   - component: {fileID: 7194358951515551220}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: ZapperWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

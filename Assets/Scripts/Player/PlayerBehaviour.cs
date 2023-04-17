@@ -12,6 +12,8 @@ using static PlayerBehaviour;
  */
 public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnable<PlayerData>
 {
+    public GameObject visionMask;
+
     // Default stats and player look. Used when changing looks using armor
     public static float PLAYER_BASE_MAX_HP = 100f;
     public static float PLAYER_BASE_SPEED = 5f;
@@ -52,6 +54,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     {
         base.Awake();
         StartCoroutine(PickableHighlightLoop());
+        visionMask.SetActive(true);
     }
 
     private new void OnDestroy()

@@ -25,6 +25,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     [SerializeField] private List<Vector2> idleRoutine = new List<Vector2>();
     [SerializeField] private float distanceMaxOffset = 2.0f;
     [SerializeField] private float locationMaxOffset = 0.5f;
+    [SerializeField] private Vector2 defaultFacing = Vector2.right;
 
     // Handled by detection system
     [HideInInspector] public ulong targetID = 0;
@@ -70,10 +71,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
 
     public void Start()
     {
-        UpdateDetectionRadius();
-        StartCoroutine(UpdateMovement());
-        StartCoroutine(UpdateFacing());
-        StartCoroutine(AIUpdate());
+        StartCoroutine(StartCoroutines());
     }
 
     private void OnDestroy()
@@ -82,6 +80,11 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         StopCoroutine(UpdateFacing());
         StopCoroutine(AIUpdate());
         if (timer != null) StopCoroutine(timer);
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(StartCoroutines());
     }
 
     public void ObtainTargetLocation()
@@ -124,6 +127,16 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         }
         // If player attacking town - turn hostile
         if (fromFaction == FactionAllegiance.player && behaviour.faction == FactionAllegiance.NPC) behaviour.faction = FactionAllegiance.NPCaggro;
+    }
+
+    private IEnumerator StartCoroutines()
+    {
+        yield return null;
+        UpdateDetectionRadius();
+        StartCoroutine(UpdateMovement());
+        StartCoroutine(UpdateFacing());
+        StartCoroutine(AIUpdate());
+        StartTimer(countdown);
     }
 
     // Get distance to each entity in list and sort it by those distances
@@ -171,8 +184,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
             if (GlobalControl.paused) yield return new WaitForSeconds(.1f);
             if (targetID == 0)
             {
-                behaviour.SetFacingVector(Vector2.right);
-                behaviour.SetAimingLocation((Vector2)transform.position + Vector2.right);
+                behaviour.SetFacingVector(defaultFacing);
+                behaviour.SetAimingLocation((Vector2)transform.position + defaultFacing);
             }
             else
             {
@@ -472,13 +485,14 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         data.searchTime = searchTime;
         data.chaseTime = chaseTime;
         data.idleRoutine = HelpFunc.VectorListToArrayList(idleRoutine);
-        data.LOCATION_MAX_OFFSET = locationMaxOffset;
-        data.DISTANCE_MAX_OFFSET = distanceMaxOffset;
+        data.locationMaxOffset = locationMaxOffset;
+        data.distanceMaxOffset = distanceMaxOffset;
         data.targetID = targetID;
         data.targetLastPos = targetLastPos.HasValue ? HelpFunc.VectorToArray(targetLastPos.Value) : null;
         data.state = state;
         data.routineIndex = routineIndex;
         data.countdown = countdown;
+        data.defaultFacing = defaultFacing;
         return data;
     }
 
@@ -494,14 +508,15 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         searchTime = data.searchTime;
         chaseTime = data.chaseTime;
         idleRoutine = HelpFunc.DataToListVec2(data.idleRoutine);
-        locationMaxOffset = data.LOCATION_MAX_OFFSET;
-        distanceMaxOffset = data.DISTANCE_MAX_OFFSET;
+        locationMaxOffset = data.locationMaxOffset;
+        distanceMaxOffset = data.distanceMaxOffset;
         targetID = data.targetID;
         if (targetID != 0) target = HelpFunc.FindEntityByID(targetID);
         targetLastPos = (data.targetLastPos != null) ? HelpFunc.DataToVec2(data.targetLastPos) : null;
         state = data.state;
         routineIndex = data.routineIndex;
         countdown = data.countdown;
+        defaultFacing = data.defaultFacing;
         if (countdown > 0) StartTimer(countdown);
     }
 }
@@ -521,12 +536,13 @@ public class CreatureAIData
     public float searchTime;
     public float chaseTime;
     public List<float[]> idleRoutine;
-    public float LOCATION_MAX_OFFSET;
-    public float DISTANCE_MAX_OFFSET;
+    public float locationMaxOffset;
+    public float distanceMaxOffset;
     public ulong targetID;
     public float[] targetLastPos;
     public aiState state;
     public int routineIndex;
     public float countdown;
+    public Vector2 defaultFacing;
 
 }

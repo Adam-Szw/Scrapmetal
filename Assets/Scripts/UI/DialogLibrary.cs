@@ -40,7 +40,7 @@ public static class DialogLibrary
     {
         TextAsset textAsset = Resources.Load<TextAsset>("Localization/" + filename);
         DialogLoadList dialogLoadList = JsonUtility.FromJson<DialogLoadList>(textAsset.text);
-        foreach (DialogData load in dialogLoadList.dialogData) dialogLocalization.Add(load.id, new DialogLocal(load.text, load.response));
+        foreach (DialogData load in dialogLoadList.dialogData) dialogLocalization[load.id] = new DialogLocal(load.text, load.response);
     }
 
     public static DialogOption getDialogOptionByID(float ID)

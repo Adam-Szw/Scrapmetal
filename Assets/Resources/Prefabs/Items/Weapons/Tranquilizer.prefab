@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 2012167021715772540}
   - component: {fileID: 7194358951515551220}
   - component: {fileID: 7695863947780370617}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Tranquilizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

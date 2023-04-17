@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -143,7 +145,7 @@ public static class HelpFunc
         return distanceCurr <= range;
     }
 
-    public static List<CreatureBehaviour> GetCreaturesInRadius(Vector2 position, float radius)
+    public static List<CreatureBehaviour> GetCreaturesInRadiusByHitbox(Vector2 position, float radius)
     {
         List<CreatureBehaviour> creatures = new List<CreatureBehaviour>();
         Collider2D[] colliders = Physics2D.OverlapCircleAll(position, radius, 1 << 7);
@@ -153,6 +155,31 @@ public static class HelpFunc
             if (b != null && !creatures.Contains(b)) creatures.Add(b);
         }
         return creatures;
+    }
+
+    public static List<GameObject> GetEntitiesInCollider(Collider2D collider)
+    {
+        List<GameObject> creatures = new List<GameObject>();
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.layerMask = 1 << 0;
+        int resultCount = 0;
+        Collider2D[] colliders = new Collider2D[999];
+        resultCount = Physics2D.OverlapCollider(collider, filter, colliders);
+        for (int i = 0; i < resultCount; i++)
+        {
+            EntityBehaviour b = colliders[i].GetComponentInParent<EntityBehaviour>();
+            if (b != null && (b is not PlayerBehaviour) && !creatures.Contains(b.gameObject)) creatures.Add(b.gameObject);
+        }
+        return creatures;
+    }
+
+    // Finds all cells in currently active scene
+    public static Dictionary<int, AreaCell> GetCells()
+    {
+        AreaCell[] cells = MonoBehaviour.FindObjectsOfType<AreaCell>();
+        Dictionary<int, AreaCell> cellsDict = new Dictionary<int, AreaCell>();
+        for (int i = 0; i < cells.Length; i++) cellsDict[cells[i].id] = cells[i];
+        return cellsDict;
     }
 
     // Recursively disables all colliders in the object
@@ -182,4 +209,14 @@ public static class HelpFunc
         }
     }
 
+    public static T DeepCopy<T>(T source)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        MemoryStream stream = new MemoryStream();
+        formatter.Serialize(stream, source);
+        stream.Seek(0, SeekOrigin.Begin);
+        T copy = (T)formatter.Deserialize(stream);
+        stream.Close();
+        return copy;
+    }
 }

@@ -7,7 +7,7 @@ public class NPCBehaviour : HumanoidBehaviour, Saveable<NPCData>, Spawnable<NPCD
 {
 
     public bool interactible = false;
-    public ulong dialogStartID = 1;
+    public ulong dialogStartID = 0;
 
     protected void Start()
     {

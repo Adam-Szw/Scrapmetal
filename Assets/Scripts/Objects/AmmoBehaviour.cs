@@ -55,6 +55,7 @@ public class AmmoData : ItemData
         prefabPath = data.prefabPath;
         ownerID = data.ownerID;
         ownerFaction = data.ownerFaction;
+        tier = data.tier;
         descriptionTextLinkID = data.descriptionTextLinkID;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;

@@ -74,6 +74,7 @@ public class SpiderbotData : CreatureData
     public SpiderbotData(CreatureData data) : base(data)
     {
         faction = data.faction;
+        tier = data.tier;
         aiData = data.aiData;
         moveSpeed = data.moveSpeed;
         alive = data.alive;

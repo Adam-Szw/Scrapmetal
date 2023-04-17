@@ -3,12 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEditor;
-using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using UnityEngine.U2D.Animation;
 using static CreatureAnimations;
-using static UnityEditor.Progress;
 
 /* Handles both dumb bullets and guided missiles
  */
@@ -129,7 +125,7 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
             if (projectile.explosionRadius > 0)
             {
                 SpawnExplosion(projectile.transform.position, explosionRadius * 0.1f);
-                List<CreatureBehaviour> inRange = HelpFunc.GetCreaturesInRadius(projectile.transform.position, projectile.explosionRadius);
+                List<CreatureBehaviour> inRange = HelpFunc.GetCreaturesInRadiusByHitbox(projectile.transform.position, projectile.explosionRadius);
                 foreach (CreatureBehaviour creature in inRange)
                 {
                     if (creature.aiControl) creature.aiControl.NotifyTakingDamage(projectile.ownerFaction);
@@ -209,6 +205,7 @@ public class ProjectileData : ItemData
         prefabPath = data.prefabPath;
         ownerID = data.ownerID;
         ownerFaction = data.ownerFaction;
+        tier = data.tier;
         descriptionTextLinkID = data.descriptionTextLinkID;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;

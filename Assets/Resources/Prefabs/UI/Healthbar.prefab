@@ -155,7 +155,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 50
+  m_SortingOrder: -1
   m_Sprite: {fileID: 89686232, guid: c7a9a06327cab23499b52f69dcf636eb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 9094980192939273627}
   - component: {fileID: 4123785504597575078}
   - component: {fileID: 208385159244422613}
+  - component: {fileID: 6255669266190598342}
   m_Layer: 5
   m_Name: Healthbar
   m_TagString: Untagged
@@ -242,7 +243,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 51
+  m_SortingOrder: 0
   m_Sprite: {fileID: -1034938997, guid: f9455eb5e34fa944aa4c4d5211a80731, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -270,3 +271,15 @@ MonoBehaviour:
   minX: -1.183
   frame: {fileID: 9181518174440840800}
   filler: {fileID: 9178651043099511843}
+  isUI: 0
+--- !u!210 &6255669266190598342
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9181518174440840800}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 50

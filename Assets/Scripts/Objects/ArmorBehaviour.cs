@@ -72,21 +72,6 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         colorRGBA = data.colorRGBA;
     }
 
-    public static ArmorData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable,
-     bool removeOnPick, ArmorSlot.Slot slot, float hpIncrease, float speedMultiplier, bool buffsScrapGeneration, bool buffsChestOpening,
-     int labelIndex, string colorRGBA)
-    {
-        ArmorData data = new ArmorData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable, removeOnPick));
-        data.slot = slot;
-        data.hpIncrease = hpIncrease;
-        data.speedMultiplierBonus = speedMultiplier;
-        data.buffsScrapGeneration = buffsScrapGeneration;
-        data.buffsChestOpening = buffsChestOpening;
-        data.labelIndex = labelIndex;
-        data.colorRGBA = colorRGBA;
-        return data;
-    }
-
     public static GameObject Spawn(ArmorData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
     {
         GameObject obj = ItemBehaviour.Spawn(data, position, rotation, scale, parent);

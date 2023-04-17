@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static ContentGenerator;
 using static CreatureBehaviour;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
@@ -24,6 +25,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         enemy       // Enemy faction, attack player only but not NPCs etc.
     }
     public GameObject healthbar = null;
+    public CreatureTier tier = CreatureTier.hostileEasy;
     public FactionAllegiance faction = FactionAllegiance.neutral;
     public CreatureAI aiControl = null;
 
@@ -259,6 +261,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public new CreatureData Save()
     {
         CreatureData data = new CreatureData(base.Save());
+        data.tier = tier;
         data.faction = faction;
         data.aiData = aiControl ? aiControl.Save() : null;
         data.moveSpeed = moveSpeed;
@@ -273,6 +276,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public void Load(CreatureData data, bool loadTransform = true)
     {
         base.Load(data, loadTransform);
+        tier = data.tier;
         faction = data.faction;
         if (data.aiData != null) aiControl.Load(data.aiData);
         moveSpeed = data.moveSpeed;
@@ -316,6 +320,7 @@ public class CreatureData : EntityData
     }
 
     public FactionAllegiance faction;
+    public CreatureTier tier;
     public CreatureAIData aiData;
     public float moveSpeed;
     public float maxHealth;

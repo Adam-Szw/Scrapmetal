@@ -12,11 +12,13 @@ public class SceneData
     public string name;
     public CameraData cameraData;
     public List<EntityData> entities;
+    public List<CellData> cells;
 
-    public SceneData(string name, CameraData cameraData, List<EntityData> entities)
+    public SceneData(string name, CameraData cameraData, List<EntityData> entities, List<CellData> cells)
     {
         this.name = name;
         this.cameraData = cameraData;
         this.entities = entities;
+        this.cells = cells;
     }
 }

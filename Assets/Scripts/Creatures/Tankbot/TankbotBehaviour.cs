@@ -75,6 +75,7 @@ public class TankbotData : CreatureData
     public TankbotData(CreatureData data) : base(data)
     {
         faction = data.faction;
+        tier = data.tier;
         aiData = data.aiData;
         moveSpeed = data.moveSpeed;
         alive = data.alive;

@@ -259,7 +259,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupTextObj: {fileID: 7198801986651529993}
   okButton: {fileID: 1143297220653639569}
-  imageObj: {fileID: 0}
   overlayPanel: {fileID: 8604204445081897018}
 --- !u!1 &4375022095757370183
 GameObject:
@@ -687,7 +686,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1967900470, guid: 4c2ced894773fc84badc923df5b9f06d, type: 3}
+  m_Sprite: {fileID: 1092013218, guid: 4c2ced894773fc84badc923df5b9f06d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

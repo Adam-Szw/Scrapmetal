@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization.Formatters.Binary;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static PopupControl;
@@ -35,45 +37,60 @@ public class GlobalControl : MonoBehaviour
     };
 
     // Global variables
-    public static Camera currentCamera;
-    public static CameraControl cameraControl;
-
+    [HideInInspector] public static Camera currentCamera = null;
     [HideInInspector] public static ulong nextID = 1;
+    [HideInInspector] public static bool paused { get; private set; } = true;
+    [HideInInspector] public static bool gameLoopOn = false;            // This should be false while in menu scene
 
-    private static GameObject player;
-    private static Transform playerTransform;
-    private static PlayerBehaviour playerBehaviour;
+    private static GameObject player = null;
+    private static Transform playerTransform = null;
+    private static PlayerBehaviour playerBehaviour = null;
+    private static CameraControl cameraControl = null;
 
-    public static bool paused { get; private set; }
-    public static bool trackingPlayer = true;
+    // Inter-scene data
+    public static bool resourcesLoaded = false;         // Set to true to prevent resources being repeatedly loaded on scene load
+    public static int saveIndex = -1;                   // Index of save file that opened scenes will look for data in
+    public static bool firstStart = true;               // True if game is loading its first scene
 
-    void Awake()
+    private void Awake()
     {
         // Setup camera
         currentCamera = Camera.main;
         cameraControl = new CameraControl();
         cameraControl.currentCamera = currentCamera;
-        // Load dialog localization
-        DialogLibrary.LoadDialogLocalization("DialogText_EN");
-        DialogLibrary.LoadDialogOptions();
-        ItemLibrary.LoadItemLocalization("ItemDescriptions_EN");
-        ItemLibrary.LoadItems();
+        // Load resources
+        if (!resourcesLoaded)
+        {
+            DialogLibrary.LoadDialogLocalization("DialogText_EN");
+            DialogLibrary.LoadDialogOptions();
+            ItemLibrary.LoadItemLocalization("ItemDescriptions_EN");
+            ItemLibrary.LoadItems();
+            CreatureLibrary.LoadCreatures();
+        }
+        // Load active scene
+        if (!firstStart) LoadGame(saveIndex);
+        firstStart = false;
     }
 
-    void Start()
+    private void Update()
     {
-        SetPlayer(HelpFunc.FindPlayerInScene());
-        UIControl.DefaultUI();
-        paused = false;
-    }
-
-    void Update()
-    {
-        if (trackingPlayer)
+        if (gameLoopOn)
         {
             if (!player) SetPlayer(HelpFunc.FindPlayerInScene());
             if (!paused) cameraControl.AdjustCameraToPlayer();
         }
+    }
+
+    public static void PauseGame()
+    {
+        Time.timeScale = 0.0f;
+        paused = true;
+    }
+
+    public static void UnpauseGame()
+    {
+        Time.timeScale = 1.0f;
+        paused = false;
     }
 
     public static GameObject GetPlayer() { return player; }
@@ -98,82 +115,131 @@ public class GlobalControl : MonoBehaviour
 
     public static void PlayerDeadActions()
     {
-        trackingPlayer = false;
+        gameLoopOn = false;
         UIControl.DestroyCombatUI();
         UIControl.DestroyDialog();
         UIControl.DestroyPopup();
         UIControl.DestroyMenu();
-        Effect effect = () => { UIControl.ShowMenu(); };
+        // make effect change scene to menu
+        Effect effect = () => { ReturnToTitle(); };
         UIControl.ShowPopup("Game Over!", "", 0.05f, effect);
     }
 
-    public static void PauseGame()
+    public static void ReturnToTitle()
     {
-        Time.timeScale = 0.0f;
-        paused = true;
+        saveIndex = -1;
+        gameLoopOn = false;
+        firstStart = true;
+        SwitchScene("Menu");
     }
 
-    public static void UnpauseGame()
-    {
-        Time.timeScale = 1.0f;
-        paused = false;
-    }
-
-    public static void Save()
+    public static void SaveGame(int index)
     {
         PauseGame();
+        Save save = new Save();
+
+        // Get current save in slot
+        Save saveCurr = Save.LoadSave(index);
+        if (saveCurr != null) save = saveCurr;
+
+        // Update save globals
+        string sceneCurr = SceneManager.GetActiveScene().name;
+        save.currentScene = sceneCurr;
+
         // Save current scene
-        string sceneCurr = SceneManager.GetActiveScene().name;
-        List<SceneData> sceneData = new List<SceneData>();
-        sceneData.Add(new SceneData(sceneCurr, cameraControl.Save(), SaveEntities(sceneCurr)));
-        Save save = new Save(sceneCurr, nextID, sceneData);
+        SceneData data = new SceneData(sceneCurr, cameraControl.Save(), SaveEntities(sceneCurr), SaveCells(sceneCurr));
+        save.scenes[sceneCurr] = data;
 
-        // Save to the folder
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/testingSave";
-        FileStream fstream = new FileStream(path, FileMode.Create);
-        formatter.Serialize(fstream, save);
-        fstream.Close();
+        // Record info in settings
+        Settings settings = Settings.GetSettings();
+        settings.saves[index] = new Settings.SaveInfo(DateTime.Now.ToString(), sceneCurr);
+        Settings.SaveSettings(settings);
+
+        // Save on disk
+        Save.StoreSave(save, index);
     }
 
-    public static void Load()
+    public static void SwitchScene(string newScene)
+    {
+        SceneManager.LoadScene(newScene, LoadSceneMode.Single);
+    }
+
+    public static void LoadGame(int index)
     {
         PauseGame();
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/testingSave";
-        FileStream fstream = new FileStream(path, FileMode.Open);
-        Save save;
-        save = formatter.Deserialize(fstream) as Save;
-        fstream.Close();
-        string sceneCurr = SceneManager.GetActiveScene().name;
-        SceneData scene = null;
-        foreach (SceneData s in save.scenes)
+        // Load the save
+        saveIndex = index;
+        Save save = Save.LoadSave(index);
+
+        // See if we got the save file
+        if (save == null)
         {
-            if (s.name == sceneCurr)
-            {
-                scene = s;
-                break;
-            }
+            // Start the game
+            gameLoopOn = true;
+            SetPlayer(HelpFunc.FindPlayerInScene());
+            UIControl.DefaultUI();
+            UnpauseGame();
+            return;
         }
+
+        // Check if we should switch to a different scene
+        string sceneCurr = SceneManager.GetActiveScene().name;
+        string sceneSave = save.currentScene;
+        if (sceneCurr != sceneSave)
+        {
+            gameLoopOn = false;
+            SwitchScene(sceneSave);
+            return;
+        }
+
+        // See if this scene is in save file
+        SceneData scene = null;
+        foreach (KeyValuePair<string, SceneData> pair in save.scenes) if (pair.Key == sceneCurr) { scene = pair.Value; break; }
+
+        // If there is data for this scene in save, load scene using it
         if (scene != null)
         {
             // Destroy entities in current scene
             DestroyEntities(sceneCurr);
-            // Load entities using save file
+
+            // Load scene data
             LoadEntities(scene.entities);
+            LoadCells(scene.cells);
             cameraControl.Load(scene.cameraData);
+
+            // Setup game environment
+            player = null;
+            playerTransform = null;
+            playerBehaviour = null;
+            gameLoopOn = true;
+            SetPlayer(HelpFunc.FindPlayerInScene());
+
+            // Load save globals
+
         }
-        player = null;
-        playerTransform = null;
-        playerBehaviour = null;
+
+        // Refresh cells
+        Dictionary<int, AreaCell> cells = HelpFunc.GetCells();
+        foreach (KeyValuePair<int, AreaCell> pair in cells) pair.Value.Initialize();
+
+        // Start the game
+        gameLoopOn = true;
         SetPlayer(HelpFunc.FindPlayerInScene());
-        trackingPlayer = true;
-        nextID = save.nextID;
         UIControl.DefaultUI();
+        UnpauseGame();
     }
 
     private static List<EntityData> SaveEntities(string sceneName)
     {
+        // First - tell cells to enable all objects so they can be saved
+        Dictionary<int, AreaCell> cells = HelpFunc.GetCells();
+        foreach (KeyValuePair<int, AreaCell> pair in cells)
+        {
+            pair.Value.ActivateEntitiesInCell();
+            pair.Value.initialized = false;
+        }
+
+        // Get all entities in scene
         List<EntityData> entities = new List<EntityData>();
         Scene scene = SceneManager.GetSceneByName(sceneName);
         List<GameObject> objects = scene.GetRootGameObjects().ToList();
@@ -182,11 +248,34 @@ public class GlobalControl : MonoBehaviour
             EntityBehaviour b = obj.GetComponent<EntityBehaviour>();
             if (b)
             {
+                // Save each entity
                 MethodInfo saveMethod = b.GetType().GetMethod("Save");
                 entities.Add((EntityData)saveMethod.Invoke(b, null));
             }
         }
+
+        // Refresh cells
+        cells = HelpFunc.GetCells();
+        foreach (KeyValuePair<int, AreaCell> pair in cells) pair.Value.Initialize();
+
         return entities;
+    }
+
+    private static List<CellData> SaveCells(string sceneName)
+    {
+        List<CellData> cells = new List<CellData>();
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        List<GameObject> objects = scene.GetRootGameObjects().ToList();
+        foreach (GameObject obj in objects)
+        {
+            AreaCell b = obj.GetComponent<AreaCell>();
+            if (b)
+            {
+                MethodInfo saveMethod = b.GetType().GetMethod("Save");
+                cells.Add((CellData)saveMethod.Invoke(b, null));
+            }
+        }
+        return cells;
     }
 
     private static void LoadEntities(List<EntityData> data)
@@ -194,6 +283,17 @@ public class GlobalControl : MonoBehaviour
         foreach (EntityData d in data)
         {
             if (SpawnMethods.TryGetValue(d.GetType(), out var spawnMethod)) spawnMethod(d);
+        }
+    }
+
+    private static void LoadCells(List<CellData> data)
+    {
+        Dictionary<int, AreaCell> cells = HelpFunc.GetCells();
+        foreach (CellData cellData in data)
+        {
+            AreaCell cell = null;
+            cells.TryGetValue(cellData.id, out cell);
+            cell.Load(cellData);
         }
     }
 

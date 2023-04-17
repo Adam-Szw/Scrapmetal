@@ -663,7 +663,7 @@ MonoBehaviour:
   minX: -102.4
   frame: {fileID: 4333425508942937662}
   filler: {fileID: 6898376515619230049}
-  playerBar: 1
+  isUI: 0
 --- !u!1 &6898376515619230049
 GameObject:
   m_ObjectHideFlags: 0

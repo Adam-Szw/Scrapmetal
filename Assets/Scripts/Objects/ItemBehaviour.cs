@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using static ContentGenerator;
 using static CreatureBehaviour;
 
 public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<ItemData>
 {
     public FactionAllegiance ownerFaction = FactionAllegiance.neutral;
+    public ItemTier tier = ItemTier.weak;
     public string inventoryIconLink = "Icons/Icon_Test";
     public ulong descriptionTextLinkID = 0;
     public int value = 0;
@@ -76,36 +78,13 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
         }
     }
 
-    /* Get data for a new item with given parameters. It replicates spawning proces without
-     * actually creating any entity, as such it will for example allocate a new ID correctly.
-     */
-    public static ItemData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable, bool removeOnPick)
-    {
-        ItemData data = new ItemData();
-        data.active = true;
-        data.ID = ++GlobalControl.nextID;
-        data.prefabPath = prefabPath;
-        data.location = HelpFunc.VectorToArray(Vector3.zero);
-        data.rotation = HelpFunc.QuaternionToArray(Quaternion.identity);
-        data.scale = HelpFunc.VectorToArray(Vector3.one);
-        data.velocity = HelpFunc.VectorToArray(Vector2.zero);
-        data.speed = 0f;
-        data.ownerID = 0;
-        data.ownerFaction = FactionAllegiance.neutral;
-        data.descriptionTextLinkID = descriptionLink;
-        data.inventoryIconLink = iconLink;
-        data.value = value;
-        data.pickable = pickable;
-        data.removeOnPick = removeOnPick;
-        return data;
-    }
-
     public new ItemData Save()
     {
         ItemData data = new ItemData(base.Save());
         data.prefabPath = prefabPath;
         data.ownerID = ownerID;
         data.ownerFaction = ownerFaction;
+        data.tier = tier;
         data.descriptionTextLinkID = descriptionTextLinkID;
         data.inventoryIconLink = inventoryIconLink;
         data.value = value;
@@ -119,6 +98,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
         base.Load(data, loadTransform);
         ownerID = data.ownerID;
         ownerFaction = data.ownerFaction;
+        tier = data.tier;
         descriptionTextLinkID = data.descriptionTextLinkID;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;
@@ -170,6 +150,7 @@ public class ItemData : EntityData
 
     public ulong ownerID;
     public FactionAllegiance ownerFaction;
+    public ItemTier tier;
     public string inventoryIconLink;
     public ulong descriptionTextLinkID;
     public int value;

@@ -2203,7 +2203,7 @@ MonoBehaviour:
   detectionRange: 9
   detectionRangeCaution: 22
   attackDistance: 10
-  accuracyAllowance: 30
+  accuracyAllowance: 60
   preferredFightDistance: 7
   cautionTime: 0.7
   searchTime: 8

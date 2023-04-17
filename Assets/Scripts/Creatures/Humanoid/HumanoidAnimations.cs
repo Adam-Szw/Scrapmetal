@@ -37,7 +37,7 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
     {
         useRunAnimation = true;
         useWalkBackwardAnimation = true;
-        speedRunThreshold = 4.0f;
+        speedRunThreshold = 2.8f;
         speedMaxAnimationSpeed = 8.0f;
         bodyAnimator = animators[0];
         armsAnimator = animators[1];

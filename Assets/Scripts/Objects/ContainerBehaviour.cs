@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spawnable<ContainerData>
 {

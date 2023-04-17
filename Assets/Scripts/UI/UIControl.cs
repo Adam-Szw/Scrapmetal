@@ -20,8 +20,12 @@ public class UIControl : MonoBehaviour
     [HideInInspector] public static GameObject combatUI = null;
     [HideInInspector] public static GameObject popup = null;
 
+    [HideInInspector] public static bool keyStrokesAccepted = false;
+
+
     public void Update()
     {
+        if (!keyStrokesAccepted) return;
         // Go thorugh hierarchy of closing things - then open menu if everything closed
         if (PlayerInput.esc)
         {
@@ -81,12 +85,14 @@ public class UIControl : MonoBehaviour
         DestroyPopup();
         DestroyMenu();
         ShowCombatUI();
+        keyStrokesAccepted = true;
     }
 
     public static void ShowMenu()
     {
         GlobalControl.PauseGame();
         menu = Instantiate(Resources.Load<GameObject>(menuPrefabPath));
+        menu.GetComponent<MainMenuControl>().OpenIngameMenu();
     }
 
     public static void DestroyMenu()

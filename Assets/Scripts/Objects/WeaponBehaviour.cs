@@ -22,6 +22,7 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
     public float snapMaxAngle = 0;
     public handsState animationType = handsState.empty;    // Used only by humanoid users
     public AmmoLink ammoLink = AmmoLink.empty;
+    public bool unlimitedAmmo = false;
 
     [HideInInspector] public Vector2 target = Vector2.zero;   // Targeting location
     [HideInInspector] public ulong guidanceTargetID = 0;
@@ -53,8 +54,11 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
         AcquireTargetLocation();
 
         // Ammo and cooldown checks
-        if (currAmmo <= 0) return;
-        if (cooldownCurrent > 0.0f) return;
+        if (!unlimitedAmmo)
+        {
+            if (currAmmo <= 0) return;
+            if (cooldownCurrent > 0.0f) return;
+        }
 
         // Spawn projectile
         float shootAngle = GetSnapAngle();
@@ -70,7 +74,7 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
         projBehaviour.RotateSprite(shootAngle);
 
         // Ammo, cooldown and animation
-        currAmmo--;
+        if (!unlimitedAmmo) currAmmo--;
         cooldownCurrent = cooldown;
         if (animator) animator.Play("Shoot");
 
@@ -128,21 +132,6 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
         return finalAngle;
     }
 
-    public static WeaponData Produce(string prefabPath, ulong descriptionLink, string iconLink, int value, bool pickable,
-        bool removeOnPick, float cooldown, float reloadCooldown, int maxAmmo, handsState animationType, AmmoLink link)
-    {
-        WeaponData data = new WeaponData(ItemBehaviour.Produce(prefabPath, descriptionLink, iconLink, value, pickable, removeOnPick));
-        data.cooldown = cooldown;
-        data.reloadCooldown = reloadCooldown;
-        data.maxAmmo = maxAmmo;
-        data.target = HelpFunc.VectorToArray(Vector2.zero);
-        data.currAmmo = maxAmmo;
-        data.cooldownCurrent = 0f;
-        data.animationType = animationType;
-        data.ammoLink = link;
-        return data;
-    }
-
     public new WeaponData Save()
     {
         WeaponData data = new WeaponData(base.Save());
@@ -154,6 +143,7 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
         data.cooldownCurrent = cooldownCurrent;
         data.animationType = animationType;
         data.ammoLink = ammoLink;
+        data.unlimitedAmmo = unlimitedAmmo;
         return data;
     }
 
@@ -168,6 +158,7 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
         cooldownCurrent = data.cooldownCurrent;
         animationType = data.animationType;
         ammoLink = data.ammoLink;
+        unlimitedAmmo = data.unlimitedAmmo;
     }
 
     public static GameObject Spawn(WeaponData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -195,6 +186,7 @@ public class WeaponData : ItemData
         prefabPath = data.prefabPath;
         ownerID = data.ownerID;
         ownerFaction = data.ownerFaction;
+        tier = data.tier;
         descriptionTextLinkID = data.descriptionTextLinkID;
         inventoryIconLink = data.inventoryIconLink;
         value = data.value;
@@ -213,4 +205,5 @@ public class WeaponData : ItemData
     public float cooldownCurrent = 0.0f;
     public handsState animationType;
     public AmmoLink ammoLink;
+    public bool unlimitedAmmo;
 }

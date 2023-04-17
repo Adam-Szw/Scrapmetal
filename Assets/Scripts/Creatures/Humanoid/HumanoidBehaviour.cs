@@ -186,6 +186,7 @@ public class HumanoidData : CreatureData
     public HumanoidData(CreatureData data) : base(data)
     {
         faction = data.faction;
+        tier = data.tier;
         aiData = data.aiData;
         moveSpeed = data.moveSpeed;
         alive = data.alive;
