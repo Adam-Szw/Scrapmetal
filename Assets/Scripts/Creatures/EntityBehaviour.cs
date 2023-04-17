@@ -27,6 +27,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     [HideInInspector] public InteractionEffect interactionUseEffect = null;
     protected GameObject aura = null;
     protected GameObject hText = null;
+    private GameObject floatingText = null;
 
     protected void Update()
     {
@@ -45,6 +46,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     {
         if (aura) Destroy(aura);
         if (hText) Destroy(hText);
+        if (floatingText) Destroy(floatingText);
         StopAllCoroutines();
     }
 
@@ -123,18 +125,18 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     // Spawn a text above entity for given time. The text will move slightly in its duration
     protected IEnumerator SpawnFloatingTextCoroutine(Color color, string text, float time)
     {
-        GameObject txt = Instantiate(Resources.Load<GameObject>("Prefabs/UI/TextObjectLight"));
-        txt.GetComponentInChildren<TextMeshProUGUI>().text = text;
-        txt.GetComponentInChildren<TextMeshProUGUI>().color = color;
-        txt.transform.position = interactAttachment.transform.position;
+        floatingText = Instantiate(Resources.Load<GameObject>("Prefabs/UI/TextObjectLight"));
+        floatingText.GetComponentInChildren<TextMeshProUGUI>().text = text;
+        floatingText.GetComponentInChildren<TextMeshProUGUI>().color = color;
+        floatingText.transform.position = interactAttachment.transform.position;
         float i = 0;
         while (i < time)
         {
-            txt.transform.position = txt.transform.position + new Vector3(0f, 0.03f, 0f);
+            floatingText.transform.position = floatingText.transform.position + new Vector3(0f, 0.03f, 0f);
             i += 0.05f;
             yield return new WaitForSeconds(.05f);
         }
-        Destroy(txt);
+        Destroy(floatingText);
     }
 
     public static GameObject Spawn(string prefabPath, Vector2 position, Quaternion rotation, Transform parent)

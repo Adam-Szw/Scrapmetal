@@ -492,7 +492,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         data.state = state;
         data.routineIndex = routineIndex;
         data.countdown = countdown;
-        data.defaultFacing = defaultFacing;
+        data.defaultFacing = HelpFunc.VectorToArray(defaultFacing);
         return data;
     }
 
@@ -516,7 +516,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         state = data.state;
         routineIndex = data.routineIndex;
         countdown = data.countdown;
-        defaultFacing = data.defaultFacing;
+        defaultFacing = HelpFunc.DataToVec2(data.defaultFacing);
         if (countdown > 0) StartTimer(countdown);
     }
 }
@@ -543,6 +543,6 @@ public class CreatureAIData
     public aiState state;
     public int routineIndex;
     public float countdown;
-    public Vector2 defaultFacing;
+    public float[] defaultFacing;
 
 }
