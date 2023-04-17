@@ -9,14 +9,14 @@ using static ItemLibrary;
 
 public static class ItemLibrary
 {
-    [System.Serializable]
+    [Serializable]
     public class ItemLocalData
     {
         public ulong id;
         public string text;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class ItemLoadList
     {
         public List<ItemLocalData> itemLocalData;
@@ -28,7 +28,10 @@ public static class ItemLibrary
     public static string[] ITEM_RESOURCES = new string[] { "FixKit", "Scrap", "Ammo/RivetAmmo", "Ammo/CapacitorCharge",
         "Ammo/GrenadeAmmo", "Ammo/RocketsAmmo", "Ammo/TranquilizerDartAmmo", "Weapons/Rivetgun", "Weapons/Laser",
         "Weapons/MissileLauncher", "Weapons/Taser", "Weapons/Tranquilizer", "Weapons/Tube", "Weapons/MissileLauncherSpiderbot",
-        "Weapons/RifleTankbot", "Weapons/ZapperWeapon" };
+        "Weapons/RifleTankbot", "Weapons/ZapperWeapon", "Armors/ArmorArmsArmored", "Armors/ArmorArmsActuator", "Armors/ArmorArmsSensoric",
+        "Armors/ArmorLegsArmored", "Armors/ArmorLegsActuator", "Armors/ArmorLegsSensoric", "Armors/ArmorHeadArmored",
+        "Armors/ArmorHeadActuator", "Armors/ArmorHeadSensoric", "Armors/ArmorBodyArmored", "Armors/ArmorBodyActuator",
+        "Armors/ArmorBodySensoric" };
 
     public static Dictionary<ItemTier, List<string>> weaponTierDictionary = new Dictionary<ItemTier, List<string>>();
     public static Dictionary<ItemTier, List<string>> armorTierDictionary = new Dictionary<ItemTier, List<string>>();

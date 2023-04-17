@@ -33,7 +33,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
     private void InteractionUse(CreatureBehaviour user)
     {
         // Send text if inventory is full and we cant pick up item
-        if (user.inventory.Count >= CreatureBehaviour.inventoryLimit && !removeOnPick)
+        if (user.GetInventory().Count >= inventoryLimit && !removeOnPick)
         {
             user.SpawnFloatingText(Color.red, "Inventory full!", 0.5f);
             return;
@@ -63,10 +63,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
     {
         if (!item.removeOnPick)
         {
-            // Add to creature's inventory
-            receiver.inventory.Add(item);
-            // Spawn pickup text
-            receiver.SpawnFloatingText(Color.green, "Item picked up", 0.5f);
+            receiver.GiveItem(item);
         }
         // Actions for scrap/currency or other things that get liquidated instantly
         else

@@ -36,9 +36,9 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     [SerializeField] private float maxHealth = 100.0f;
     [SerializeField] private float health = 100.0f;
     private bool alive = true;
+    private List<ItemData> inventory = new List<ItemData>();
 
     [HideInInspector] public CircleCollider2D visionCollider;
-    [HideInInspector] public List<ItemData> inventory;
     [HideInInspector] public static int inventoryLimit = 40;
     [HideInInspector] public List<ItemData> loot;
 
@@ -122,6 +122,45 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         float newHealth = Mathf.Min(GetHealth() + amount, GetMaxHealth());
         SetHealth(newHealth);
         SpawnFloatingText(Color.green, "+" + amount, 0.35f);
+    }
+
+    public List<ItemData> GetInventory() { return inventory; }
+
+    public void GiveItem(ItemData item)
+    {
+        // Spawn pickup text
+        SpawnFloatingText(Color.green, "Item picked up", 0.5f);
+        // Check if item is stackable
+        if (item is AmmoData)
+        {
+            int amountToStack = ((AmmoData)item).quantity;
+            // Check if we can stack on any existing ammo items
+            foreach (ItemData inv in inventory)
+            {
+                // If stacked all, finish
+                if (amountToStack <= 0) break;
+                // If not stackable continue
+                if (inv is not AmmoData) continue;
+                bool ammoSameType = ((AmmoData)item).link == ((AmmoData)inv).link;
+                bool canStack = ((AmmoData)inv).maxStack > ((AmmoData)inv).quantity;
+                if (ammoSameType && canStack)
+                {
+                    // Stack item
+                    int amountStacked = Mathf.Min(((AmmoData)inv).maxStack - ((AmmoData)inv).quantity, amountToStack);
+                    ((AmmoData)inv).quantity += amountStacked;
+                    amountToStack -= amountStacked;
+                }
+            }
+            // Set final quantity
+            ((AmmoData)item).quantity = amountToStack;
+            // Only add if item not empty
+            if (((AmmoData)item).quantity > 0) inventory.Add(item);
+        }
+        else
+        {
+            // Add to creature's inventory by default
+            inventory.Add(item);
+        }
     }
 
     public void SetAlive(bool alive)

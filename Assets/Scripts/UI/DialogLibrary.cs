@@ -19,7 +19,7 @@ public static class DialogLibrary
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class DialogData
     {
         public ulong id;
@@ -27,7 +27,7 @@ public static class DialogLibrary
         public string response;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class DialogLoadList
     {
         public List<DialogData> dialogData;

@@ -99,7 +99,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         floatingText.GetComponentInChildren<TextMeshProUGUI>().text = text;
         floatingText.GetComponentInChildren<TextMeshProUGUI>().color = color;
         floatingText.transform.position = interactAttachment.transform.position + new Vector3(0f, 0f, 0f);
-        floatingText.GetComponent<TextBehaviour>().Initiate(time);
+        floatingText.GetComponent<TextBehaviour>().Initiate(time, gameObject);
     }
 
     // Spawn a text in interaction area for a given amount of time

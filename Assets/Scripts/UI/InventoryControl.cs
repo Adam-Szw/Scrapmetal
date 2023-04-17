@@ -159,12 +159,12 @@ public class InventoryControl : MonoBehaviour
         descriptionText.text = ItemLibrary.itemLocalization.TryGetValue(item.descriptionTextLinkID, out string val) ? val : "No description";
         if (status != ItemStatus.equipped && item is WeaponData) descriptionText.text += "\n\nAmmo: " +
                 ((WeaponData)item).currAmmo + "/" + ((WeaponData)item).maxAmmo;
-        if (item is AmmoData) descriptionText.text += "\n\nQuantity: " + ((AmmoData)item).quantity;
+        if (item is AmmoData) descriptionText.text += "\n\nQuantity: " + ((AmmoData)item).quantity + "/" + ((AmmoData)item).maxStack;
         if (status == ItemStatus.equipped) descriptionText.text += "\n\nClick to unequip the item";
         else if (!isShopOpen && status == ItemStatus.inventory && (item is WeaponData || item is ArmorData))
             descriptionText.text += "\n\nClick to equip the item";
-        else if (status == ItemStatus.shop) descriptionText.text += "\n\nClick to purchase the item.\nPrice: " + item.value;
-        else if (isShopOpen && status == ItemStatus.inventory) descriptionText.text += "\n\nClick to sell the item.\nPrice: " + (int)Mathf.Round(item.value / 2);
+        else if (status == ItemStatus.shop) descriptionText.text += "\n\nClick to purchase the item.\nPrice: " + item.value * ((item is AmmoData) ? ((AmmoData)item).quantity : 1f);
+        else if (isShopOpen && status == ItemStatus.inventory) descriptionText.text += "\n\nClick to sell the item.\nPrice: " + (int)Mathf.Round(((item is AmmoData) ? ((AmmoData)item).quantity : 1f) / 2);
         else if (!isShopOpen && (item is UsableData)) descriptionText.text += "\n\nClick to use the item";
     }
 
@@ -324,7 +324,7 @@ public class InventoryControl : MonoBehaviour
         button.onClick.AddListener(() =>
         {
             playerBehaviour.Heal(((UsableData)item).restoration);
-            playerBehaviour.inventory.Remove(item);
+            playerBehaviour.GetInventory().Remove(item);
             LoadInventoryPanel(playerBehaviour, shopItems);
         });
     }
@@ -336,10 +336,10 @@ public class InventoryControl : MonoBehaviour
         SetButtonText(button, "Confirm purchase");
         button.onClick.AddListener(() =>
         {
-            if (playerBehaviour.currencyCount >= item.value)
+            if (playerBehaviour.currencyCount >= item.value * ((item is AmmoData) ? ((AmmoData)item).quantity : 1f) && playerBehaviour.GetInventory().Count < CreatureBehaviour.inventoryLimit)
             {
-                playerBehaviour.currencyCount -= item.value;
-                playerBehaviour.inventory.Add(item);
+                playerBehaviour.currencyCount -= item.value * (int)((item is AmmoData) ? ((AmmoData)item).quantity : 1f);
+                playerBehaviour.GiveItem(item);
                 shopItems.Remove(item);
             }
             LoadInventoryPanel(playerBehaviour, shopItems);
@@ -353,8 +353,8 @@ public class InventoryControl : MonoBehaviour
         SetButtonText(button, "Confirm sale");
         button.onClick.AddListener(() =>
         {
-            playerBehaviour.currencyCount += (int)Mathf.Round(item.value / 2);
-            playerBehaviour.inventory.Remove(item);
+            playerBehaviour.currencyCount += (int)Mathf.Round(item.value * ((item is AmmoData) ? ((AmmoData)item).quantity : 1f) / 2);
+            playerBehaviour.GetInventory().Remove(item);
             shopItems.Add(item);
             LoadInventoryPanel(playerBehaviour, shopItems);
         });
@@ -365,7 +365,7 @@ public class InventoryControl : MonoBehaviour
         EnableButton(true, button);
         button.onClick.AddListener(() =>
         {
-            playerBehaviour.inventory.Remove(item);
+            playerBehaviour.GetInventory().Remove(item);
             item.pickable = true;
             GameObject obj = ItemBehaviour.FlexibleSpawn(item);
             obj.transform.position = playerBehaviour.groundReferenceObject.transform.position;
@@ -404,7 +404,7 @@ public class InventoryControl : MonoBehaviour
         playerBehaviour = player;
         currencyText.text = "Scrap: " + player.currencyCount;
         EnableText(true, currencyText);
-        LoadInventory(player.weapons, player.armors, player.inventory);
+        LoadInventory(player.weapons, player.armors, player.GetInventory());
         if (shopItems != null)
         {
             shopPanel.SetActive(true);

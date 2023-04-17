@@ -115,7 +115,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         {
             if (slot.index == index)
             {
-                inventory.Add(slot.weapon);
+                GetInventory().Add(slot.weapon);
                 toRemove = slot;
                 break;
             }
@@ -131,7 +131,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         {
             if (slot.slot == aSlot)
             {
-                inventory.Add(slot.armor);
+                GetInventory().Add(slot.armor);
                 toRemove = slot;
                 break;
             }
@@ -145,7 +145,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     {
         UnequipWeapon(wSlot.index);
         weapons.Add(wSlot);
-        if (inventory.Contains(wSlot.weapon)) inventory.Remove(wSlot.weapon);
+        if (GetInventory().Contains(wSlot.weapon)) GetInventory().Remove(wSlot.weapon);
         SetWeaponFromSlot(weaponSelected);
     }
 
@@ -153,7 +153,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     {
         UnequipArmor(aSlot.slot);
         armors.Add(aSlot);
-        if (inventory.Contains(aSlot.armor)) inventory.Remove(aSlot.armor);
+        if (GetInventory().Contains(aSlot.armor)) GetInventory().Remove(aSlot.armor);
         RefreshPlayerStats();
         RefreshPlayerLimbs();
     }
@@ -240,10 +240,10 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     {
         // First search inventory to replace item
         int indToReplace = -1;
-        for (int i = 0; i < inventory.Count; i++) { if (inventory[i].ID == item.ID) indToReplace = i; }
+        for (int i = 0; i < GetInventory().Count; i++) { if (GetInventory()[i].ID == item.ID) indToReplace = i; }
         if (indToReplace != -1)
         {
-            inventory[indToReplace] = item;
+            GetInventory()[indToReplace] = item;
             return;
         }
         // Now try to save in assigned weapons
@@ -262,14 +262,19 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         }
 
         // If we dont have weapon do nothing
-        if (!activeItemBehaviour || (activeItemBehaviour && (activeItemBehaviour is not WeaponBehaviour))) return;
+        if (!activeItemBehaviour || activeItemBehaviour is not WeaponBehaviour)
+        {
+            SpawnFloatingText(Color.blue, "No weapon", 0.3f);
+            return;
+        }
+
 
         // Get currently active weapon
         WeaponBehaviour weapon = (WeaponBehaviour)activeItemBehaviour;
         // Search inventory to find ammo
         List<ItemData> toRemove = new List<ItemData>();
         bool reloadWasNeeded = false;
-        foreach (ItemData item in inventory)
+        foreach (ItemData item in GetInventory())
         {
             // Break if ammo satisfied
             if (weapon.currAmmo >= weapon.maxAmmo) break;
@@ -287,14 +292,14 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
             // Remove ammo item if fully drained
             if (ammo.quantity <= 0) toRemove.Add(item);
         }
-        foreach (ItemData item in toRemove) inventory.Remove(item);
+        foreach (ItemData item in toRemove) GetInventory().Remove(item);
         if (reloadWasNeeded) StartCoroutine(ReloadTimerCoroutine(weapon.reloadCooldown));
     }
 
     private IEnumerator ReloadTimerCoroutine(float time)
     {
         reloadTimer = Mathf.Max(time, 0f);
-        if (time > 0) SpawnFloatingText(Color.blue, "Reloading: " + time + "s", 0.5f);
+        if (time > 0) SpawnFloatingText(Color.blue, "Reloading: " + time + "s", time);
         while (reloadTimer > 0)
         {
             yield return new WaitForSeconds(.2f);

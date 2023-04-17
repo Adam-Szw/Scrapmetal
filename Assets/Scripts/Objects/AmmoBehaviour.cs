@@ -7,6 +7,7 @@ using static AmmoBehaviour;
 public class AmmoBehaviour : ItemBehaviour, Saveable<AmmoData>, Spawnable<AmmoData>
 {
 
+    public int maxStack = 1;
     public int quantity = 1;
     public AmmoLink link = AmmoLink.empty;
 
@@ -19,6 +20,7 @@ public class AmmoBehaviour : ItemBehaviour, Saveable<AmmoData>, Spawnable<AmmoDa
     {
         AmmoData data = new AmmoData(base.Save());
         data.quantity = quantity;
+        data.maxStack = maxStack;
         data.link = link;
         return data;
     }
@@ -27,6 +29,7 @@ public class AmmoBehaviour : ItemBehaviour, Saveable<AmmoData>, Spawnable<AmmoDa
     {
         base.Load(data, loadTransform);
         quantity = data.quantity;
+        maxStack = data.maxStack;
         link = data.link;
     }
 
@@ -63,6 +66,7 @@ public class AmmoData : ItemData
         removeOnPick = data.removeOnPick;
     }
 
+    public int maxStack;
     public int quantity;
     public AmmoLink link;
 

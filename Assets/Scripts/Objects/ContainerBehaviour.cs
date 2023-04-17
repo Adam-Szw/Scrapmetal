@@ -61,7 +61,7 @@ public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spaw
         foreach (ItemData item in loot)
         {
             // Do nothing if we cant pick up item due to inventory being full
-            if (user.inventory.Count >= CreatureBehaviour.inventoryLimit && (!item.removeOnPick))
+            if (user.GetInventory().Count >= CreatureBehaviour.inventoryLimit && (!item.removeOnPick))
             {
                 user.SpawnFloatingText(Color.red, "Inventory full!", 0.5f);
                 continue;
@@ -135,6 +135,6 @@ public class ContainerData : EntityData
     }
 
     public bool isAvailable;
-    public bool requiresOpeningSkill = false;
+    public bool requiresOpeningSkill;
 
 }

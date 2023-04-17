@@ -57,6 +57,7 @@ MonoBehaviour:
   pickable: 1
   removeOnPick: 0
   ownerID: 0
+  maxStack: 3
   quantity: 1
   link: 3
 --- !u!1 &3554906992047203862
