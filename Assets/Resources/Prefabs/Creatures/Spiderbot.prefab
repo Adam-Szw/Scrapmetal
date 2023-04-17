@@ -2177,7 +2177,7 @@ MonoBehaviour:
   ID: 0
   healthbar: {fileID: 4699295782675156808}
   tier: 2
-  faction: 4
+  faction: 5
   aiControl: {fileID: 5291230762624573668}
   moveSpeed: 3.5
   weaponAttachmentBones:
@@ -2186,7 +2186,6 @@ MonoBehaviour:
   maxHealth: 600
   health: 600
   visionCollider: {fileID: 0}
-  inventory: []
   loot: []
 --- !u!114 &5291230762624573668
 MonoBehaviour:

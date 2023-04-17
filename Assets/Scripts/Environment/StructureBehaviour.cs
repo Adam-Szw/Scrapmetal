@@ -47,6 +47,7 @@ public class StructureBehaviour : MonoBehaviour
         SpriteMask sprMask = mask.AddComponent<SpriteMask>();
         sprMask.sprite = maskSprite;
         sprMask.alphaCutoff = 1f;
+        sprMask.enabled = false;
         masks.Add(mask);
     }
 

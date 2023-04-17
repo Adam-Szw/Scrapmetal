@@ -16,6 +16,7 @@ public class Save
     public static string SAVE_PATH = "/Save";
 
     public string currentScene = "";
+    public Decisions decisions = new Decisions();
     public Dictionary<string, SceneData> scenes = new Dictionary<string, SceneData>();
 
     public static void StoreSave(Save save, int index)

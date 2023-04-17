@@ -48,9 +48,10 @@ public class GlobalControl : MonoBehaviour
     private static CameraControl cameraControl = null;
 
     // Inter-scene data
-    public static bool resourcesLoaded = false;         // Set to true to prevent resources being repeatedly loaded on scene load
-    public static int saveIndex = -1;                   // Index of save file that opened scenes will look for data in
-    public static bool firstStart = true;               // True if game is loading its first scene
+    public static Decisions decisions = new Decisions();    // Playthrough decisions
+    public static bool resourcesLoaded = false;             // Set to true to prevent resources being repeatedly loaded on scene load
+    public static int saveIndex = -1;                       // Index of save file that opened scenes will look for data in
+    public static bool menuLoad = false;                    // True if game is loading menu and should not begin gameloop automatically
 
     private void Awake()
     {
@@ -68,8 +69,8 @@ public class GlobalControl : MonoBehaviour
             CreatureLibrary.LoadCreatures();
         }
         // Load active scene
-        if (!firstStart) LoadGame(saveIndex);
-        firstStart = false;
+        if (!menuLoad) LoadGame(saveIndex);
+        menuLoad = false;
     }
 
     private void Update()
@@ -129,7 +130,7 @@ public class GlobalControl : MonoBehaviour
     {
         saveIndex = -1;
         gameLoopOn = false;
-        firstStart = true;
+        menuLoad = true;
         SwitchScene("Menu");
     }
 
@@ -145,6 +146,7 @@ public class GlobalControl : MonoBehaviour
         // Update save globals
         string sceneCurr = SceneManager.GetActiveScene().name;
         save.currentScene = sceneCurr;
+        save.decisions = decisions;
 
         // Save current scene
         SceneData data = new SceneData(sceneCurr, cameraControl.Save(), SaveEntities(sceneCurr), SaveCells(sceneCurr));
@@ -181,6 +183,9 @@ public class GlobalControl : MonoBehaviour
             UnpauseGame();
             return;
         }
+
+        // Load decisions
+        decisions = save.decisions;
 
         // Check if we should switch to a different scene
         string sceneCurr = SceneManager.GetActiveScene().name;
