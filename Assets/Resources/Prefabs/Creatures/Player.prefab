@@ -505,7 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 7.726547e-38
+  m_SpriteKey: 0
 --- !u!114 &6799900385674299996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,6 +969,7 @@ MonoBehaviour:
   loot: []
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 12
+  randomizeParts: 0
   backwardSpeedMultiplier: 0.5
   visionMask: {fileID: 6293809838073669848}
   currencyCount: 0
@@ -1642,7 +1643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -0.00000017324673
+  m_SpriteKey: 0
 --- !u!114 &2068605372927883227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2031,7 +2032,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -2.3797434e+36
+  m_SpriteKey: 0
 --- !u!114 &4289724615435944915
 MonoBehaviour:
   m_ObjectHideFlags: 0

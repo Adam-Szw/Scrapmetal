@@ -50,8 +50,9 @@ MonoBehaviour:
   interactAttachment: {fileID: 2300210682344453543}
   ID: 0
   ownerFaction: 1
+  tier: 1
   inventoryIconLink: Icons/Icon_Body_Armored
-  descriptionTextLinkID: 0
+  descriptionTextLinkID: 8
   value: 0
   pickable: 1
   removeOnPick: 0
@@ -59,6 +60,7 @@ MonoBehaviour:
   hpIncrease: 0
   speedMultiplierBonus: 0
   buffsScrapGeneration: 0
+  buffsLootGeneration: 0
   buffsChestOpening: 0
   slot: 1
   labelIndex: 4

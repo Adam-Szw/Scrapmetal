@@ -2176,6 +2176,7 @@ MonoBehaviour:
   interactAttachment: {fileID: 1010068221656279094}
   ID: 0
   healthbar: {fileID: 4699295782675156808}
+  tier: 2
   faction: 4
   aiControl: {fileID: 5291230762624573668}
   moveSpeed: 3.5
@@ -2211,6 +2212,7 @@ MonoBehaviour:
   idleRoutine: []
   distanceMaxOffset: 2
   locationMaxOffset: 0.5
+  defaultFacing: {x: 1, y: 0}
   targetID: 0
 --- !u!50 &2978790146387656399
 Rigidbody2D:

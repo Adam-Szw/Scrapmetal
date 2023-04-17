@@ -17,7 +17,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     // Default stats and player look. Used when changing looks using armor
     public static float PLAYER_BASE_MAX_HP = 100f;
     public static float PLAYER_BASE_SPEED = 5f;
-    public static string PLAYER_BASE_COLOR_RGBA = "(1, 1, 1, 1)";
+    public static float[] PLAYER_BASE_COLOR_RGBA = new float[] { 1f, 1f, 1f, 1f };
 
     [HideInInspector] public int currencyCount = 0;
 
@@ -26,6 +26,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     private GameObject selectedInteractible = null;
 
     [HideInInspector] public bool hasScrapGeneration = false;
+    [HideInInspector] public bool hasLootGeneration = false;
     [HideInInspector] public bool hasChestOpening = false;
 
     private float bonusHP = 0f;
@@ -308,12 +309,14 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         bonusHP = 0f;
         bonusSpeedMult = 1f;
         hasScrapGeneration = false;
+        hasLootGeneration = false;
         hasChestOpening = false;
         // Get armor buffs
         foreach (ArmorSlot aSlot in armors)
         {
             ArmorData armor = aSlot.armor;
             if (armor.buffsScrapGeneration) hasScrapGeneration = true;
+            if (armor.buffsLootGeneration) hasLootGeneration = true;
             if (armor.buffsChestOpening) hasChestOpening = true;
             bonusHP += armor.hpIncrease;
             bonusSpeedMult += armor.speedMultiplierBonus;
@@ -326,7 +329,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     private void RefreshPlayerLimbs()
     {
         // Reset player graphics
-        for (int i = 1; i < BODYPARTS.Length; i++) SetBodypart(i, 1, PLAYER_BASE_COLOR_RGBA);
+        for (int i = 1; i < BODYPARTS.Length; i++) SetBodypart(i, 1, "", PLAYER_BASE_COLOR_RGBA);
         // Apply armor parts
         foreach (ArmorSlot armor in armors)
         {
@@ -398,6 +401,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         SetWeaponFromSlot(weaponSelected);
         RefreshPlayerLimbs();
         UpdateState();
+        RefreshPlayerStats();
         StartCoroutine(ReloadTimerCoroutine(reloadTimer));
     }
 

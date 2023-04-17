@@ -23,9 +23,12 @@ public static class ItemLibrary
     }
 
     public static Dictionary<ulong, string> itemLocalization = new Dictionary<ulong, string>();
-    private static string ITEM_PREFABS_PATH = "Prefabs/Items/";
+    public static string ITEM_PREFABS_PATH = "Prefabs/Items/";
     // to fill
-    private static string[] ITEM_RESOURCES = new string[] { "FixKit", "Scrap", "Ammo/AmmoRivetgun" };
+    public static string[] ITEM_RESOURCES = new string[] { "FixKit", "Scrap", "Ammo/RivetAmmo", "Ammo/CapacitorCharge",
+        "Ammo/GrenadeAmmo", "Ammo/RocketsAmmo", "Ammo/TranquilizerDartAmmo", "Weapons/Rivetgun", "Weapons/Laser",
+        "Weapons/MissileLauncher", "Weapons/Taser", "Weapons/Tranquilizer", "Weapons/Tube", "Weapons/MissileLauncherSpiderbot",
+        "Weapons/RifleTankbot", "Weapons/ZapperWeapon" };
 
     public static Dictionary<ItemTier, List<string>> weaponTierDictionary = new Dictionary<ItemTier, List<string>>();
     public static Dictionary<ItemTier, List<string>> armorTierDictionary = new Dictionary<ItemTier, List<string>>();

@@ -9,8 +9,9 @@ public class NPCBehaviour : HumanoidBehaviour, Saveable<NPCData>, Spawnable<NPCD
     public bool interactible = false;
     public ulong dialogStartID = 0;
 
-    protected void Start()
+    protected new void Start()
     {
+        base.Start();
         if (interactible)
         {
             AddInteractionCollider();
@@ -72,6 +73,8 @@ public class NPCData : HumanoidData
         itemActive = data.itemActive;
         bodypartData = data.bodypartData;
         animationData = data.animationData;
+        randomizeParts = data.randomizeParts;
+        bodypartsGenerated = data.bodypartsGenerated;
     }
 
     public bool interactible = false;

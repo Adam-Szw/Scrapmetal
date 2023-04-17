@@ -924,7 +924,8 @@ MonoBehaviour:
   interactAttachment: {fileID: 4398082579037113846}
   ID: 0
   healthbar: {fileID: 2184009108772949476}
-  faction: 1
+  tier: 3
+  faction: 5
   aiControl: {fileID: 6062211383785325316}
   moveSpeed: 3
   weaponAttachmentBones:
@@ -937,6 +938,7 @@ MonoBehaviour:
   loot: []
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 14
+  randomizeParts: 1
   backwardSpeedMultiplier: 0.5
   interactible: 1
   dialogStartID: 1
@@ -964,6 +966,7 @@ MonoBehaviour:
   idleRoutine: []
   distanceMaxOffset: 2
   locationMaxOffset: 0.5
+  defaultFacing: {x: 1, y: 0}
   targetID: 0
 --- !u!50 &8151393122861713825
 Rigidbody2D:

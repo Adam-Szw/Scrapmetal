@@ -2,11 +2,79 @@
     "itemLocalData": [
         {
             "id": 1,
-            "text": "This is description for item 1"
+            "text": "Rivet"
         },
         {
             "id": 2,
-            "text": "This is description for item 2"
-        }
+            "text": "Capacitor"
+        },
+		{
+            "id": 3,
+            "text": "Tranquilizer Dart"
+        },
+		{
+            "id": 4,
+            "text": "Grenade"
+        },
+		{
+            "id": 5,
+            "text": "Rocket"
+        },
+		{
+            "id": 6,
+            "text": "Scrap"
+        },
+		{
+            "id": 7,
+            "text": "FixKit"
+        },
+		{
+            "id": 8,
+            "text": "Body Armor"
+        },
+		{
+            "id": 9,
+            "text": "Body Actuator"
+        },
+		{
+            "id": 10,
+            "text": "Body Sensoric"
+        },
+		{
+            "id": 11,
+            "text": "Head Armor"
+        },
+		{
+            "id": 12,
+            "text": "Head Actuator"
+        },
+		{
+            "id": 13,
+            "text": "Head Sensoric"
+        },
+		{
+            "id": 14,
+            "text": "Arms Armored"
+        },
+		{
+            "id": 15,
+            "text": "Arms Actuator"
+        },
+		{
+            "id": 16,
+            "text": "Arms Sensoric"
+        },
+		{
+            "id": 17,
+            "text": "Legs Armored"
+        },
+		{
+            "id": 18,
+            "text": "Legs Actuator"
+        },
+		{
+            "id": 19,
+            "text": "Legs Sensoric"
+        },
     ]
 }

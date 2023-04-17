@@ -43,6 +43,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     private List<GameObject> entitiesSorted = null;
     private float detectionRangeCurrent = 0.0f;
 
+    private bool coroutinesRunning = false;
+
     /* hold - stand in place
      * idle - play idle cycle (for example patrol an area)
      * caution - play warning and/or run timer
@@ -85,6 +87,11 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     private void OnEnable()
     {
         StartCoroutine(StartCoroutines());
+    }
+
+    private void OnDisable()
+    {
+        coroutinesRunning = false;
     }
 
     public void ObtainTargetLocation()
@@ -132,11 +139,15 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     private IEnumerator StartCoroutines()
     {
         yield return null;
-        UpdateDetectionRadius();
-        StartCoroutine(UpdateMovement());
-        StartCoroutine(UpdateFacing());
-        StartCoroutine(AIUpdate());
-        StartTimer(countdown);
+        if (!coroutinesRunning)
+        {
+            UpdateDetectionRadius();
+            StartCoroutine(UpdateMovement());
+            StartCoroutine(UpdateFacing());
+            StartCoroutine(AIUpdate());
+            StartTimer(countdown);
+            coroutinesRunning = true;
+        }
     }
 
     // Get distance to each entity in list and sort it by those distances

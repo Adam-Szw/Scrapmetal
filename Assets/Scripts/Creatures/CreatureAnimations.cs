@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using static CreatureAnimations;
 using static HumanoidAnimations;
-using static UnityEngine.GraphicsBuffer;
 
 public class CreatureAnimations : Saveable<CreatureAnimationData>
 {
@@ -130,7 +129,7 @@ public class CreatureAnimations : Saveable<CreatureAnimationData>
     public virtual void UpdateRotations() { }
 
     // Update the animators with latest flags
-    protected void UpdateAnimators()
+    public void UpdateAnimators()
     {
         foreach (Animator animator in animators) animator.SetBool("Alive", alive);
         foreach (Animator animator in animators) animator.SetInteger("MovementState", (int)stateMovement);

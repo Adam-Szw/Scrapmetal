@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5684202536283468193}
   - component: {fileID: 7629942265934686138}
   m_Layer: 0
-  m_Name: AmmoRivetgun
+  m_Name: RocketsAmmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,19 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7592a7973f69e5d42be46b583760e1c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabPath: Prefabs/Items/Ammo/AmmoRivetgun
+  prefabPath: Prefabs/Items/Ammo/RocketsAmmo
   targetBone: {fileID: 2300210682344453543}
   interactAttachment: {fileID: 2300210682344453543}
   ID: 0
   ownerFaction: 1
-  inventoryIconLink: Icons/Icon_RivetAmmo
-  descriptionTextLinkID: 0
-  value: 0
+  tier: 2
+  inventoryIconLink: Icons/Icon_RocketsAmmo
+  descriptionTextLinkID: 5
+  value: 45
   pickable: 1
   removeOnPick: 0
   ownerID: 0
-  quantity: 3
-  link: 1
+  quantity: 1
+  link: 3
 --- !u!1 &3554906992047203862
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +178,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: dc4a3ef09cb7c9f429d6d06e7828ce6b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 368448ce517b68049a9546de0d7b7df7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -216,4 +217,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 1.3179259e+19
+  m_SpriteKey: -5.9042434e+37

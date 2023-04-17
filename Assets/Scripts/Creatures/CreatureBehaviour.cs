@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -42,7 +43,8 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     [HideInInspector] public List<ItemData> loot;
 
     private HealthbarBehaviour healthbarBehaviour = null;
-    private GameObject lastDealer = null;
+    private int lastHit = -1;
+    private int lastFrameHit = -1;
 
     // Populate this list to have AI use it
     protected List<WeaponBehaviour> AIweapons = new List<WeaponBehaviour>();
@@ -63,6 +65,12 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         AddVisionCollider();
     }
 
+    protected void OnEnable()
+    {
+        MethodInfo method = GetAnimations().GetType().GetMethod("UpdateAnimators");
+        method.Invoke(GetAnimations(), null);
+    }
+
     // Handle collision with projectiles
     public void OnTriggerEnter2D(Collider2D other)
     {
@@ -75,11 +83,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         if (b.ownerID == ID) return;
         // Do nothing if from same faction
         if (b.ownerFaction == faction && faction != FactionAllegiance.berserk) return;
-        // Do nothing if this was already registered
-        if (other.gameObject == lastDealer) return;
-        // Lock this projectile from triggering entity again
-        lastDealer = other.gameObject;
-        b.RunEffect(b, this);
+        RunProjectileHitActions(b);
     }
 
     public float GetHealth() { return health; }
@@ -185,7 +189,10 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     public bool Attack()
     {
         if (!alive) return false;
-        foreach (WeaponBehaviour w in GetWeapons()) w.Use();
+        foreach (WeaponBehaviour w in GetWeapons())
+        {
+            w.Use();
+        }
         if (GetWeapons().Count > 0) return true;
         return false;
     }
@@ -214,6 +221,17 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         weaponBehaviour.ownerFaction = faction;
         weaponBehaviour.groundReferenceObject = groundReferenceObject;
         AIweapons.Add(weaponBehaviour);
+    }
+
+    private void RunProjectileHitActions(ProjectileBehaviour projectile)
+    {
+        // Do nothing if this was already registered
+        if (lastFrameHit == Time.frameCount) return;
+        lastFrameHit = Time.frameCount;
+        if (projectile.gameObject.GetInstanceID() == lastHit) return;
+        // Lock this projectile from triggering entity again
+        lastHit = projectile.gameObject.GetInstanceID();
+        projectile.RunEffect(projectile, this);
     }
 
     private void RunDeathActions()

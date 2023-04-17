@@ -36,58 +36,91 @@ public class ContentGenerator : MonoBehaviour
         massive // Lots of cash and some most powerful items
     }
 
-    public int spawnCountMax;
-    public int spawnCountMin;           // Min and max of how many enemies can spawn
-    public CreatureTier enemyTier;      // Tier of enemies and their weapons
-    public LootTier lootTier;           // Tier of loot that will be dropped
-
     public GameObject spawnLocation;    // Location of enemy spawn
     public float spawnRadius;           // How far away from center enemies can be spawned
 
+    [Serializable]
+    public class SpawnData
+    {
+        public int minSpawn;
+        public int maxSpawn;
+        public CreatureTier creatureTier;
+        public LootTier lootTier;
+    }
+
+    /* Arguments: Min and max of how many enemies can spawn, Tier of enemies and their weapons, Tier of loot that will be dropped
+     */
+    public List<SpawnData> spawns = new List<SpawnData>();
+
     public void Trigger()
     {
-        // Randomize how many enemies to spawn
-        int spawnCount = Random.Range(spawnCountMin, spawnCountMax + 1);
-        for (int i = 0; i < spawnCount; i++)
+        foreach(SpawnData spawn in spawns)
         {
-            List<string> creatureAssets;
-            CreatureLibrary.tierDictionary.TryGetValue(enemyTier, out creatureAssets);
-            if (creatureAssets != null)
+            int spawnCountMin = spawn.minSpawn;
+            int spawnCountMax = spawn.maxSpawn;
+            CreatureTier enemyTier = spawn.creatureTier;
+            LootTier lootTier = spawn.lootTier;
+            // Randomize how many enemies to spawn
+            int spawnCount = Random.Range(spawnCountMin, spawnCountMax + 1);
+            for (int i = 0; i < spawnCount; i++)
             {
-                // Spawn enemy. If couldnt spawn enemy, go to next iteration
-                Vector3 position = spawnLocation.transform.position;
-                GameObject enemy = SpawnEnemy(enemyTier, position, spawnRadius);
-                if (!enemy) continue;
-                List<ItemData> loot = new List<ItemData>();
-                // If enemy is of humanoid type, give it a weapon and make it lootable
-                bool humanoid = enemyTier == CreatureTier.enemyEasy || enemyTier == CreatureTier.enemyMedium || enemyTier == CreatureTier.enemyHard;
-                if (enemyTier == CreatureTier.enemyEasy)
+                List<string> creatureAssets;
+                CreatureLibrary.tierDictionary.TryGetValue(enemyTier, out creatureAssets);
+                if (creatureAssets != null)
                 {
-                    WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.weak });
-                    loot.Add(HelpFunc.DeepCopy(weapon));
-                    GiveWeapon(weapon, enemy);
+                    // Spawn enemy. If couldnt spawn enemy, go to next iteration
+                    Vector3 position = spawnLocation.transform.position;
+                    GameObject enemy = SpawnEnemy(enemyTier, position, spawnRadius);
+                    if (!enemy) continue;
+                    List<ItemData> loot = new List<ItemData>();
+                    // If enemy is of humanoid type, give it a weapon and make it lootable
+                    bool humanoid = enemyTier == CreatureTier.enemyEasy || enemyTier == CreatureTier.enemyMedium || enemyTier == CreatureTier.enemyHard;
+                    if (enemyTier == CreatureTier.enemyEasy)
+                    {
+                        WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.weak });
+                        if (weapon != null)
+                        {
+                            loot.Add(HelpFunc.DeepCopy(weapon));
+                            GiveWeapon(weapon, enemy);
+                        }
+                    }
+                    else if (enemyTier == CreatureTier.enemyMedium)
+                    {
+                        WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.weak, ItemTier.medium });
+                        if (weapon != null)
+                        {
+                            loot.Add(HelpFunc.DeepCopy(weapon));
+                            GiveWeapon(weapon, enemy);
+                        }
+                    }
+                    else if (enemyTier == CreatureTier.enemyHard)
+                    {
+                        WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.medium, ItemTier.strong });
+                        if (weapon != null)
+                        {
+                            loot.Add(HelpFunc.DeepCopy(weapon));
+                            GiveWeapon(weapon, enemy);
+                        }
+                    }
+                    // See if player has extra modifiers
+                    float lootModifier = 1f;
+                    float scrapModifier = 1f;
+                    GameObject player = GlobalControl.GetPlayer();
+                    if (player)
+                    {
+                        lootModifier = player.GetComponent<PlayerBehaviour>().hasLootGeneration ? 1.3f : 1f;
+                        scrapModifier = player.GetComponent<PlayerBehaviour>().hasScrapGeneration ? 1.8f : 1f;
+                    }
+                    // Generate loot. Humanoid enemies can give weapons but cant give armor
+                    foreach (ItemData extraLoot in GetRandomLoot(lootTier, !humanoid, humanoid, scrapModifier, lootModifier)) loot.Add(extraLoot);
+                    // Give loot to enemy
+                    enemy.GetComponent<CreatureBehaviour>().loot = loot;
                 }
-                else if (enemyTier == CreatureTier.enemyMedium)
-                {
-                    WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.weak, ItemTier.medium });
-                    loot.Add(HelpFunc.DeepCopy(weapon));
-                    GiveWeapon(weapon, enemy);
-                }
-                else if (enemyTier == CreatureTier.enemyHard)
-                {
-                    WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.medium, ItemTier.strong });
-                    loot.Add(HelpFunc.DeepCopy(weapon));
-                    GiveWeapon(weapon, enemy);
-                }
-                // Generate loot. Humanoid enemies can give weapons but cant give armor
-                loot.Concat(GetRandomLoot(lootTier, humanoid, !humanoid));
-                // Give loot to enemy
-                enemy.GetComponent<CreatureBehaviour>().loot = loot;
             }
         }
     }
 
-    private GameObject SpawnEnemy(CreatureTier tier, Vector3 position, float radius)
+    private static GameObject SpawnEnemy(CreatureTier tier, Vector3 position, float radius)
     {
         // Get enemies at this tier
         List<string> creatureAssets;
@@ -107,7 +140,7 @@ public class ContentGenerator : MonoBehaviour
         return null;
     }
 
-    private WeaponData GetRandomWeapon(List<ItemTier> tiersPossible)
+    private static WeaponData GetRandomWeapon(List<ItemTier> tiersPossible)
     {
         // Collect list of all possible weapons
         List<string> weapons = new List<string>();
@@ -116,14 +149,14 @@ public class ContentGenerator : MonoBehaviour
             // Get weapon assets at this tier
             List<string> tierWeapons;
             ItemLibrary.weaponTierDictionary.TryGetValue(tier, out tierWeapons);
-            if (tierWeapons != null) weapons.Concat(tierWeapons);
+            if (tierWeapons != null) foreach (string weapon in tierWeapons) weapons.Add(weapon);
         }
         // Select random weapon if there are any on this tier
         if (weapons.Count > 0)
         {
             // Randomize weapon
             int i = Random.Range(0, weapons.Count - 1);
-            GameObject weapon = Resources.Load<GameObject>(weapons[i]);
+            GameObject weapon = Resources.Load<GameObject>(ItemLibrary.ITEM_PREFABS_PATH + weapons[i]);
             return weapon.GetComponent<WeaponBehaviour>().Save();
         }
         return null;
@@ -135,7 +168,7 @@ public class ContentGenerator : MonoBehaviour
         receiver.GetComponent<HumanoidBehaviour>().SetItemActive(weapon);
     }
 
-    private List<ItemData> GetRandomLoot(LootTier tier, bool weaponsEnabled, bool armorsEnabled)
+    public static List<ItemData> GetRandomLoot(LootTier tier, bool weaponsEnabled, bool armorsEnabled, float scrapMultiplier = 1f, float chanceMultiplier = 1f)
     {
         List<ItemData> loot = new List<ItemData>();
         switch (tier)
@@ -143,58 +176,62 @@ public class ContentGenerator : MonoBehaviour
             case LootTier.small:
                 {
                     // Moderate chance for lowest quality item + small amount of scrap
-                    if (Random.value < 0.7) loot.Add(GetRandomItem(ItemTier.weak, false, false, true, 7, 16));
-                    if (weaponsEnabled && Random.value < 0.45) loot.Add(GetRandomItem(ItemTier.weak, true, false, false, 1, 1));
-                    if (armorsEnabled && Random.value < 0.3) loot.Add(GetRandomItem(ItemTier.weak, false, true, false, 1, 1));
-                    loot.Add(GetScrapData(Random.Range(12, 26)));
+                    if (Random.value < 0.7 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.weak, false, false, true, 7, 16));
+                    if (weaponsEnabled && Random.value < 0.45 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.weak, true, false, false, 1, 1));
+                    if (armorsEnabled && Random.value < 0.3 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.weak, false, true, false, 1, 1));
+                    loot.Add(GetScrapData((int)Random.Range(12 * scrapMultiplier, 26 * scrapMultiplier)));
                     break;
                 }
             case LootTier.medium:
                 {
                     // High chance for low quality item or small chance for medium item + reasonable scrap
-                    if (Random.value < 0.95) loot.Add(GetRandomItem(ItemTier.weak, false, false, true, 7, 16));
-                    if (Random.value < 0.35) loot.Add(GetRandomItem(ItemTier.medium, false, false, true, 4, 7));
-                    if (weaponsEnabled && Random.value < 0.8) loot.Add(GetRandomItem(ItemTier.weak, true, false, false, 1, 1));
-                    if (armorsEnabled && Random.value < 0.6) loot.Add(GetRandomItem(ItemTier.weak, false, true, false, 1, 1));
-                    loot.Add(GetScrapData(Random.Range(28, 82)));
+                    if (Random.value < 0.95 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.weak, false, false, true, 7, 16));
+                    if (Random.value < 0.35 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.medium, false, false, true, 4, 7));
+                    if (weaponsEnabled && Random.value < 0.8 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.weak, true, false, false, 1, 1));
+                    if (armorsEnabled && Random.value < 0.6 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.weak, false, true, false, 1, 1));
+                    loot.Add(GetScrapData((int)Random.Range(28 * scrapMultiplier, 82 * scrapMultiplier)));
                     break;
                 }
             case LootTier.large:
                 {
                     // Small chance for epic item, good chance for medium item or multiple small items + good scrap
-                    if (Random.value < 0.95) loot.Add(GetRandomItem(ItemTier.weak, false, false, true, 15, 32));
-                    if (Random.value < 0.85) loot.Add(GetRandomItem(ItemTier.medium, false, false, true, 5, 12));
-                    if (Random.value < 0.45) loot.Add(GetRandomItem(ItemTier.strong, false, false, true, 2, 4));
-                    if (weaponsEnabled && Random.value < 0.9) loot.Add(GetRandomItem(ItemTier.weak, true, false, false, 1, 1));
-                    if (weaponsEnabled && Random.value < 0.4) loot.Add(GetRandomItem(ItemTier.weak, true, false, false, 1, 1));
-                    if (weaponsEnabled && Random.value < 0.5) loot.Add(GetRandomItem(ItemTier.medium, true, false, false, 1, 1));
-                    if (weaponsEnabled && Random.value < 0.25) loot.Add(GetRandomItem(ItemTier.strong, true, false, false, 1, 1));
-                    if (armorsEnabled && Random.value < 0.6) loot.Add(GetRandomItem(ItemTier.medium, false, true, false, 1, 1));
-                    if (armorsEnabled && Random.value < 0.2) loot.Add(GetRandomItem(ItemTier.strong, false, true, false, 1, 1));
-                    loot.Add(GetScrapData(Random.Range(125, 362)));
+                    if (Random.value < 0.95 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.weak, false, false, true, 15, 32));
+                    if (Random.value < 0.85 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.medium, false, false, true, 5, 12));
+                    if (Random.value < 0.45 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.strong, false, false, true, 2, 4));
+                    if (weaponsEnabled && Random.value < 0.9 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.weak, true, false, false, 1, 1));
+                    if (weaponsEnabled && Random.value < 0.4 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.weak, true, false, false, 1, 1));
+                    if (weaponsEnabled && Random.value < 0.5 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.medium, true, false, false, 1, 1));
+                    if (weaponsEnabled && Random.value < 0.25 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.strong, true, false, false, 1, 1));
+                    if (armorsEnabled && Random.value < 0.6 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.medium, false, true, false, 1, 1));
+                    if (armorsEnabled && Random.value < 0.2 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.strong, false, true, false, 1, 1));
+                    loot.Add(GetScrapData((int)Random.Range(125 * scrapMultiplier, 362 * scrapMultiplier)));
                     break;
                 }
             case LootTier.massive:
                 {
                     // Tons of scrap + multiple epic and medium items
-                    if (Random.value < 0.95) loot.Add(GetRandomItem(ItemTier.medium, false, false, true, 5, 12));
-                    if (Random.value < 0.85) loot.Add(GetRandomItem(ItemTier.strong, false, false, true, 6, 9));
-                    if (Random.value < 0.35) loot.Add(GetRandomItem(ItemTier.strong, false, false, true, 6, 9));
-                    if (weaponsEnabled && Random.value < 0.9) loot.Add(GetRandomItem(ItemTier.medium, true, false, false, 1, 1));
-                    if (weaponsEnabled && Random.value < 0.5) loot.Add(GetRandomItem(ItemTier.medium, true, false, false, 1, 1));
-                    if (weaponsEnabled && Random.value < 0.25) loot.Add(GetRandomItem(ItemTier.medium, true, false, false, 1, 1));
-                    if (weaponsEnabled && Random.value < 0.9) loot.Add(GetRandomItem(ItemTier.strong, true, false, false, 1, 1));
-                    if (weaponsEnabled && Random.value < 0.4) loot.Add(GetRandomItem(ItemTier.strong, true, false, false, 1, 1));
-                    if (armorsEnabled && Random.value < 0.8) loot.Add(GetRandomItem(ItemTier.strong, false, true, false, 1, 1));
-                    if (armorsEnabled && Random.value < 0.4) loot.Add(GetRandomItem(ItemTier.strong, false, true, false, 1, 1));
-                    loot.Add(GetScrapData(Random.Range(425, 1204)));
+                    if (Random.value < 0.95 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.medium, false, false, true, 5, 12));
+                    if (Random.value < 0.85 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.strong, false, false, true, 6, 9));
+                    if (Random.value < 0.35 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.strong, false, false, true, 6, 9));
+                    if (weaponsEnabled && Random.value < 0.9 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.medium, true, false, false, 1, 1));
+                    if (weaponsEnabled && Random.value < 0.5 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.medium, true, false, false, 1, 1));
+                    if (weaponsEnabled && Random.value < 0.25 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.medium, true, false, false, 1, 1));
+                    if (weaponsEnabled && Random.value < 0.9 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.strong, true, false, false, 1, 1));
+                    if (weaponsEnabled && Random.value < 0.4 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.strong, true, false, false, 1, 1));
+                    if (armorsEnabled && Random.value < 0.8 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.strong, false, true, false, 1, 1));
+                    if (armorsEnabled && Random.value < 0.4 * chanceMultiplier) loot.Add(GetRandomItem(ItemTier.strong, false, true, false, 1, 1));
+                    loot.Add(GetScrapData((int)Random.Range(425 * scrapMultiplier, 1204 * scrapMultiplier)));
                     break;
                 }
         }
+        // Sometimes we will fail to obtain items for loot table. Clear all nulls from the list
+        List<ItemData> toRemove = new List<ItemData>();
+        foreach (ItemData item in loot) if (item == null) toRemove.Add(item);
+        foreach (ItemData item in toRemove) loot.Remove(item);
         return loot;
     }
 
-    private ItemData GetRandomItem(ItemTier tier, bool weapons, bool armors, bool items, int minQuantity, int maxQuantity)
+    private static ItemData GetRandomItem(ItemTier tier, bool weapons, bool armors, bool items, int minQuantity, int maxQuantity)
     {
         // Collect list of all possible loot items
         List<string> lootPossible = new List<string>();
@@ -204,7 +241,7 @@ public class ContentGenerator : MonoBehaviour
         {
             List<string> tierWeapons;
             ItemLibrary.weaponTierDictionary.TryGetValue(tier, out tierWeapons);
-            if (tierWeapons != null) lootPossible.Concat(tierWeapons);
+            if (tierWeapons != null) foreach (string weapon in tierWeapons) lootPossible.Add(weapon);
         }
 
         // Get armors at this tier
@@ -212,21 +249,21 @@ public class ContentGenerator : MonoBehaviour
         {
             List<string> tierArmors;
             ItemLibrary.armorTierDictionary.TryGetValue(tier, out tierArmors);
-            if (tierArmors != null) lootPossible.Concat(tierArmors);
+            if (tierArmors != null) foreach (string armor in tierArmors) lootPossible.Add(armor);
         }
 
         // Get items at this tier
-        if(items)
+        if (items)
         {
             List<string> tierItems;
             ItemLibrary.itemTierDictionary.TryGetValue(tier, out tierItems);
-            if (tierItems != null) lootPossible.Concat(tierItems);
+            if (tierItems != null) foreach (string item in tierItems) lootPossible.Add(item);
         }
 
         // Get random loot from possible items
         if (lootPossible.Count == 0) return null;
         int i = Random.Range(0, lootPossible.Count - 1);
-        GameObject loot = Resources.Load<GameObject>(lootPossible[i]);
+        GameObject loot = Resources.Load<GameObject>(ItemLibrary.ITEM_PREFABS_PATH + lootPossible[i]);
 
         // Save correct data
         ItemBehaviour b = loot.GetComponent<ItemBehaviour>();
@@ -242,7 +279,7 @@ public class ContentGenerator : MonoBehaviour
         return data;
     }
 
-    private ItemData GetScrapData(int value)
+    private static ItemData GetScrapData(int value)
     {
         GameObject scrap = Resources.Load<GameObject>(ItemLibrary.SCRAP_PATH);
         ItemData data = scrap.GetComponent<ItemBehaviour>().Save();

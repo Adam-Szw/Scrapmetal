@@ -50,13 +50,14 @@ MonoBehaviour:
   interactAttachment: {fileID: 2300210682344453543}
   ID: 0
   ownerFaction: 1
-  inventoryIconLink: Icons/Icon_Test
-  descriptionTextLinkID: 0
-  value: 0
+  tier: 0
+  inventoryIconLink: Icons/Icon_FixKit
+  descriptionTextLinkID: 7
+  value: 20
   pickable: 1
   removeOnPick: 0
   ownerID: 0
-  restoration: 15
+  restoration: 25
 --- !u!1 &3554906992047203862
 GameObject:
   m_ObjectHideFlags: 0

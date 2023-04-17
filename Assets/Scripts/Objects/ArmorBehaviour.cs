@@ -12,6 +12,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
     public float hpIncrease = 0f;
     public float speedMultiplierBonus = 0f;
     public bool buffsScrapGeneration = false;
+    public bool buffsLootGeneration = false;
     public bool buffsChestOpening = false;
 
     [Serializable]
@@ -54,6 +55,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         data.hpIncrease = hpIncrease;
         data.speedMultiplierBonus = speedMultiplierBonus;
         data.buffsScrapGeneration = buffsScrapGeneration;
+        data.buffsLootGeneration = buffsLootGeneration;
         data.buffsChestOpening = buffsChestOpening;
         data.labelIndex = labelIndex;
         data.colorRGBA = colorRGBA;
@@ -67,6 +69,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
         hpIncrease = data.hpIncrease;
         speedMultiplierBonus = data.speedMultiplierBonus;
         buffsScrapGeneration = data.buffsScrapGeneration;
+        buffsLootGeneration = data.buffsLootGeneration;
         buffsChestOpening = data.buffsChestOpening;
         labelIndex = data.labelIndex;
         colorRGBA = data.colorRGBA;
@@ -108,6 +111,7 @@ public class ArmorData : ItemData
     public float hpIncrease;
     public float speedMultiplierBonus;
     public bool buffsScrapGeneration;
+    public bool buffsLootGeneration;
     public bool buffsChestOpening;
     public int labelIndex;
     public string colorRGBA;

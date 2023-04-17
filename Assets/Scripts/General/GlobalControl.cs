@@ -306,7 +306,7 @@ public class GlobalControl : MonoBehaviour
         {
             EntityBehaviour eB = obj.GetComponent<EntityBehaviour>();
             if (eB) Destroy(obj);
-            TextMarker tm = obj.GetComponent<TextMarker>();
+            TextBehaviour tm = obj.GetComponent<TextBehaviour>();
             if (tm) Destroy(obj);
         }
     }

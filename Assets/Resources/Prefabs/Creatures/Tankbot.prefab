@@ -630,6 +630,7 @@ MonoBehaviour:
   interactAttachment: {fileID: 1010068221656279094}
   ID: 0
   healthbar: {fileID: 4699295782675156808}
+  tier: 1
   faction: 4
   aiControl: {fileID: 5291230762624573668}
   moveSpeed: 2.7
@@ -642,7 +643,6 @@ MonoBehaviour:
   visionCollider: {fileID: 0}
   inventory: []
   loot: []
-  weaponAttachmentSecondary: {fileID: 1731808231861850036}
 --- !u!114 &5291230762624573668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,6 +667,7 @@ MonoBehaviour:
   idleRoutine: []
   distanceMaxOffset: 3
   locationMaxOffset: 0.5
+  defaultFacing: {x: 1, y: 0}
   targetID: 0
 --- !u!50 &2978790146387656399
 Rigidbody2D:

@@ -82,11 +82,10 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
         if (stateHands == handsState.empty) armsAnimator.Play("Arms_Flinch");
     }
 
-    private new void UpdateAnimators()
+    public new void UpdateAnimators()
     {
         base.UpdateAnimators();
         armsAnimator.SetInteger("HandsState", (int)stateHands);
-
     }
 
     // Updates bend of torso and head to look at the characters target
@@ -177,14 +176,14 @@ public class HumanoidAnimationData : CreatureAnimationData
 
     public HumanoidAnimationData(CreatureAnimationData data)
     {
-        this.alive = data.alive;
-        this.stateMovement = data.stateMovement;
-        this.facingVector = data.facingVector;
-        this.movementVector = data.movementVector;
-        this.aimingLocation = data.aimingLocation;
-        this.speed = data.speed;
-        this.animatorsState = data.animatorsState;
-        this.jointsAngles = data.jointsAngles;
+        alive = data.alive;
+        stateMovement = data.stateMovement;
+        facingVector = data.facingVector;
+        movementVector = data.movementVector;
+        aimingLocation = data.aimingLocation;
+        speed = data.speed;
+        animatorsState = data.animatorsState;
+        jointsAngles = data.jointsAngles;
     }
 
     public handsState stateHands;

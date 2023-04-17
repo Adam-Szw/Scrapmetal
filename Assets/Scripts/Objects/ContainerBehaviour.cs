@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
+using static ContentGenerator;
 
 public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spawnable<ContainerData>
 {
 
     public bool isAvailable = true;
     public bool requiresOpeningSkill = false;
+    public bool randomizeContent = true;
+    public LootTier lootTier = LootTier.small;
 
     [HideInInspector] public List<ItemData> loot = new List<ItemData>();
 
@@ -20,7 +23,6 @@ public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spaw
         AddInteractionCollider();
         interactionEnterEffect = (CreatureBehaviour user) => { InteractionEnter(user); };
         interactionUseEffect = (CreatureBehaviour user) => { InteractionUse(user); };
-        if (loot.Count == 0) isAvailable = false;
     }
 
     private void InteractionUse(CreatureBehaviour user)
@@ -39,6 +41,16 @@ public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spaw
         hText = null;
         // Do nothing if container was already opened
         if (!isAvailable) return;
+        // See if player has extra modifiers
+        float lootModifier = 1f;
+        float scrapModifier = 1f;
+        GameObject player = GlobalControl.GetPlayer();
+        if (player)
+        {
+            lootModifier = player.GetComponent<PlayerBehaviour>().hasLootGeneration ? 1.3f : 1f;
+            scrapModifier = player.GetComponent<PlayerBehaviour>().hasScrapGeneration ? 1.8f : 1f;
+        }
+        if (randomizeContent) loot = GetRandomLoot(lootTier, true, true, scrapModifier, lootModifier);
         interacting = true;
         StartCoroutine(LootingCoroutine(user));
     }

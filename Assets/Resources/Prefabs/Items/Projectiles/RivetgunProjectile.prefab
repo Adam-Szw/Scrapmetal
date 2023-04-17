@@ -218,6 +218,7 @@ MonoBehaviour:
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
   ownerFaction: 1
+  tier: 3
   inventoryIconLink: 
   descriptionTextLinkID: 0
   value: 0

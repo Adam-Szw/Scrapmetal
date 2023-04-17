@@ -4,31 +4,45 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
+using static CreatureLibrary;
 using static HumanoidAnimations;
 using ColorUtility = UnityEngine.ColorUtility;
+using Random = UnityEngine.Random;
 
 public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spawnable<HumanoidData>
 {
     [SerializeField] private Vector2 weaponAttachmentOffset;
     [SerializeField] private int itemActiveSortLayer;
+    [SerializeField] private bool randomizeParts = false;
 
     [HideInInspector] public HumanoidAnimations animations;
     public float backwardSpeedMultiplier = 0.5f;
 
     public static string[] BODYPARTS = new string[] { "Face", "Head", "Torso", "Pelvis", "Arm_Up_R", "Arm_Low_R",
     "Hand_R", "Arm_Up_L", "Arm_Low_L", "Hand_L", "Leg_Up_R", "Leg_Low_R", "Foot_R", "Leg_Up_L", "Leg_Low_L", "Foot_L", };
-    public static String[] BODYPART_LABELS_INDEX = new string[] { "", "_0", "_2", "_5", "_1", "_4",
+    public static string[] BODYPART_LABELS_INDEX = new string[] { "_F", "_0", "_2", "_5", "_1", "_4",
         "_7", "_3", "_6", "_8", "_10", "_9", "_13", "_11", "_12", "_14" };
+    public static int BODYPART_NPC_INDEX_START = 2;
+    public static int BODYPART_NPC_INDEX_END = 9;
+    public static int FACE_NPC_INDEX_START = 2;
+    public static int FACE_NPC_INDEX_END = 6;
 
     protected ItemBehaviour activeItemBehaviour = null;
+
+    private bool bodypartsGenerated = false;
 
     new protected void Awake()
     {
         base.Awake();
-        Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
-        Animator armsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Arms").GetComponent<Animator>();
-        Animator legsAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Legs").GetComponent<Animator>();
+        Animator bodyAnimator = HelpFunc.RecursiveFindChild(gameObject, "Body").GetComponent<Animator>();
+        Animator armsAnimator = HelpFunc.RecursiveFindChild(gameObject, "Arms").GetComponent<Animator>();
+        Animator legsAnimator = HelpFunc.RecursiveFindChild(gameObject, "Legs").GetComponent<Animator>();
         animations = new HumanoidAnimations(transform, new List<Animator>() { bodyAnimator, armsAnimator, legsAnimator }, BODYPARTS, weaponAttachmentBones[0]);
+    }
+
+    protected void Start()
+    {
+        if (!bodypartsGenerated && randomizeParts) RandomizeBodyparts();
     }
 
     new protected void Update()
@@ -98,23 +112,24 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         return weapons;
     }
 
-    protected void SetBodypart(int labelIndex, int setChoice, string colorRGBA)
+    protected void SetBodypart(int labelIndex, int setChoice, string colorRGBA = "", float[] colorVals = null)
     {
         string partName = BODYPARTS[labelIndex];
         string category = BODYPARTS[labelIndex];
         string label = "Body" + setChoice + BODYPART_LABELS_INDEX[labelIndex];
-        SpriteResolver spR = HelpFunc.RecursiveFindChild(this.gameObject, partName).GetComponent<SpriteResolver>();
-        SpriteRenderer spRD = HelpFunc.RecursiveFindChild(this.gameObject, partName).GetComponent<SpriteRenderer>();
+        SpriteResolver spR = HelpFunc.RecursiveFindChild(gameObject, partName).GetComponent<SpriteResolver>();
+        SpriteRenderer spRD = HelpFunc.RecursiveFindChild(gameObject, partName).GetComponent<SpriteRenderer>();
         spR.SetCategoryAndLabel(category, label);
-        Color color;
-        ColorUtility.TryParseHtmlString("#" + colorRGBA, out color);
+        Color color = Color.white;
+        if (colorVals != null) color = new Color(colorVals[0], colorVals[1], colorVals[2], colorVals[3]);
+        else if (colorRGBA != "") ColorUtility.TryParseHtmlString("#" + colorRGBA, out color);
         spRD.color = color;
     }
 
     private List<string> SaveBodypartData()
     {
         List<string> data = new List<string>();
-        foreach(string bodypart in BODYPARTS)
+        foreach (string bodypart in BODYPARTS)
         {
             SpriteResolver spR = HelpFunc.RecursiveFindChild(this.gameObject, bodypart).GetComponent<SpriteResolver>();
             SpriteRenderer spRD = HelpFunc.RecursiveFindChild(this.gameObject, bodypart).GetComponent<SpriteRenderer>();
@@ -140,6 +155,25 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         }
     }
 
+    private void RandomizeBodyparts()
+    {
+        // Randomize color scheme
+        BodyColorPreset preset = HUMANOID_BODY_COLOR_PRESETS[Random.Range(0, HUMANOID_BODY_COLOR_PRESETS.Count)];
+        for (int i = 1; i < BODYPARTS.Length; i++)
+        {
+            // Randomize part
+            int bodyChoice = Random.Range(BODYPART_NPC_INDEX_START, BODYPART_NPC_INDEX_END + 1);
+            if (i == 1) SetBodypart(i, bodyChoice, "", preset.headColor);
+            if (i >= 2 && i <= 3) SetBodypart(i, bodyChoice, "", preset.bodyColor);
+            if (i >= 4 && i <= 9) SetBodypart(i, bodyChoice, "", preset.armsColor);
+            if (i >= 10) SetBodypart(i, bodyChoice, "", preset.legsColor);
+        }
+        // Randomize face
+        int faceChoice = Random.Range(FACE_NPC_INDEX_START, FACE_NPC_INDEX_END + 1);
+        SetBodypart(0, faceChoice, "");
+        bodypartsGenerated = true;
+    }
+
     new public HumanoidData Save()
     {
         HumanoidData data = new HumanoidData(base.Save());
@@ -151,6 +185,8 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
             data.itemActive = (ItemData)saveMethod.Invoke(activeItemBehaviour, null);
         }
         else data.itemActive = null;
+        data.randomizeParts = randomizeParts;
+        data.bodypartsGenerated = bodypartsGenerated;
         return data;
     }
 
@@ -161,6 +197,8 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         LoadBodyPartData(data.bodypartData);
         animations.Load(data.animationData);
         SetItemActive(data.itemActive);
+        randomizeParts = data.randomizeParts;
+        bodypartsGenerated = data.bodypartsGenerated;
     }
 
     public static GameObject Spawn(HumanoidData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -199,5 +237,8 @@ public class HumanoidData : CreatureData
     public ItemData itemActive;
     public List<string> bodypartData;
     public HumanoidAnimationData animationData;
+    public bool randomizeParts;
+    public bool bodypartsGenerated;
+
 }
 

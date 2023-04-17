@@ -50,9 +50,10 @@ MonoBehaviour:
   interactAttachment: {fileID: 2300210682344453543}
   ID: 0
   ownerFaction: 1
+  tier: 0
   inventoryIconLink: Icons/Icon_Test
-  descriptionTextLinkID: 0
-  value: 10
+  descriptionTextLinkID: 6
+  value: 1
   pickable: 1
   removeOnPick: 1
   ownerID: 0
