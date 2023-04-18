@@ -1,0 +1,12 @@
+{
+    "popupData": [
+        {
+            "id": 1,
+            "text": "This is the text for popup ID 1."
+        },
+        {
+            "id": 2,
+            "text": "This is the text for popup ID 2."
+        }
+    ]
+}

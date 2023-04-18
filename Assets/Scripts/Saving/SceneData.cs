@@ -13,12 +13,14 @@ public class SceneData
     public CameraData cameraData;
     public List<EntityData> entities;
     public List<CellData> cells;
+    public List<TriggerData> triggers;
 
-    public SceneData(string name, CameraData cameraData, List<EntityData> entities, List<CellData> cells)
+    public SceneData(string name, CameraData cameraData, List<EntityData> entities, List<CellData> cells, List<TriggerData> triggers)
     {
         this.name = name;
         this.cameraData = cameraData;
         this.entities = entities;
         this.cells = cells;
+        this.triggers = triggers;
     }
 }

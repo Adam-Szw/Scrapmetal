@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 
 /* This script controls visibility inside and around buildings - displaying floors or transparency mask where the player is
@@ -12,6 +13,8 @@ public class StructureBehaviour : MonoBehaviour
     public List<GameObject> tilemapsOutside;
     public List<GameObject> tilemapsInside;
     public Sprite maskSprite;
+    public Collider2D structureBoundary;
+    public Collider2D hideAreaBoundary;
 
     [HideInInspector] public Vector2 currPlayerPos;
 
@@ -24,6 +27,7 @@ public class StructureBehaviour : MonoBehaviour
         foreach (GameObject tilemap in tilemapsOutside) CreateMask(tilemap);
         foreach (GameObject tilemap in tilemapsInside) CreateMask(tilemap);
         CreateMask(tilemapOutsideGroundFloor);
+        UpdateStructureVisibility();
     }
 
     public void Update()
@@ -39,6 +43,37 @@ public class StructureBehaviour : MonoBehaviour
         }
     }
 
+    public static void UpdateStructures()
+    {
+        foreach (StructureBehaviour structure in FindObjectsOfType<StructureBehaviour>()) structure.UpdateStructureVisibility();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // For all objects
+        SetHideObject(other.gameObject, true);
+
+        // For player entering
+        if (other.gameObject.GetComponent<PlayerBehaviour>()) PlayerEnteredActions();
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        // For all objects
+        SetHideObject(other.gameObject, false);
+
+        // For player exiting
+        if (other.gameObject.GetComponent<PlayerBehaviour>()) PlayerLeftActions();
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (GlobalControl.paused) return;
+        // Only if triggering object is player
+        if (!other.gameObject.GetComponent<PlayerBehaviour>()) return;
+        currPlayerPos = other.gameObject.transform.position;
+    }
+
     private void CreateMask(GameObject parent)
     {
         GameObject mask = new GameObject("Mask");
@@ -51,56 +86,17 @@ public class StructureBehaviour : MonoBehaviour
         masks.Add(mask);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    // Makes all objects inside and behind structure to be hidden
+    private void UpdateStructureVisibility()
     {
-        // Only if triggering object is player
-        if (!other.gameObject.GetComponent<PlayerBehaviour>()) return;
-
-        // Make outside walls invisible with exception of first floor
-        foreach (GameObject tilemap in tilemapsOutside)
-        {
-            tilemap.GetComponent<TilemapRenderer>().enabled = false;
-        }
-
-        // Make ground floor transparent
-        tilemapOutsideGroundFloor.GetComponent<Tilemap>().color = new Color(200.0f, 200.0f, 200.0f, 0.65f);
-
-        // Make inside walls visible
-        foreach (GameObject tilemap in tilemapsInside)
-        {
-            tilemap.GetComponent<TilemapRenderer>().enabled = true;
-        }
-
+        SetHideAllInside(true);
+        SetHideAllBehind(true);
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    public void SetHideObject(GameObject obj, bool hide)
     {
-        // Only if triggering object is player
-        if (!other.gameObject.GetComponent<PlayerBehaviour>()) return;
-
-        // Make outside walls visible
-        foreach (GameObject tilemap in tilemapsOutside)
-        {
-            tilemap.GetComponent<TilemapRenderer>().enabled = true;
-        }
-
-        // Make ground floor normal
-        tilemapOutsideGroundFloor.GetComponent<Tilemap>().color = new Color(255.0f, 255.0f, 255.0f, 255.0f);
-
-        // Make inside walls invisible
-        foreach (GameObject tilemap in tilemapsInside)
-        {
-            tilemap.GetComponent<TilemapRenderer>().enabled = false;
-        }
-
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (GlobalControl.paused) return;
-        // Only if triggering object is player
-        if (!other.gameObject.GetComponent<PlayerBehaviour>()) return;
-        currPlayerPos = other.gameObject.transform.position;
+        SortingGroup sGroup = obj.GetComponentInChildren<SortingGroup>();
+        if (sGroup) sGroup.sortingOrder = hide ? -1 : 0;
     }
 
     public void EnableMasks()
@@ -119,6 +115,48 @@ public class StructureBehaviour : MonoBehaviour
         {
             mask.GetComponent<SpriteMask>().enabled = false;
         }
+    }
+
+    private void PlayerEnteredActions()
+    {
+        // Make outside walls invisible with exception of first floor
+        foreach (GameObject tilemap in tilemapsOutside) tilemap.GetComponent<TilemapRenderer>().enabled = false;
+
+        // Make ground floor transparent
+        tilemapOutsideGroundFloor.GetComponent<Tilemap>().color = new Color(200.0f, 200.0f, 200.0f, 0.25f);
+
+        // Make inside walls visible
+        foreach (GameObject tilemap in tilemapsInside) tilemap.GetComponent<TilemapRenderer>().enabled = true;
+
+        // Make all objects inside be in front of walls
+        SetHideAllInside(false);
+    }
+
+    private void PlayerLeftActions()
+    {
+        // Make outside walls visible
+        foreach (GameObject tilemap in tilemapsOutside) tilemap.GetComponent<TilemapRenderer>().enabled = true;
+
+        // Make ground floor normal
+        tilemapOutsideGroundFloor.GetComponent<Tilemap>().color = new Color(255.0f, 255.0f, 255.0f, 255.0f);
+
+        // Make inside walls invisible
+        foreach (GameObject tilemap in tilemapsInside) tilemap.GetComponent<TilemapRenderer>().enabled = false;
+
+        // Hide objects inside
+        SetHideAllInside(true);
+    }
+
+    private void SetHideAllInside(bool hide)
+    {
+        List<GameObject> objInside = HelpFunc.GetObjectsInCollider(structureBoundary);
+        foreach (GameObject obj in objInside) SetHideObject(obj, hide);
+    }
+
+    private void SetHideAllBehind(bool hide)
+    {
+        List<GameObject> objInside = HelpFunc.GetObjectsInCollider(hideAreaBoundary);
+        foreach (GameObject obj in objInside) SetHideObject(obj, hide);
     }
 
 }

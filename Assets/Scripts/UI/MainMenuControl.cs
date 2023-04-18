@@ -80,7 +80,7 @@ public class MainMenuControl : MonoBehaviour
             UIControl.DestroyMenu();
             GlobalControl.saveIndex = -1;
             GlobalControl.gameLoopOn = false;
-            GlobalControl.SwitchScene("DeveloperRoom");
+            GlobalControl.SwitchScene("Village Area");
         });
     }
 

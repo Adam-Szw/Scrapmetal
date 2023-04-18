@@ -51,7 +51,10 @@ public class GlobalControl : MonoBehaviour
     public static Decisions decisions = new Decisions();    // Playthrough decisions
     public static bool resourcesLoaded = false;             // Set to true to prevent resources being repeatedly loaded on scene load
     public static int saveIndex = -1;                       // Index of save file that opened scenes will look for data in
-    public static bool menuLoad = false;                    // True if game is loading menu and should not begin gameloop automatically
+
+    // Local data
+    public bool loadOnLaunch = true;        // True if game should attempt to load the scene and start gameplay loop automatically
+    public bool showStartingPopup = false;  // If true - this scene will show welcome popup at start
 
     private void Awake()
     {
@@ -66,11 +69,12 @@ public class GlobalControl : MonoBehaviour
             DialogLibrary.LoadDialogOptions();
             ItemLibrary.LoadItemLocalization("ItemDescriptions_EN");
             ItemLibrary.LoadItems();
+            PopupLibrary.LoadPopupLocalization("PopupText_EN");
             CreatureLibrary.LoadCreatures();
         }
         // Load active scene
-        if (!menuLoad) LoadGame(saveIndex);
-        menuLoad = false;
+        if (loadOnLaunch) LoadGame(saveIndex);
+        if (showStartingPopup) UIControl.ShowPopup(2, 0.2f);
     }
 
     private void Update()
@@ -123,14 +127,13 @@ public class GlobalControl : MonoBehaviour
         UIControl.DestroyMenu();
         // make effect change scene to menu
         Effect effect = () => { ReturnToTitle(); };
-        UIControl.ShowPopup("Game Over!", "", 0.05f, effect);
+        UIControl.ShowPopup(1, 0.05f, effect);
     }
 
     public static void ReturnToTitle()
     {
         saveIndex = -1;
         gameLoopOn = false;
-        menuLoad = true;
         SwitchScene("Menu");
     }
 
@@ -149,7 +152,7 @@ public class GlobalControl : MonoBehaviour
         save.decisions = decisions;
 
         // Save current scene
-        SceneData data = new SceneData(sceneCurr, cameraControl.Save(), SaveEntities(sceneCurr), SaveCells(sceneCurr));
+        SceneData data = new SceneData(sceneCurr, cameraControl.Save(), SaveEntities(sceneCurr), SaveCells(sceneCurr), SaveTriggers(sceneCurr));
         save.scenes[sceneCurr] = data;
 
         // Record info in settings
@@ -176,11 +179,7 @@ public class GlobalControl : MonoBehaviour
         // See if we got the save file
         if (save == null)
         {
-            // Start the game
-            gameLoopOn = true;
-            SetPlayer(HelpFunc.FindPlayerInScene());
-            UIControl.DefaultUI();
-            UnpauseGame();
+            StartGameLoop();
             return;
         }
 
@@ -210,6 +209,7 @@ public class GlobalControl : MonoBehaviour
             // Load scene data
             LoadEntities(scene.entities);
             LoadCells(scene.cells);
+            LoadTriggers(scene.triggers);
             cameraControl.Load(scene.cameraData);
 
             // Setup game environment
@@ -223,9 +223,17 @@ public class GlobalControl : MonoBehaviour
 
         }
 
+        StartGameLoop();
+    }
+
+    private static void StartGameLoop()
+    {
         // Refresh cells
-        Dictionary<int, AreaCell> cells = HelpFunc.GetCells();
-        foreach (KeyValuePair<int, AreaCell> pair in cells) pair.Value.Initialize();
+        Dictionary<int, CellBehaviour> cells = HelpFunc.GetCells();
+        foreach (KeyValuePair<int, CellBehaviour> pair in cells) pair.Value.Initialize();
+
+        // Refresh structures
+        StructureBehaviour.UpdateStructures();
 
         // Start the game
         gameLoopOn = true;
@@ -237,8 +245,8 @@ public class GlobalControl : MonoBehaviour
     private static List<EntityData> SaveEntities(string sceneName)
     {
         // First - tell cells to enable all objects so they can be saved
-        Dictionary<int, AreaCell> cells = HelpFunc.GetCells();
-        foreach (KeyValuePair<int, AreaCell> pair in cells)
+        Dictionary<int, CellBehaviour> cells = HelpFunc.GetCells();
+        foreach (KeyValuePair<int, CellBehaviour> pair in cells)
         {
             pair.Value.ActivateEntitiesInCell();
             pair.Value.initialized = false;
@@ -261,7 +269,7 @@ public class GlobalControl : MonoBehaviour
 
         // Refresh cells
         cells = HelpFunc.GetCells();
-        foreach (KeyValuePair<int, AreaCell> pair in cells) pair.Value.Initialize();
+        foreach (KeyValuePair<int, CellBehaviour> pair in cells) pair.Value.Initialize();
 
         return entities;
     }
@@ -273,7 +281,7 @@ public class GlobalControl : MonoBehaviour
         List<GameObject> objects = scene.GetRootGameObjects().ToList();
         foreach (GameObject obj in objects)
         {
-            AreaCell b = obj.GetComponent<AreaCell>();
+            CellBehaviour b = obj.GetComponent<CellBehaviour>();
             if (b)
             {
                 MethodInfo saveMethod = b.GetType().GetMethod("Save");
@@ -281,6 +289,23 @@ public class GlobalControl : MonoBehaviour
             }
         }
         return cells;
+    }
+
+    private static List<TriggerData> SaveTriggers(string sceneName)
+    {
+        List<TriggerData> triggers = new List<TriggerData>();
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        List<GameObject> objects = scene.GetRootGameObjects().ToList();
+        foreach (GameObject obj in objects)
+        {
+            TriggerBehaviour b = obj.GetComponent<TriggerBehaviour>();
+            if (b)
+            {
+                MethodInfo saveMethod = b.GetType().GetMethod("Save");
+                triggers.Add((TriggerData)saveMethod.Invoke(b, null));
+            }
+        }
+        return triggers;
     }
 
     private static void LoadEntities(List<EntityData> data)
@@ -293,12 +318,23 @@ public class GlobalControl : MonoBehaviour
 
     private static void LoadCells(List<CellData> data)
     {
-        Dictionary<int, AreaCell> cells = HelpFunc.GetCells();
+        Dictionary<int, CellBehaviour> cells = HelpFunc.GetCells();
         foreach (CellData cellData in data)
         {
-            AreaCell cell = null;
+            CellBehaviour cell = null;
             cells.TryGetValue(cellData.id, out cell);
-            cell.Load(cellData);
+            if (cell) cell.Load(cellData);
+        }
+    }
+
+    private static void LoadTriggers(List<TriggerData> data)
+    {
+        Dictionary<int, TriggerBehaviour> triggers = HelpFunc.GetTriggers();
+        foreach (TriggerData trigger in data)
+        {
+            TriggerBehaviour triggerBehaviour = null;
+            triggers.TryGetValue(trigger.id, out triggerBehaviour);
+            if (triggerBehaviour) triggerBehaviour.Load(trigger);
         }
     }
 

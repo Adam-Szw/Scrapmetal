@@ -27,14 +27,19 @@ public class PopupControl : MonoBehaviour
         StartCoroutine(PopupFadeOut());
     }
 
-    public void Initialize(string text, string imageLink, float fadeInTime, Effect specialEffect = null)
+    public void Initialize(ulong ID, float fadeInTime, Effect specialEffect = null)
     {
+        string popupText = "No Text";
+        if (ID != 0 && PopupLibrary.popupLocalization.ContainsKey(ID))
+        {
+            popupText = PopupLibrary.popupLocalization[ID];
+        }
         effect = specialEffect;
         okButton.onClick.AddListener(() =>
         {
             UIControl.DestroyPopup();
         });
-        popupTextObj.text = text;
+        popupTextObj.text = popupText;
         StartCoroutine(PopupFadeIn(fadeInTime));
     }
 

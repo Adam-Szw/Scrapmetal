@@ -145,15 +145,17 @@ public class UIControl : MonoBehaviour
         combatUI = null;
     }
 
-    public static void ShowPopup(string text, string imageLink, float fadeInTime, Effect effect)
+    public static void ShowPopup(ulong ID, float fadeInTime, Effect effect = null)
     {
+        GlobalControl.PauseGame();
         popup = Instantiate(Resources.Load<GameObject>(popupPrefabPath));
-        popup.GetComponent<PopupControl>().Initialize(text, imageLink, fadeInTime, effect);
+        popup.GetComponent<PopupControl>().Initialize(ID, fadeInTime, effect);
     }
 
     public static void DestroyPopup()
     {
         if (popup) popup.GetComponent<PopupControl>().SelfDestruct();
         popup = null;
+        if (!dialog && !inventory && !menu) GlobalControl.UnpauseGame();
     }
 }

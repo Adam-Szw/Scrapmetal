@@ -159,27 +159,44 @@ public static class HelpFunc
 
     public static List<GameObject> GetEntitiesInCollider(Collider2D collider)
     {
+        List<GameObject> objects = GetObjectsInCollider(collider);
         List<GameObject> creatures = new List<GameObject>();
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.layerMask = 1 << 0;
-        int resultCount = 0;
-        Collider2D[] colliders = new Collider2D[999];
-        resultCount = Physics2D.OverlapCollider(collider, filter, colliders);
-        for (int i = 0; i < resultCount; i++)
+        foreach (GameObject obj in objects)
         {
-            EntityBehaviour b = colliders[i].GetComponentInParent<EntityBehaviour>();
+            EntityBehaviour b = obj.GetComponentInParent<EntityBehaviour>();
             if (b != null && (b is not PlayerBehaviour) && !creatures.Contains(b.gameObject)) creatures.Add(b.gameObject);
         }
         return creatures;
     }
 
-    // Finds all cells in currently active scene
-    public static Dictionary<int, AreaCell> GetCells()
+    public static List<GameObject> GetObjectsInCollider(Collider2D collider)
     {
-        AreaCell[] cells = MonoBehaviour.FindObjectsOfType<AreaCell>();
-        Dictionary<int, AreaCell> cellsDict = new Dictionary<int, AreaCell>();
+        List<GameObject> objects = new List<GameObject>();
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.layerMask = 1 << 0;
+        int resultCount = 0;
+        Collider2D[] colliders = new Collider2D[999];
+        resultCount = Physics2D.OverlapCollider(collider, filter, colliders);
+        for (int i = 0; i < resultCount; i++) objects.Add(colliders[i].gameObject);
+        return objects;
+    }
+
+    // Finds all cells in currently active scene
+    public static Dictionary<int, CellBehaviour> GetCells()
+    {
+        CellBehaviour[] cells = MonoBehaviour.FindObjectsOfType<CellBehaviour>();
+        Dictionary<int, CellBehaviour> cellsDict = new Dictionary<int, CellBehaviour>();
         for (int i = 0; i < cells.Length; i++) cellsDict[cells[i].id] = cells[i];
         return cellsDict;
+    }
+
+    // Finds all triggers in currently active scene
+    public static Dictionary<int, TriggerBehaviour> GetTriggers()
+    {
+        TriggerBehaviour[] triggers = MonoBehaviour.FindObjectsOfType<TriggerBehaviour>();
+        Dictionary<int, TriggerBehaviour> triggersDict = new Dictionary<int, TriggerBehaviour>();
+        for (int i = 0; i < triggers.Length; i++) triggersDict[triggers[i].id] = triggers[i];
+        return triggersDict;
     }
 
     // Recursively disables all colliders in the object

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /* Simple trigger script that detects entities entering building obscured areas and redirects events to StructureBehaviour
@@ -7,23 +8,27 @@ using UnityEngine;
 public class StructureVisibilityAreaTrigger : MonoBehaviour
 {
 
-    public StructureBehaviour structureBehaviour;
+    public StructureBehaviour structure;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<PlayerBehaviour>())
-            structureBehaviour.EnableMasks();
+        PlayerBehaviour b = other.gameObject.GetComponent<PlayerBehaviour>();
+        if (b) structure.EnableMasks();
+        structure.SetHideObject(other.gameObject, true);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<PlayerBehaviour>())
-            structureBehaviour.DisableMasks();
+        PlayerBehaviour b = other.gameObject.GetComponent<PlayerBehaviour>();
+        if (b) structure.DisableMasks();
+        structure.SetHideObject(other.gameObject, false);
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (!other.gameObject.GetComponent<PlayerBehaviour>()) return;
-        structureBehaviour.currPlayerPos = other.gameObject.transform.position;
+        PlayerBehaviour b = other.gameObject.GetComponent<PlayerBehaviour>();
+        if (b) structure.currPlayerPos = other.gameObject.transform.position;
+        // Uncover objects that will be hidden through y-sorting anyway
+        if (other.gameObject.transform.position.y > structure.gameObject.transform.parent.position.y) structure.SetHideObject(other.gameObject, false);
     }
 }

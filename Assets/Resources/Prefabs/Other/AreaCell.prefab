@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6931864628952884240}
   - component: {fileID: 496365880449744881}
   - component: {fileID: 7666490140898762771}
+  - component: {fileID: 3744404231743090080}
   m_Layer: 12
   m_Name: AreaCell
   m_TagString: Untagged
@@ -45,8 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771dd5c1f3c1ac94190d754ffbbcbeac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider2d: {fileID: 0}
-  disableByDefault: 1
+  collider2d: {fileID: 3744404231743090080}
+  disableEntitiesByDefault: 0
+  id: 0
+  content: {fileID: 0}
+  isHoldingEntities: 0
+  initialized: 0
 --- !u!50 &7666490140898762771
 Rigidbody2D:
   serializedVersion: 4
@@ -68,3 +73,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!60 &3744404231743090080
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7886658684277625806}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1}
+      - {x: -0.95105654, y: 0.30901697}
+      - {x: -0.5877852, y: -0.80901706}
+      - {x: 0.58778536, y: -0.80901694}
