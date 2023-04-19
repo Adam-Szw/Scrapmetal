@@ -282,7 +282,6 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     private void RunDeathActions()
     {
-        if (this is not PlayerBehaviour) HelpFunc.DisableColliders(transform);
         base.SetSpeed(0.0f);
         StartCoroutine(DestroyInTime(5));
         foreach (ItemData item in loot)
@@ -296,6 +295,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     private IEnumerator DestroyInTime(float time)
     {
         yield return new WaitForSeconds(time);
+        if (this is not PlayerBehaviour) HelpFunc.DisableColliders(transform);
         Destroy(gameObject);
     }
 

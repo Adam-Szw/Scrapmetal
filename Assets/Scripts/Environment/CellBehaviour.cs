@@ -112,7 +112,6 @@ public class CellBehaviour : MonoBehaviour, Saveable<CellData>
 
     public void Load(CellData data, bool loadTransform = true)
     {
-        print("trigger update");
         triggered = data.triggered;
     }
 }

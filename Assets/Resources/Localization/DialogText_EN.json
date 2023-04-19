@@ -193,7 +193,7 @@
         {
             "id": 39,
             "text": "What's keeping you so busy?",
-            "response": "The Elder is having me scan those stupid CPU's for any information on the Machinist. It's a myth, don't buy into this stuff."
+            "response": "The Elder is having me scan those stupid RAM's for any information on the Machinist. It's a myth, don't buy into this stuff."
         },
         {
             "id": 40,
@@ -272,8 +272,8 @@
         },
         {
             "id": 55,
-            "text": "Let's paint! (You will be painted in random colours - NYI)",
-            "response": ""
+            "text": "Let's paint!",
+            "response": "Alright! Equip the bodyparts that you'd like to be coloured. I will only paint your extra sets. Your base parts are pristine and it would be sacriledge to paint them, the Elder would have my head module. If you don't have any armour pieces, check out our local shop at Gyro's."
         },
         {
             "id": 56,
@@ -288,6 +288,11 @@
         {
             "id": 58,
             "text": "Thanks, I will look out.",
+            "response": ""
+        },
+		{
+            "id": 59,
+            "text": "I'm ready. (Currently equipped armour will be painted in random colours)",
             "response": ""
         }
     ]

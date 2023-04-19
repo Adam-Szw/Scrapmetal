@@ -50,8 +50,9 @@ public class StructureBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // For all objects
-        SetHideObject(other.gameObject, true);
+        // Hide object that entered unless player is inside
+        List<GameObject> objInside = HelpFunc.GetObjectsInCollider(structureBoundary);
+        if (!objInside.Contains(GlobalControl.GetPlayer())) SetHideObject(other.gameObject, true);
 
         // For player entering
         if (other.gameObject.GetComponent<PlayerBehaviour>()) PlayerEnteredActions();
@@ -96,7 +97,10 @@ public class StructureBehaviour : MonoBehaviour
         GlobalControl.GetPlayer().GetComponentInChildren<SortingGroup>().sortingOrder = 0;
         // If the player is currently inside we also want to show other things
         List<GameObject> objInside = HelpFunc.GetObjectsInCollider(structureBoundary);
-        if (objInside.Contains(GlobalControl.GetPlayer())) SetHideAllInside(false);
+        if (objInside.Contains(GlobalControl.GetPlayer()))
+        {
+            SetHideAllInside(false);
+        }
     }
 
     public void SetHideObject(GameObject obj, bool hide)

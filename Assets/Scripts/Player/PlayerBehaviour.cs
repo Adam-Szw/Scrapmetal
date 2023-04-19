@@ -7,6 +7,7 @@ using static AmmoBehaviour;
 using static ArmorBehaviour;
 using static ArmorBehaviour.ArmorSlot;
 using static PlayerBehaviour;
+using Random = UnityEngine.Random;
 
 /* Everything that is unique to the player and not other humanoid NPCs goes here
  */
@@ -178,6 +179,17 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         return armors;
     }
 
+    // Painting mechanic for NPC
+    public void PaintArmors()
+    {
+        foreach (ArmorSlot aSlot in GetPlayerArmors())
+        {
+            //UnequipArmor(aSlot.slot);
+            aSlot.armor.colorRGBA = new float[] { Random.value, Random.value, Random.value, 1f };
+            //EquipArmor(aSlot);
+        }
+    }
+
 
     public int? GetCurrWeaponMaxAmmo()
     {
@@ -322,7 +334,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         reloadTimer = 0f;
     }
 
-    private void RefreshPlayerStats()
+    public void RefreshPlayerStats()
     {
         // Record current health ratio
         float hpRatio = GetHealth() / GetMaxHealth();
@@ -348,10 +360,10 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         SetHealth(GetMaxHealth() * hpRatio);
     }
 
-    private void RefreshPlayerLimbs()
+    public void RefreshPlayerLimbs()
     {
         // Reset player graphics
-        for (int i = 1; i < BODYPARTS.Length; i++) SetBodypart(i, 1, "", PLAYER_BASE_COLOR_RGBA);
+        for (int i = 1; i < BODYPARTS.Length; i++) SetBodypart(i, 1, PLAYER_BASE_COLOR_RGBA);
         // Apply armor parts
         foreach (ArmorSlot armor in armors)
         {

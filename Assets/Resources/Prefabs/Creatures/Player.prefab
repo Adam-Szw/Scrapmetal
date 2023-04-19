@@ -964,8 +964,8 @@ MonoBehaviour:
   weaponAttachmentBones:
   - {fileID: 4415601639827162915}
   groundReferenceObject: {fileID: 8155264429366595155}
-  maxHealth: 100
-  health: 100
+  maxHealth: 250
+  health: 250
   visionCollider: {fileID: 0}
   loot: []
   weaponAttachmentOffset: {x: 0, y: 0}
@@ -2657,7 +2657,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 20
+  m_Radius: 30
 --- !u!1 &6293809838073669848
 GameObject:
   m_ObjectHideFlags: 0

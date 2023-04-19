@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5684202536283468193}
   - component: {fileID: 3178473535925910538}
+  - component: {fileID: 3095182204065599158}
+  - component: {fileID: 693970723998702018}
   m_Layer: 0
   m_Name: FixKit
   m_TagString: Untagged
@@ -49,6 +51,7 @@ MonoBehaviour:
   targetBone: {fileID: 2300210682344453543}
   interactAttachment: {fileID: 2300210682344453543}
   ID: 0
+  dontSave: 0
   ownerFaction: 1
   tier: 0
   inventoryIconLink: Icons/Icon_FixKit
@@ -57,7 +60,44 @@ MonoBehaviour:
   pickable: 1
   removeOnPick: 0
   ownerID: 0
-  restoration: 25
+  restoration: 75
+--- !u!50 &3095182204065599158
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2300210682344453543}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &693970723998702018
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2300210682344453543}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.01
 --- !u!1 &3554906992047203862
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,4 +256,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -317001180
+  m_SpriteKey: 0

@@ -2184,8 +2184,8 @@ MonoBehaviour:
   weaponAttachmentBones:
   - {fileID: 8109489427493512261}
   groundReferenceObject: {fileID: 8025869341345888668}
-  maxHealth: 600
-  health: 600
+  maxHealth: 350
+  health: 350
   visionCollider: {fileID: 0}
   loot: []
 --- !u!114 &5291230762624573668

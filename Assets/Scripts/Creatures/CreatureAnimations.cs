@@ -314,7 +314,7 @@ public class CreatureAnimations : Saveable<CreatureAnimationData>
         List<Tuple<int, float>> state = data.animatorsState;
         for(int i = 0; i < state.Count; i++)
         {
-            animators[i].Play(state[i].Item1, 0, state[i].Item2);
+            if (animators[i].gameObject.activeSelf) animators[i].Play(state[i].Item1, 0, state[i].Item2);
         }
         for (int i = 0; i < data.jointsAngles.Count; i++)
         {

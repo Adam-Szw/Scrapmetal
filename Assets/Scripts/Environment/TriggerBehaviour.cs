@@ -29,6 +29,8 @@ public class TriggerBehaviour : MonoBehaviour, Saveable<TriggerData>
         triggered = true;
         // Show popup if assigned
         UIControl.ShowPopup(popupID, 0.2f);
+        // Special trigger for a quest
+        if (popupID == 10) GlobalControl.decisions.elderQuestFulfilled = true;
     }
 
     public TriggerData Save()

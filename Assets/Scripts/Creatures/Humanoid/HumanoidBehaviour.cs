@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor.Presets;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 using static CreatureLibrary;
@@ -92,6 +93,8 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         obj.GetComponentInChildren<SpriteRenderer>().sortingOrder = itemActiveSortLayer;
         Rigidbody2D objRB = obj.GetComponentInChildren<Rigidbody2D>();
         Destroy(objRB);
+        Collider2D objCollider = obj.GetComponentInChildren<Collider2D>();
+        Destroy(objCollider);
         ItemBehaviour itemB = obj.GetComponent<ItemBehaviour>();
         itemB.ownerID = ID;
         itemB.ownerFaction = faction;
@@ -121,7 +124,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         return weapons;
     }
 
-    protected void SetBodypart(int labelIndex, int setChoice, string colorRGBA = "", float[] colorVals = null)
+    protected void SetBodypart(int labelIndex, int setChoice, float[] colorVals = null)
     {
         string partName = BODYPARTS[labelIndex];
         string category = BODYPARTS[labelIndex];
@@ -131,7 +134,6 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         spR.SetCategoryAndLabel(category, label);
         Color color = Color.white;
         if (colorVals != null) color = new Color(colorVals[0], colorVals[1], colorVals[2], colorVals[3]);
-        else if (colorRGBA != "") ColorUtility.TryParseHtmlString("#" + colorRGBA, out color);
         spRD.color = color;
     }
 
@@ -166,20 +168,20 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
 
     private void RandomizeBodyparts()
     {
-        // Randomize color scheme
+        // Randomize color scheme using presets
         BodyColorPreset preset = HUMANOID_BODY_COLOR_PRESETS[Random.Range(0, HUMANOID_BODY_COLOR_PRESETS.Count)];
         for (int i = 1; i < BODYPARTS.Length; i++)
         {
             // Randomize part
             int bodyChoice = Random.Range(BODYPART_NPC_INDEX_START, BODYPART_NPC_INDEX_END + 1);
-            if (i == 1) SetBodypart(i, bodyChoice, "", preset.headColor);
-            if (i >= 2 && i <= 3) SetBodypart(i, bodyChoice, "", preset.bodyColor);
-            if (i >= 4 && i <= 9) SetBodypart(i, bodyChoice, "", preset.armsColor);
-            if (i >= 10) SetBodypart(i, bodyChoice, "", preset.legsColor);
+            if (i == 1) SetBodypart(i, bodyChoice, preset.headColor);
+            if (i >= 2 && i <= 3) SetBodypart(i, bodyChoice, preset.bodyColor);
+            if (i >= 4 && i <= 9) SetBodypart(i, bodyChoice, preset.armsColor);
+            if (i >= 10) SetBodypart(i, bodyChoice, preset.legsColor);
         }
         // Randomize face
         int faceChoice = Random.Range(FACE_NPC_INDEX_START, FACE_NPC_INDEX_END + 1);
-        SetBodypart(0, faceChoice, "");
+        SetBodypart(0, faceChoice);
         bodypartsGenerated = true;
     }
 

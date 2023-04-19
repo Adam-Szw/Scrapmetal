@@ -168,6 +168,9 @@ public static class DialogLibrary
         o = new DialogOption(34, new List<int>() { 13 });
         o.effects.Add(() => {
             dec.elderQuestCompleted = true;
+            ArmorData reward = Resources.Load<GameObject>(ItemLibrary.ITEM_PREFABS_PATH + "Armors/ArmorArmsSensoric").GetComponent<ArmorBehaviour>().Save();
+            reward.pickable = false;
+            if (GlobalControl.GetPlayer()) GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().GiveItem(reward);
         });
         options.Add(o);
         o = new DialogOption(35, new List<int>() { 36, 37 });
@@ -234,8 +237,7 @@ public static class DialogLibrary
             UIControl.ShowInventory(trader.GetInventory());
         });
         options.Add(o);
-        // Paint me
-        o = new DialogOption(55, new List<int>());
+        o = new DialogOption(55, new List<int>() { 59, 56 });
         options.Add(o);
         o = new DialogOption(56, new List<int>() { 13 });
         options.Add(o);
@@ -244,6 +246,14 @@ public static class DialogLibrary
         options.Add(o);
         o = new DialogOption(58, new List<int>() );
         o.effects.Add(() => {
+            UIControl.DestroyDialog();
+        });
+        options.Add(o);
+        // Paint me
+        o = new DialogOption(59, new List<int>());
+        o.effects.Add(() => {
+            if (GlobalControl.GetPlayer()) GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().PaintArmors();
+            if (GlobalControl.GetPlayer()) GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().RefreshPlayerLimbs();
             UIControl.DestroyDialog();
         });
         options.Add(o);

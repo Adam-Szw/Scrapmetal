@@ -35,6 +35,14 @@
 		{
             "id": 9,
             "text": "If you cause trouble in cities through your aggresion, the city will turn hostile against you. You can find traders and merchants who will sell items or render services in cities.\n\nGood luck in your adventures!"
+        },
+		{
+            "id": 10,
+            "text": "Hidden in a pile of rusting scrap, you find a huge wrench with a big 'M' grafted onto it's handle. Sadly it's also bent and some of the screws fell out. This might be interesting to the townsfolk."
+        },
+		{
+            "id": 11,
+            "text": "This area is not yet implemented. Perhaps one day you can venture further in this direction? For now, please turn around and enjoy demo area to the north and south."
         }
     ]
 }

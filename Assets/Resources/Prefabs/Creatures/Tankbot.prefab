@@ -639,8 +639,8 @@ MonoBehaviour:
   - {fileID: 8109489427493512261}
   - {fileID: 1731808231861850036}
   groundReferenceObject: {fileID: 8025869341345888668}
-  maxHealth: 300
-  health: 300
+  maxHealth: 150
+  health: 150
   visionCollider: {fileID: 0}
   loot: []
 --- !u!114 &5291230762624573668

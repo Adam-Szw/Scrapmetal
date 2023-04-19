@@ -36,7 +36,7 @@ public class ArmorBehaviour : ItemBehaviour, Saveable<ArmorData>, Spawnable<Armo
     // Graphical data - where the armor goes and which sprite from library to use
     public ArmorSlot.Slot slot;
     public int labelIndex;
-    public string colorRGBA;
+    public float[] colorRGBA = new float[] { 1f, 1f, 1f, 1f };
 
     protected new void Awake()
     {
@@ -114,6 +114,6 @@ public class ArmorData : ItemData
     public bool buffsLootGeneration;
     public bool buffsChestOpening;
     public int labelIndex;
-    public string colorRGBA;
+    public float[] colorRGBA;
 
 }
