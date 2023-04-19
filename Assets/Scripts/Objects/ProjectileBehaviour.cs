@@ -119,7 +119,7 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
         effect = (ProjectileBehaviour projectile, CreatureBehaviour target) => {
             if (target)
             {
-                if (target.aiControl) target.aiControl.NotifyTakingDamage(projectile.ownerFaction);
+                if (target.aiControl) target.aiControl.NotifyTakingDamage(projectile.ownerID, projectile.ownerFaction);
                 if (projectile.explosionRadius <= 0) target.DealDamage(projectile.damage);
             }
             if (projectile.explosionRadius > 0)
@@ -128,7 +128,7 @@ public class ProjectileBehaviour : ItemBehaviour, Saveable<ProjectileData>, Spaw
                 List<CreatureBehaviour> inRange = HelpFunc.GetCreaturesInRadiusByHitbox(projectile.transform.position, projectile.explosionRadius);
                 foreach (CreatureBehaviour creature in inRange)
                 {
-                    if (creature.aiControl) creature.aiControl.NotifyTakingDamage(projectile.ownerFaction);
+                    if (creature.aiControl) creature.aiControl.NotifyTakingDamage(projectile.ownerID, projectile.ownerFaction);
                     creature.DealDamage(projectile.damage);
                 }
             }

@@ -20,7 +20,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         player,
         neutral,    // Uninteractive background creatures i.e. a rabbit, never fight back
         NPC,        // Non playable neutral characters (villagers etc.), fight hostile creatures
-        NPCaggro,   // NPCs that were triggered to be aggressive to player
+        NPCaggressive,   // NPCs that were triggered to be aggressive to player
         hostile,    // Always hostile creatures (example: wild dog), attack everything on sight except each other
         berserk,    // Attacks everything including in own faction
         enemy       // Enemy faction, attack player only but not NPCs etc.
@@ -125,6 +125,11 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     }
 
     public List<ItemData> GetInventory() { return inventory; }
+
+    public void SetInventory(List<ItemData> items)
+    {
+        inventory = items;
+    }
 
     public void GiveItem(ItemData item)
     {
@@ -250,7 +255,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     protected virtual List<WeaponBehaviour> GetWeapons() { return AIweapons; }
 
-    protected void SpawnAIWeapon(GameObject bone, string prefabPath)
+    public void SpawnAIWeapon(GameObject bone, string prefabPath)
     {
         Vector3 position = bone.transform.position;
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);

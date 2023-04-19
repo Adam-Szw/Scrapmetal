@@ -145,6 +145,7 @@ public static class HelpFunc
         return distanceCurr <= range;
     }
 
+    // Searches for objects with CreatureBehaviour using hitbox layer
     public static List<CreatureBehaviour> GetCreaturesInRadiusByHitbox(Vector2 position, float radius)
     {
         List<CreatureBehaviour> creatures = new List<CreatureBehaviour>();

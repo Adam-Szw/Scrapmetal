@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using static ContentGenerator;
 using static ItemLibrary;
+using static UnityEditor.Progress;
 
 public static class ItemLibrary
 {
@@ -36,6 +37,7 @@ public static class ItemLibrary
     public static Dictionary<ItemTier, List<string>> weaponTierDictionary = new Dictionary<ItemTier, List<string>>();
     public static Dictionary<ItemTier, List<string>> armorTierDictionary = new Dictionary<ItemTier, List<string>>();
     public static Dictionary<ItemTier, List<string>> itemTierDictionary = new Dictionary<ItemTier, List<string>>();
+    public static Dictionary<int, List<ItemData>> shopInventories = new Dictionary<int, List<ItemData>>();
     public static string SCRAP_PATH = "Prefabs/Items/Scrap";
 
     public static void LoadItemLocalization(string filename)
@@ -70,4 +72,75 @@ public static class ItemLibrary
         }
     }
 
+    public static List<ItemData> GetDefaultShopGyro()
+    {
+        List<ItemData> items = new List<ItemData>();
+        try
+        {
+            items.Add(GetItemDataFromStr("Weapons/Rivetgun"));
+            items.Add(GetItemDataFromStr("Weapons/Laser"));
+            items.Add(GetItemDataFromStr("Weapons/Taser"));
+            items.Add(GetItemDataFromStr("Weapons/Tube"));
+            items.Add(GetItemDataFromStr("Weapons/MissileLauncher"));
+            items.Add(GetItemDataFromStr("Armors/ArmorArmsArmored"));
+            items.Add(GetItemDataFromStr("Armors/ArmorArmsActuator"));
+            items.Add(GetItemDataFromStr("Armors/ArmorLegsArmored"));
+            items.Add(GetItemDataFromStr("Armors/ArmorLegsActuator"));
+            items.Add(GetItemDataFromStr("Armors/ArmorHeadArmored"));
+            items.Add(GetItemDataFromStr("Armors/ArmorHeadActuator"));
+            items.Add(GetItemDataFromStr("Armors/ArmorBodyArmored"));
+            items.Add(GetItemDataFromStr("Armors/ArmorBodyActuator"));
+            items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
+            items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
+            items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
+            items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
+            items.Add(GetItemDataFromStr("Ammo/GrenadeAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/GrenadeAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RocketsAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RocketsAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/TranquilizerDartAmmo"));
+        } catch
+        {
+            Debug.Log("Inventory failed to load for Gyro");
+        }
+        return items;
+    }
+
+    public static List<ItemData> GetDefaultShopJesse()
+    {
+        List<ItemData> items = new List<ItemData>();
+        try
+        {
+            for (int i = 0; i < 30; i++) items.Add(GetItemDataFromStr("FixKit"));
+        }
+        catch
+        {
+            Debug.Log("Inventory failed to load for Jesse");
+        }
+        return items;
+    }
+
+    private static ItemData GetItemDataFromStr(string path)
+    {
+        try
+        {
+            GameObject obj = Resources.Load<GameObject>(ITEM_PREFABS_PATH + path);
+            if (obj.GetComponent<WeaponBehaviour>() != null) return obj.GetComponent<WeaponBehaviour>().Save();
+            if (obj.GetComponent<ArmorBehaviour>() != null) return obj.GetComponent<ArmorBehaviour>().Save();
+            if (obj.GetComponent<AmmoBehaviour>() != null) return obj.GetComponent<AmmoBehaviour>().Save();
+            if (obj.GetComponent<UsableBehaviour>() != null) return obj.GetComponent<UsableBehaviour>().Save();
+            if (obj.GetComponent<ItemBehaviour>() != null) return obj.GetComponent<ItemBehaviour>().Save();
+        }
+        catch
+        {
+            Debug.Log("Inventory failed to load item: " + path);
+        }
+        return null;
+    }
 }

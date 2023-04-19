@@ -121,12 +121,12 @@ public class UIControl : MonoBehaviour
         GlobalControl.UnpauseGame();
     }
 
-    public static void ShowInventory()
+    public static void ShowInventory(List<ItemData> shopItems = null)
     {
         if (!GlobalControl.GetPlayer()) return;
         GlobalControl.PauseGame();
         inventory = Instantiate(Resources.Load<GameObject>(inventoryPrefabPath));
-        inventory.GetComponent<InventoryControl>().LoadInventoryPanel(GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>());
+        inventory.GetComponent<InventoryControl>().LoadInventoryPanel(GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>(), shopItems);
     }
 
     public static void DestroyInventory()

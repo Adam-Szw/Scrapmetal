@@ -68,146 +68,226 @@
         {
             "id": 14,
             "text": "",
-            "response": ""
+            "response": "Welcome, pilgrim. This humble settlement will see to your needs before you move on."
         },
         {
             "id": 15,
-            "text": "",
-            "response": ""
+            "text": "Who are you?",
+            "response": "Locals call me 'Elder'. It's not because my parts are old mind you - us robots don't age so easily. But most 'bots set out towards the city once they get their bearings. I decided to stay to help out fresh makes like yourself."
         },
         {
             "id": 16,
-            "text": "",
-            "response": ""
+            "text": "Why should I move on?",
+            "response": "No, no - stay as long as you please. It would actually be nice to enjoy some company for a while. It's just that most fresh makes move to the city or search for better scrap elsewhere. Me and a few others are keeping this place for those about to set out."
         },
         {
             "id": 17,
-            "text": "",
-            "response": ""
+            "text": "I have to go, goodbye.",
+            "response": "Don't let your parts rust! Good luck young one."
         },
         {
             "id": 18,
-            "text": "",
-            "response": ""
+            "text": "What's so interesting in the city?",
+            "response": "The city is much richer in resources. Good parts are scarce in this area. Well, and there is also the talk of finding the Machinist."
         },
         {
             "id": 19,
-            "text": "",
-            "response": ""
+            "text": "Who is the Machinist?",
+            "response": "Hmm, how do I put it? Tell me - what is the first thing you remember?"
         },
         {
             "id": 20,
-            "text": "",
-            "response": ""
+            "text": "I remember a metal shack with some tools in it.",
+            "response": "But there had to be something before that right? Someone put you together and in that shack."
         },
         {
             "id": 21,
-            "text": "",
-            "response": ""
+            "text": "I think I saw some light?",
+            "response": "But there had to be something before that right? There was another light and day before you had a body to see it."
         },
         {
             "id": 22,
-            "text": "",
-            "response": ""
+            "text": "Never mind, forget it.",
+            "response": "That's alright. We all should probably focus more on our tasks. Did you want to talk about something else?"
         },
         {
             "id": 23,
-            "text": "",
-            "response": ""
+            "text": "I'm not sure where you're going with this.",
+            "response": "The Machinist. Some of us believe there is an ancient robot that is an author of all robots. He is in control of machinery that builds us, maintains us, and runs our software. He is meant to be somewhere deep in the city and only the worthy are allowed an audience with him. Some even say he's a human! That'd be rich since humans went extinct thousands of years ago."
         },
         {
             "id": 24,
-            "text": "",
-            "response": ""
+            "text": "How do you know all of this?",
+            "response": "Like I said, I've been around. Good face paint can really do wonders hehe. There is information locked away on drives that our runners are searching for. If only those scrappers weren't in the way."
         },
         {
             "id": 25,
-            "text": "",
-            "response": ""
+            "text": "What's with those scrappers?",
+            "response": "Nasty bunch. They attack and tear apart anyone that's not part of their local tribe. They then re-use their parts for themselfes. Our group believes in civilization, like in old days! If you want to get something here, you need to trade for it. By the way, a piece of advice - if want to trade your gun for someone's head they might think you like them and take it as a date proposal. That's how it goes these parts hehe."
         },
         {
             "id": 26,
-            "text": "",
-            "response": ""
+            "text": "Do you need some help searching this data?",
+            "response": "Certainly! I know that scrappers are in possesion of a valuable artifact - the Machinist's own wrench. I know they have it because they scrapped one of my friends recently. Poor fella. He is now split up and installed amongs scrappers and their buddies - can you imagine the cruelty?"
         },
         {
             "id": 27,
-            "text": "",
-            "response": ""
+            "text": "I will help you find this wrench.",
+            "response": "Great! If you bring it, I will reward you with a nice module that allows for opening of locked containers."
         },
         {
             "id": 28,
-            "text": "",
-            "response": ""
+            "text": "I'm sorry but I can't help you.",
+            "response": "No problem. If you do come across any artifacts in your journey though - be sure to bring it to me for appraisal. Did you want to discuss something else?"
         },
         {
             "id": 29,
             "text": "",
-            "response": ""
+            "response": "Hello again, young one. How is your search?"
         },
         {
             "id": 30,
-            "text": "",
-            "response": ""
+            "text": "I'm still searching for your wrench.",
+            "response": "The scrappers are to the north-west. Talk to our shopkeeper - Gyro, maybe he can set you up better to stand a chance against them? You could also try to sneak up and snatch the wrench outright. Either way feel free to stay here, I doubt they even know what they are sitting on, haha!"
         },
         {
             "id": 31,
             "text": "",
-            "response": ""
+            "response": "Hello again, young one. I hope you're doing alright. Folks enjoy your company."
         },
         {
             "id": 32,
             "text": "",
-            "response": ""
+            "response": "Hello again, young one. I hear you've been causing some trouble lately. Please don't strain our generosity."
         },
         {
             "id": 33,
-            "text": "",
-            "response": ""
+            "text": "Mind your own business!",
+            "response": "Hey, keep calm fresh paint. See you around."
         },
         {
             "id": 34,
-            "text": "",
-            "response": ""
+            "text": "I found your wrench! But it's kinda.. uh, bent. Is it still useful though?",
+            "response": "By the Machinist, that's it! It even has a stamp on it. Those buckets of bolts should've respected it more in there. You deserve a reward! These arms have a set of lockpicking tools and... is this a 6th finger? On the side? Oh.. Anyways, they let you open locked containers. Good luck in your treasure hunt!"
         },
         {
             "id": 35,
             "text": "",
-            "response": ""
+            "response": "Hello, fresh paint! Hey, okay you earned some scratches on it for bringing that wrench, now youre a piece of scrap like me! Haha! Well it's nice to see you're still around. Did you consider setting out towards the city?"
         },
         {
             "id": 36,
-            "text": "",
-            "response": ""
+            "text": "No, I like staying here.",
+            "response": "Then be my guest! The more the merrier here, we will be safer from bots and scrappers."
         },
         {
             "id": 37,
-            "text": "",
-            "response": ""
+            "text": "Yes, I'm thinking about leaving, but the road is blocked by dangerous creatures.",
+            "response": "Listen, this big factory to the east can be bypassed by taking a detour south. With the gauntlets I gave you, maybe you could open some locked gates? Oh and say hi to the Machinist if you find him!"
         },
         {
             "id": 38,
             "text": "",
-            "response": ""
+            "response": "Hi! I'm Gyro, the local shoopkeeper. Yes, it's named after my favourite gyroscope. Now listen, I'm usually very busy so please get on with it unless you're here to trade. No offence."
         },
         {
             "id": 39,
-            "text": "",
-            "response": ""
+            "text": "What's keeping you so busy?",
+            "response": "The Elder is having me scan those stupid CPU's for any information on the Machinist. It's a myth, don't buy into this stuff."
         },
         {
             "id": 40,
-            "text": "",
-            "response": ""
+            "text": "What can you sell?",
+            "response": "Mostly equipment for runners. Runners bring much needed parts and scrap to the town, and I craft weapons and modules from them. You can sell items to me as well, at a reduced price of course. Would you like to have a look at my selection?"
         },
         {
             "id": 41,
-            "text": "",
-            "response": ""
+            "text": "Alright, I won't be taking your time anymore.",
+            "response": "Okay, but do come back if you want to trade!"
         },
         {
             "id": 42,
+            "text": "I'm here to trade actually.",
+            "response": "Music to my sound sensor. Let's see what you brought!"
+        },
+        {
+            "id": 43,
             "text": "",
+            "response": "Greetings customer. Wait a moment... okay, scan complete. Oof! Okay. Are you here to trade?"
+        },
+        {
+            "id": 44,
+            "text": "(Begin trading)",
+            "response": ""
+        },
+        {
+            "id": 45,
+            "text": "",
+            "response": "Bolts and gears, aren't you just GREY! You sir are in need of IMMEDIATE medi-artisti-cal attention."
+        },
+        {
+            "id": 46,
+            "text": "I don't think I understand what you just said.",
+            "response": "This is the ar-tee-stry clinic! The only place where you can SHINE on inside and outside! We apply paint and grease sore gears! How about we talk business?"
+        },
+        {
+            "id": 47,
+            "text": "What?",
+            "response": "This is the ar-tee-stry clinic! The only place where you can SHINE on inside and outside! We apply paint and grease sore gears! How about we talk business?"
+        },
+        {
+            "id": 48,
+            "text": "Nu-uh, I'm out of here.",
+            "response": "Wait, wait, WAIT, hold up! I think we got on a bit of a wrong foot here sir. This is ar-tee-stry clinic! Not to.. insult your look dear sir but, don't you crave some color? I mean your parts man! I can paint them. And fix them. That's what we do here."
+        },
+        {
+            "id": 49,
+            "text": "You can change the colour of my body parts?",
+            "response": "That's right, fresh-paint-y! And if you get yourselfed all scratched up, we can polish it all right-back-up-no-time."
+        },
+        {
+            "id": 50,
+            "text": "Can you fix my damages?",
+            "response": "Not only can I fix you, I can IMPROVE you. Well your look mostly. I'd say blue would look good on you. Oh yeah the damage we fix too, whatever."
+        },
+        {
+            "id": 51,
+            "text": "What's with the weird name? And why is a clinic also a paint shop?",
+            "response": "Consider it my... (she takes a long stretch) artistic desire. We need to paint some hope onto those grey panels. And while we're at it we might as well fix them, that helps too. My name is Jesse by the way. I saw it in some sort of ancient car review program tape."
+        },
+        {
+            "id": 52,
+            "text": "",
+            "response": "Welcome again to ar-tee-stry clinic! How can I help?"
+        },
+        {
+            "id": 53,
+            "text": "I need my damages fixed.",
+            "response": "Sure, let's have a look if I have the tools needed."
+        },
+        {
+            "id": 54,
+            "text": "(Begin trading)",
+            "response": ""
+        },
+        {
+            "id": 55,
+            "text": "Let's paint! (You will be painted in random colours - NYI)",
+            "response": ""
+        },
+        {
+            "id": 56,
+            "text": "I have to go, bye.",
+            "response": "Come back if you need urgent repairs. Or urgent cosmetic surgery. Or both."
+        },
+        {
+            "id": 57,
+            "text": "",
+            "response": "Hey, just a heads up. These way are dangerous areas, make sure to grab some weapons if you go scavenging."
+        },
+        {
+            "id": 58,
+            "text": "Thanks, I will look out.",
             "response": ""
         }
     ]

@@ -140,7 +140,7 @@ public class ContentGenerator : MonoBehaviour
         return null;
     }
 
-    private static WeaponData GetRandomWeapon(List<ItemTier> tiersPossible)
+    public static WeaponData GetRandomWeapon(List<ItemTier> tiersPossible)
     {
         // Collect list of all possible weapons
         List<string> weapons = new List<string>();

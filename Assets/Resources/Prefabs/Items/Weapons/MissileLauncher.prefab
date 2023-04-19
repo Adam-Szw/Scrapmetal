@@ -218,8 +218,9 @@ MonoBehaviour:
   targetBone: {fileID: 8289283381652960123}
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
+  dontSave: 0
   ownerFaction: 1
-  tier: 2
+  tier: 3
   inventoryIconLink: Icons/Icon_MissileLauncher
   descriptionTextLinkID: 21
   value: 20

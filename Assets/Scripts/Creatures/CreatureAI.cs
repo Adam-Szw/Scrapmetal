@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static ContentGenerator;
 using static CreatureAI;
 using static CreatureBehaviour;
 using static UnityEngine.EventSystems.EventTrigger;
@@ -122,18 +123,48 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         entities.Remove(entity);
     }
 
-    public void NotifyTakingDamage(FactionAllegiance fromFaction = FactionAllegiance.berserk)
+    public void NotifyTakingDamage(ulong aggressorID, FactionAllegiance fromFaction = FactionAllegiance.berserk)
     {
         // Raise caution level
         if (state == aiState.idle)
         {
             state = aiState.caution;
-            UpdateDetectionRadius();
             locationGoal = null;
             StartTimer(cautionTime);
         }
         // If player attacking town - turn hostile
-        if (fromFaction == FactionAllegiance.player && behaviour.faction == FactionAllegiance.NPC) behaviour.faction = FactionAllegiance.NPCaggro;
+        if (fromFaction == FactionAllegiance.player && behaviour.faction == FactionAllegiance.NPC)
+        {
+            // Set me aggressive
+            GlobalControl.decisions.causedVillageTrouble = true;
+            if (behaviour is NPCBehaviour) SetNPCAggressive(aggressorID, (NPCBehaviour)behaviour);
+            // Call for help
+            foreach (CreatureBehaviour creature in HelpFunc.GetCreaturesInRadiusByHitbox(transform.position, 10f))
+            {
+                if (creature is NPCBehaviour && ((NPCBehaviour)creature).faction == FactionAllegiance.NPC) SetNPCAggressive(aggressorID, (NPCBehaviour)creature);
+            }
+        }
+        // Update detection range
+        UpdateDetectionRadius();
+        // Add entity to be scanned
+        GameObject owner = HelpFunc.FindEntityByID(aggressorID);
+        if (owner != null) entities[owner] = (owner.transform.position - transform.position).magnitude;
+    }
+
+    private void SetNPCAggressive(ulong aggressorID, NPCBehaviour behaviour)
+    {
+        behaviour.faction = FactionAllegiance.NPCaggressive;
+        behaviour.interactible = false;
+        WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.medium, ItemTier.strong });
+        if (weapon != null)
+        {
+            behaviour.loot.Add(HelpFunc.DeepCopy(weapon));
+            weapon.unlimitedAmmo = true;
+            behaviour.SetItemActive(weapon);
+        }
+        // Add entity to be scanned
+        GameObject owner = HelpFunc.FindEntityByID(aggressorID);
+        if (owner != null) entities[owner] = (owner.transform.position - transform.position).magnitude;
     }
 
     private IEnumerator StartCoroutines()
@@ -193,7 +224,13 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         while (true)
         {
             if (GlobalControl.paused) yield return new WaitForSeconds(.1f);
-            if (targetID == 0)
+            if (locationGoal.HasValue)
+            {
+                Vector2 desiredDirection = locationGoal.Value - (Vector2)transform.position;
+                behaviour.SetFacingVector(desiredDirection);
+                behaviour.SetAimingLocation((Vector2)transform.position + desiredDirection);
+            }
+            else if (targetID == 0)
             {
                 behaviour.SetFacingVector(defaultFacing);
                 behaviour.SetAimingLocation((Vector2)transform.position + defaultFacing);
@@ -263,6 +300,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
 
     private void UpdateDetectionRadius()
     {
+        detectorCollider.radius = 0f;
+        detectionRangeCurrent = 0f;
         switch (state)
         {
             case aiState.hold:
@@ -454,7 +493,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         if (factionMe == FactionAllegiance.berserk) return true;
         if (factionMe == FactionAllegiance.hostile && factionOther != FactionAllegiance.hostile) return true;
         if (factionMe == FactionAllegiance.NPC && factionOther == FactionAllegiance.hostile) return true;
-        if (factionMe == FactionAllegiance.NPCaggro && factionOther == FactionAllegiance.player) return true;
+        if (factionMe == FactionAllegiance.NPCaggressive && factionOther == FactionAllegiance.player) return true;
         if (factionMe == FactionAllegiance.enemy && factionOther == FactionAllegiance.player) return true;
         return false;
     }
