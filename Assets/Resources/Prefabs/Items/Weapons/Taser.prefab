@@ -219,8 +219,9 @@ MonoBehaviour:
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
   ownerFaction: 1
+  tier: 0
   inventoryIconLink: Icons/Icon_Taser
-  descriptionTextLinkID: 2
+  descriptionTextLinkID: 23
   value: 20
   pickable: 1
   removeOnPick: 0
@@ -234,6 +235,7 @@ MonoBehaviour:
   snapMaxAngle: 5
   animationType: 1
   ammoLink: 2
+  unlimitedAmmo: 0
   target: {x: 0, y: 0}
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}

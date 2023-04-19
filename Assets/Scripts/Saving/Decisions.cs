@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 [Serializable]
 public class Decisions
 {
-    
+    public bool welcomeShown = false;
+    public bool villageWelcomeDone = false;
 }

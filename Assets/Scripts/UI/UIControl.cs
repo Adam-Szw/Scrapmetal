@@ -61,19 +61,22 @@ public class UIControl : MonoBehaviour
         }
         if (PlayerInput.tab)
         {
+            // Nothing if in dialog or menu
+            if (menu) return;
+            if (dialog) return;
             // Popup open - close it
             if (popup) DestroyPopup();
             // Open inventory
+            else if (inventory)
+            {
+                DestroyInventory();
+                ShowCombatUI();
+            }
+            // CLose inventory
             else if (!inventory)
             {
                 DestroyCombatUI();
                 ShowInventory();
-            }
-            // CLose inventory
-            else
-            {
-                DestroyInventory();
-                ShowCombatUI();
             }
         }
     }
@@ -102,13 +105,13 @@ public class UIControl : MonoBehaviour
         GlobalControl.UnpauseGame();
     }
 
-    public static void showDialog(ulong initialOptionID, string dialogRespondentName)
+    public static void showDialog(int initialOptionID, string dialogRespondentName, NPCBehaviour responder)
     {
         if (!GlobalControl.GetPlayer()) return;
         GlobalControl.PauseGame();
         DialogOption initialOption = DialogLibrary.getDialogOptionByID(initialOptionID);
         dialog = Instantiate(Resources.Load<GameObject>(dialogPrefabPath));
-        dialog.GetComponent<DialogControl>().Initialize(initialOption, dialogRespondentName);
+        dialog.GetComponent<DialogControl>().Initialize(initialOption, dialogRespondentName, responder);
     }
 
     public static void DestroyDialog()
@@ -145,7 +148,7 @@ public class UIControl : MonoBehaviour
         combatUI = null;
     }
 
-    public static void ShowPopup(ulong ID, float fadeInTime, Effect effect = null)
+    public static void ShowPopup(int ID, float fadeInTime, Effect effect = null)
     {
         GlobalControl.PauseGame();
         popup = Instantiate(Resources.Load<GameObject>(popupPrefabPath));

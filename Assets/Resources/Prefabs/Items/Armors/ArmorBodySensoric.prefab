@@ -57,10 +57,10 @@ MonoBehaviour:
   pickable: 1
   removeOnPick: 0
   ownerID: 0
-  hpIncrease: 0
+  hpIncrease: 50
   speedMultiplierBonus: 0
   buffsScrapGeneration: 0
-  buffsLootGeneration: 0
+  buffsLootGeneration: 1
   buffsChestOpening: 0
   slot: 1
   labelIndex: 6

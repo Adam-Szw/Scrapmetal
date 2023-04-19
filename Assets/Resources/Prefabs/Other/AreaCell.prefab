@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2d: {fileID: 3744404231743090080}
-  disableEntitiesByDefault: 0
+  disableEntitiesByDefault: 1
   id: 0
   content: {fileID: 0}
   isHoldingEntities: 0

@@ -157,15 +157,15 @@ public class InventoryControl : MonoBehaviour
         EnableButton(false, throwAction);
         // set description to item text
         descriptionText.text = ItemLibrary.itemLocalization.TryGetValue(item.descriptionTextLinkID, out string val) ? val : "No description";
-        if (status != ItemStatus.equipped && item is WeaponData) descriptionText.text += "\n\nAmmo: " +
+        if (item is WeaponData) descriptionText.text += "\nAmmo: " +
                 ((WeaponData)item).currAmmo + "/" + ((WeaponData)item).maxAmmo;
-        if (item is AmmoData) descriptionText.text += "\n\nQuantity: " + ((AmmoData)item).quantity + "/" + ((AmmoData)item).maxStack;
-        if (status == ItemStatus.equipped) descriptionText.text += "\n\nClick to unequip the item";
+        if (item is AmmoData) descriptionText.text += "\nQuantity: " + ((AmmoData)item).quantity + "/" + ((AmmoData)item).maxStack;
+        if (status == ItemStatus.equipped) descriptionText.text += "\nClick to unequip the item";
         else if (!isShopOpen && status == ItemStatus.inventory && (item is WeaponData || item is ArmorData))
-            descriptionText.text += "\n\nClick to equip the item";
-        else if (status == ItemStatus.shop) descriptionText.text += "\n\nClick to purchase the item.\nPrice: " + item.value * ((item is AmmoData) ? ((AmmoData)item).quantity : 1f);
-        else if (isShopOpen && status == ItemStatus.inventory) descriptionText.text += "\n\nClick to sell the item.\nPrice: " + (int)Mathf.Round(((item is AmmoData) ? ((AmmoData)item).quantity : 1f) / 2);
-        else if (!isShopOpen && (item is UsableData)) descriptionText.text += "\n\nClick to use the item";
+            descriptionText.text += "\nClick to equip the item";
+        else if (status == ItemStatus.shop) descriptionText.text += "\nClick to purchase the item.\nPrice: " + item.value * ((item is AmmoData) ? ((AmmoData)item).quantity : 1f);
+        else if (isShopOpen && status == ItemStatus.inventory) descriptionText.text += "\nClick to sell the item.\nPrice: " + (int)Mathf.Round(((item is AmmoData) ? ((AmmoData)item).quantity : 1f) / 2);
+        else if (!isShopOpen && (item is UsableData)) descriptionText.text += "\nClick to use the item";
     }
 
     // Setup actions panel to have actions that are dependant on item type, when item is pressed
@@ -278,7 +278,7 @@ public class InventoryControl : MonoBehaviour
     {
         ClearButtonActions(button);
         EnableButton(true, button);
-        SetButtonText(button, "Assign weapon to slot " + (slot + 1).ToString());
+        SetButtonText(button, "Assign to slot " + (slot + 1).ToString());
         button.onClick.AddListener(() =>
         {
             WeaponSlot w = new WeaponSlot(weapon, slot);
@@ -291,23 +291,23 @@ public class InventoryControl : MonoBehaviour
     {
         ClearButtonActions(button);
         EnableButton(true, button);
-        string s = "No correct module";
+        string s = "None";
         switch(armor.slot)
         {
             case Slot.head:
-                s = "Head module";
+                s = "Head";
                 break;
             case Slot.torso:
-                s = "Body module";
+                s = "Body";
                 break;
             case Slot.arms:
-                s = "Arms module";
+                s = "Arms";
                 break;
             case Slot.legs:
-                s = "Legs module";
+                s = "Legs";
                 break;
         }
-        SetButtonText(button, "Assign to: " + s);
+        SetButtonText(button, "Install in: " + s);
         button.onClick.AddListener(() =>
         {
             ArmorSlot a = new ArmorSlot(armor, armor.slot);
@@ -362,6 +362,7 @@ public class InventoryControl : MonoBehaviour
 
     private void SetupThrowItemButton(Button button, ItemData item)
     {
+        ClearButtonActions(button);
         EnableButton(true, button);
         button.onClick.AddListener(() =>
         {
@@ -404,7 +405,7 @@ public class InventoryControl : MonoBehaviour
         playerBehaviour = player;
         currencyText.text = "Scrap: " + player.currencyCount;
         EnableText(true, currencyText);
-        LoadInventory(player.weapons, player.armors, player.GetInventory());
+        LoadInventory(player.GetPlayerWeapons(), player.GetPlayerArmors(), player.GetInventory());
         if (shopItems != null)
         {
             shopPanel.SetActive(true);

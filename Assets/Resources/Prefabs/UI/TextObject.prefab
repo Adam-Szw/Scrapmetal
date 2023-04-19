@@ -253,9 +253,9 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3525777346967199823}
   m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -464362959
+  m_SortingLayer: 1
+  m_SortingOrder: 1
 --- !u!114 &7478479917963560986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,6 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0731df3f38be204780f1792cd53371d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  follow: {fileID: 0}
 --- !u!1 &6645949323736648708
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,8 +328,8 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -464362959
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &4430902528237711613
 MonoBehaviour:

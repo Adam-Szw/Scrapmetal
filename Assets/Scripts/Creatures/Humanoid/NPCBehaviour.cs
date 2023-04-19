@@ -7,7 +7,8 @@ public class NPCBehaviour : HumanoidBehaviour, Saveable<NPCData>, Spawnable<NPCD
 {
 
     public bool interactible = false;
-    public ulong dialogStartID = 0;
+    public int dialogStartID = 0;
+    public string NPCname = "No Name";
 
     protected new void Start()
     {
@@ -23,7 +24,7 @@ public class NPCBehaviour : HumanoidBehaviour, Saveable<NPCData>, Spawnable<NPCD
     private void InteractionUse()
     {
         // Open dialog
-        UIControl.showDialog(dialogStartID, gameObject.name);
+        UIControl.showDialog(DialogLibrary.GetDialogConditionedID(dialogStartID), gameObject.name, this);
     }
 
     private void InteractionEnter(CreatureBehaviour user)
@@ -38,6 +39,7 @@ public class NPCBehaviour : HumanoidBehaviour, Saveable<NPCData>, Spawnable<NPCD
         NPCData data = new NPCData(base.Save());
         data.interactible = interactible;
         data.dialogStartID = dialogStartID;
+        data.NPCname = NPCname;
         return data;
     }
 
@@ -46,6 +48,7 @@ public class NPCBehaviour : HumanoidBehaviour, Saveable<NPCData>, Spawnable<NPCD
         base.Load(data, loadTransform);
         interactible = data.interactible;
         dialogStartID = data.dialogStartID;
+        NPCname = data.NPCname;
     }
 
     public static GameObject Spawn(NPCData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -77,8 +80,9 @@ public class NPCData : HumanoidData
         bodypartsGenerated = data.bodypartsGenerated;
     }
 
-    public bool interactible = false;
-    public ulong dialogStartID = 0;
+    public bool interactible;
+    public int dialogStartID;
+    public string NPCname;
 
 }
 

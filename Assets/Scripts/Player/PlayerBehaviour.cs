@@ -46,8 +46,8 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         }
     }
 
-    [HideInInspector] public List<WeaponSlot> weapons = new List<WeaponSlot>();
-    [HideInInspector] public List<ArmorSlot> armors = new List<ArmorSlot>();
+    [HideInInspector] private List<WeaponSlot> weapons = new List<WeaponSlot>();
+    [HideInInspector] private List<ArmorSlot> armors = new List<ArmorSlot>();
 
     public static float interactibleInteravalTime = 0.2f;
 
@@ -166,6 +166,19 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         return null;
     }
 
+    public List<WeaponSlot> GetPlayerWeapons()
+    {
+        // Refresh weapon thats used in active weapon slot
+        SetWeaponFromSlot(weaponSelected);
+        return weapons;
+    }
+
+    public List<ArmorSlot> GetPlayerArmors()
+    {
+        return armors;
+    }
+
+
     public int? GetCurrWeaponMaxAmmo()
     {
         ItemBehaviour b = activeItemBehaviour;
@@ -216,9 +229,10 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
 
     private void SetWeaponFromSlot(int index)
     {
+        ItemData toStore = SaveItemActive();
+        StoreItem(toStore);
         WeaponData weapon = GetWeaponBySlot(index);
-        ItemData toStore = SetItemActive(weapon);
-        if (toStore != null) StoreItem(toStore);
+        SetItemActive(weapon);
         weaponSelected = index;
         if (weapon == null) weaponSelected = -1;
     }
@@ -238,6 +252,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     // Check if this item is owned by the player and replace its data with new
     private void StoreItem(ItemData item)
     {
+        if (item == null) return;
         // First search inventory to replace item
         int indToReplace = -1;
         for (int i = 0; i < GetInventory().Count; i++) { if (GetInventory()[i].ID == item.ID) indToReplace = i; }
@@ -257,7 +272,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         // Do nothing if on cooldown
         if (reloadTimer > 0f)
         {
-            SpawnFloatingText(Color.blue, "Reloading" + reloadTimer + "s", 0.3f);
+            SpawnFloatingText(Color.blue, "Reloading" + Mathf.Round(reloadTimer * 10f) / 10f + "s", 0.3f);
             return;
         }
 
@@ -267,7 +282,6 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
             SpawnFloatingText(Color.blue, "No weapon", 0.3f);
             return;
         }
-
 
         // Get currently active weapon
         WeaponBehaviour weapon = (WeaponBehaviour)activeItemBehaviour;
@@ -299,7 +313,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     private IEnumerator ReloadTimerCoroutine(float time)
     {
         reloadTimer = Mathf.Max(time, 0f);
-        if (time > 0) SpawnFloatingText(Color.blue, "Reloading: " + time + "s", time);
+        if (time > 0) SpawnFloatingText(Color.blue, "Reloading: " + Mathf.Round(time * 10f) / 10f + "s", time);
         while (reloadTimer > 0)
         {
             yield return new WaitForSeconds(.2f);
@@ -310,6 +324,8 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
 
     private void RefreshPlayerStats()
     {
+        // Record current health ratio
+        float hpRatio = GetHealth() / GetMaxHealth();
         // Reset to base stats
         bonusHP = 0f;
         bonusSpeedMult = 1f;
@@ -329,6 +345,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         // Apply new stats
         SetMaxHealth(PLAYER_BASE_MAX_HP + bonusHP);
         moveSpeed = PLAYER_BASE_SPEED * bonusSpeedMult;
+        SetHealth(GetMaxHealth() * hpRatio);
     }
 
     private void RefreshPlayerLimbs()
@@ -388,8 +405,8 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         PlayerData data = new PlayerData(base.Save());
         data.currencyCount = currencyCount;
         data.weaponSelected = weaponSelected;
-        data.weapons = weapons;
-        data.armors = armors;
+        data.weapons = GetPlayerWeapons();
+        data.armors = GetPlayerArmors();
         data.reloadTimer = reloadTimer;
         return data;
     }

@@ -2,11 +2,39 @@
     "popupData": [
         {
             "id": 1,
-            "text": "This is the text for popup ID 1."
+            "text": "Game Over!\n\nPress OK to exit to menu"
         },
         {
             "id": 2,
-            "text": "This is the text for popup ID 2."
+            "text": "Welcome to ScrapMetal demo!\n\nYou wake up in a small workshop surrounded by various tools and machinery. While you cant recollect how you came to be here, you have a sense of how to move your body around.\nYou're a robot and you will have to survive in this strange place.\n\nUse WASD to move around.\n\nUse mouse to move the camera.\n\nPress ESC (Escape) button to open menu, where you can also exit the game."
+        },
+		{
+            "id": 3,
+            "text": "By moving the mouse cursor far to the edges of the screen, you can move the camera even further. How far you can see is limited however.\n\nTry to move look as far left, behind the fence, as you can, until you see dark border."
+        },
+		{
+            "id": 4,
+            "text": "In your adventures you will find many useful items. Press TAB button on your keyboard to open inventory and view your items. If you see any items lying on the ground, walk up to them until you see text, notifying you that item can be picked up.\n\nPress E to interact with your environment when prompted. Interacting with items will put them in your inventory (provided you have enough space)."
+        },
+		{
+            "id": 5,
+            "text": "Some items are special and can be used as weapons or armour. Click on an item in your inventory to show more actions that can be performed. If you have a weapon in your inventory, it can be assigned to one of your weapon slots.\n\nYou have 4 weapon slots. Once a weapon was assigned to a slot, it can be accessed by a corresponding button on your keyboard: 1-4 (numeric keys, not NUMPAD).\n\nAssigned weapon can be also unassigned by clicking it in your inventory in its slot."
+        },
+		{
+            "id": 6,
+            "text": "Once you have assigned a weapon, you can take it out by pressing a corresponding button (1-4).\n\nUse Left Mouse button to shoot your weapon. Pay attention to your ammunition counter in bottom left - if it runs out you will have to press R to reload your weapon or else you will not be able to shoot it.\n\nTry shooting your weapon at the wall of a building to your right."
+        },
+		{
+            "id": 7,
+            "text": "You will encounter many hostile creatures in your adventure. If you choose to fight them - you might be rewarded by loot and money. But be careful! You are weak for now and many enemies will be stronger than you, and could end your adventure early.\n\nEnemies can also be evaded - you cant be seen if there is something blocking line of sight from the enemy to you.\n\nIf you are noticed, you can also try to run away. The enemies might give up the chase after a while.\n\nTry to pass unnoticed to the area on the right by using boxes for cover."
+        },
+		{
+            "id": 8,
+            "text": "Not all robots are hostile. You might find some friendlies who will assist you in your journey. If you see a robot without weapons - they might be interactible.\n\nYou can walk up to some robots and press (E) to talk to them. You will see a prompt to do so after you approach them.\n\nYou can always leave conversation by pressing Escape."
+        },
+		{
+            "id": 9,
+            "text": "If you cause trouble in cities through your aggresion, the city will turn hostile against you. You can find traders and merchants who will sell items or render services in cities.\n\nGood luck in your adventures!"
         }
     ]
 }

@@ -59,15 +59,10 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
     /* Spawns an item in selected bone for character. Null can be provided to indicate that no items should be selected.
      * Returns data of the item that is to be unequipped.
      */
-    public ItemData SetItemActive(ItemData item)
+    public void SetItemActive(ItemData item)
     {
-        // We have to destroy current item
-        // Save item before destroying
-        ItemData data = null;
         if (activeItemBehaviour != null)
         {
-            MethodInfo saveMethod = activeItemBehaviour.GetType().GetMethod("Save");
-            data = (ItemData)saveMethod.Invoke(activeItemBehaviour, null);
             // Destroy item object
             Destroy(activeItemBehaviour.gameObject);
             activeItemBehaviour = null;
@@ -76,7 +71,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         animations.SetStateHands(handsState.empty);
         animations.ResetJoints();
         // Finish here if no new item provided
-        if (item == null) return data;
+        if (item == null) return;
 
         // Spawn new item in hand/bone
         // We have to specify extra details so spawning process is more manual than usual here
@@ -101,9 +96,23 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         itemB.ownerID = ID;
         itemB.ownerFaction = faction;
         activeItemBehaviour = itemB;
+        // Make sure the active item is not saved itself. We will save inventory state instead
+        itemB.dontSave = true;
+        return;
+    }
 
+    public ItemData SaveItemActive()
+    {
+        ItemData data = null;
+        if (activeItemBehaviour != null)
+        {
+            MethodInfo saveMethod = activeItemBehaviour.GetType().GetMethod("Save");
+            data = (ItemData)saveMethod.Invoke(activeItemBehaviour, null);
+        }
         return data;
     }
+
+
 
     protected override List<WeaponBehaviour> GetWeapons()
     {
@@ -179,12 +188,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
         HumanoidData data = new HumanoidData(base.Save());
         data.bodypartData = SaveBodypartData();
         data.animationData = animations.Save();
-        if (activeItemBehaviour)
-        {
-            MethodInfo saveMethod = activeItemBehaviour.GetType().GetMethod("Save");
-            data.itemActive = (ItemData)saveMethod.Invoke(activeItemBehaviour, null);
-        }
-        else data.itemActive = null;
+        data.itemActive = SaveItemActive();
         data.randomizeParts = randomizeParts;
         data.bodypartsGenerated = bodypartsGenerated;
         return data;

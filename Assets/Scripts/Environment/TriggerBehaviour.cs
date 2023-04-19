@@ -9,7 +9,7 @@ public class TriggerBehaviour : MonoBehaviour, Saveable<TriggerData>
 {
     public int id = 0;
 
-    public ulong popupID = 0;   // No popup will be shown if ID is 0
+    public int popupID = 0;   // No popup will be shown if ID is 0
 
     private bool triggered = false;
 

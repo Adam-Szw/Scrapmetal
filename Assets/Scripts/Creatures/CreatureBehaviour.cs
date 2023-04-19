@@ -255,10 +255,12 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         Vector3 position = bone.transform.position;
         Quaternion rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
         GameObject weapon = WeaponBehaviour.Spawn(prefabPath, position, rotation, bone.transform);
+        weapon.transform.localRotation = rotation;
         WeaponBehaviour weaponBehaviour = weapon.GetComponent<WeaponBehaviour>();
         weaponBehaviour.ownerID = ID;
         weaponBehaviour.ownerFaction = faction;
         weaponBehaviour.groundReferenceObject = groundReferenceObject;
+        weaponBehaviour.dontSave = true;
         AIweapons.Add(weaponBehaviour);
     }
 
@@ -275,7 +277,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     private void RunDeathActions()
     {
-        HelpFunc.DisableColliders(transform);
+        if (this is not PlayerBehaviour) HelpFunc.DisableColliders(transform);
         base.SetSpeed(0.0f);
         StartCoroutine(DestroyInTime(5));
         foreach (ItemData item in loot)
@@ -312,7 +314,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     protected void LoadAIWeapons(List<WeaponData> data)
     {
-        for (int i = 0; i < data.Count; i++) AIweapons[i].Load(data[i]);
+        for (int i = 0; i < data.Count; i++) AIweapons[i].Load(data[i], false);
     }
 
     public new CreatureData Save()

@@ -199,6 +199,36 @@ public static class HelpFunc
         return triggersDict;
     }
 
+
+    public static List<GameObject> GetAllObjectsInScene()
+    {
+        List<GameObject> objects = new List<GameObject>();
+        GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (GameObject rootObject in rootObjects)
+        {
+            GetChildrenIntoListRecursive(objects, rootObject);
+        }
+        return objects;
+    }
+
+    public static void GetChildrenIntoListRecursive(List<GameObject> list, GameObject parent)
+    {
+        if (!list.Contains(parent)) list.Add(parent);
+        foreach (Transform child in parent.transform) GetChildrenIntoListRecursive(list, child.gameObject);
+    }
+
+    public static List<GameObject> GetAllChildObjects(GameObject parentObject)
+    {
+        List<GameObject> childObjects = new List<GameObject>();
+        foreach (Transform childTransform in parentObject.transform)
+        {
+            GameObject childObject = childTransform.gameObject;
+            childObjects.Add(childObject);
+            childObjects.AddRange(GetAllChildObjects(childObject));
+        }
+        return childObjects;
+    }
+
     // Recursively disables all colliders in the object
     public static void DisableColliders(Transform parent)
     {

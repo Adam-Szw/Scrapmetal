@@ -61,7 +61,7 @@ MonoBehaviour:
   speedMultiplierBonus: 0
   buffsScrapGeneration: 0
   buffsLootGeneration: 0
-  buffsChestOpening: 0
+  buffsChestOpening: 1
   slot: 2
   labelIndex: 6
   colorRGBA: (0, 0, 0, 0)

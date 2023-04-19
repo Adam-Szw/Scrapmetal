@@ -8,12 +8,12 @@ public class DialogOption
 {
     public delegate void Effect();
 
-    public ulong ID = 0;
-    public List<ulong> optionIDsResulting = new List<ulong>();
+    public int ID = 0;
+    public List<int> optionIDsResulting = new List<int>();
     public List<Effect> effects = new List<Effect>();
     public bool doClearDialog = true;
 
-    public DialogOption(ulong iD, List<ulong> optionIDsResulting)
+    public DialogOption(int iD, List<int> optionIDsResulting)
     {
         ID = iD;
         this.optionIDsResulting = optionIDsResulting;

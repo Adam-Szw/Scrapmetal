@@ -221,7 +221,7 @@ MonoBehaviour:
   ownerFaction: 1
   tier: 1
   inventoryIconLink: Icons/Icon_Laser
-  descriptionTextLinkID: 1
+  descriptionTextLinkID: 20
   value: 20
   pickable: 1
   removeOnPick: 0

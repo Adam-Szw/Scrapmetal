@@ -59,7 +59,7 @@ MonoBehaviour:
   ownerID: 0
   hpIncrease: 0
   speedMultiplierBonus: 0
-  buffsScrapGeneration: 0
+  buffsScrapGeneration: 1
   buffsLootGeneration: 0
   buffsChestOpening: 0
   slot: 0

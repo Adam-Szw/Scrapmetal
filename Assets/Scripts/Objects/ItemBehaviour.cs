@@ -11,7 +11,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
     public FactionAllegiance ownerFaction = FactionAllegiance.neutral;
     public ItemTier tier = ItemTier.weak;
     public string inventoryIconLink = "Icons/Icon_Test";
-    public ulong descriptionTextLinkID = 0;
+    public int descriptionTextLinkID = 0;
     public int value = 0;
     public bool pickable = true;
     public bool removeOnPick = false;
@@ -149,7 +149,7 @@ public class ItemData : EntityData
     public FactionAllegiance ownerFaction;
     public ItemTier tier;
     public string inventoryIconLink;
-    public ulong descriptionTextLinkID;
+    public int descriptionTextLinkID;
     public int value;
     public bool pickable;
     public bool removeOnPick;

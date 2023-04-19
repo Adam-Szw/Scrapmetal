@@ -27,7 +27,7 @@ public class PopupControl : MonoBehaviour
         StartCoroutine(PopupFadeOut());
     }
 
-    public void Initialize(ulong ID, float fadeInTime, Effect specialEffect = null)
+    public void Initialize(int ID, float fadeInTime, Effect specialEffect = null)
     {
         string popupText = "No Text";
         if (ID != 0 && PopupLibrary.popupLocalization.ContainsKey(ID))

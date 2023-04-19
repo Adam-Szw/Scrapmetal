@@ -18,6 +18,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     public GameObject interactAttachment = null;    // Interaction and floating texts will reference position of this object
 
     [HideInInspector] public ulong ID = 0;
+    [HideInInspector] public bool dontSave = false;
     private float speed = 0.0f;
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
@@ -141,8 +142,8 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         EntityData data = new EntityData();
         data.ID = ID;
         data.prefabPath = prefabPath;
-        data.location = HelpFunc.VectorToArray(transform.localPosition);
-        data.rotation = HelpFunc.QuaternionToArray(transform.localRotation);
+        data.location = HelpFunc.VectorToArray(transform.position);
+        data.rotation = HelpFunc.QuaternionToArray(transform.rotation);
         data.scale = HelpFunc.VectorToArray(transform.localScale);
         data.velocity = HelpFunc.VectorToArray(GetMoveVector());
         data.speed = speed;
@@ -155,7 +156,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         prefabPath = data.prefabPath;
         if(loadTransform)
         {
-            transform.localPosition = HelpFunc.DataToVec3(data.location);
+            transform.position = HelpFunc.DataToVec3(data.location);
             transform.rotation = HelpFunc.DataToQuaternion(data.rotation);
             transform.localScale = HelpFunc.DataToVec3(data.scale);
         }

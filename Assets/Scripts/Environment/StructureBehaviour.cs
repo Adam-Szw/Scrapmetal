@@ -91,6 +91,12 @@ public class StructureBehaviour : MonoBehaviour
     {
         SetHideAllInside(true);
         SetHideAllBehind(true);
+        // Since the player might get caught in this, reverse it rather than checking on every step
+        if (GlobalControl.GetPlayer() == null) return;
+        GlobalControl.GetPlayer().GetComponentInChildren<SortingGroup>().sortingOrder = 0;
+        // If the player is currently inside we also want to show other things
+        List<GameObject> objInside = HelpFunc.GetObjectsInCollider(structureBoundary);
+        if (objInside.Contains(GlobalControl.GetPlayer())) SetHideAllInside(false);
     }
 
     public void SetHideObject(GameObject obj, bool hide)

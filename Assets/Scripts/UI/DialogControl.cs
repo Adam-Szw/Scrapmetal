@@ -10,6 +10,7 @@ public class DialogControl : MonoBehaviour
     public Button[] dialogBtns;
     public TextMeshProUGUI dialogTitle;
     public TextMeshProUGUI dialogName;
+    public NPCBehaviour responder;
 
     private List<DialogOption> options = new List<DialogOption>();
     private int indxCurr = 0;
@@ -74,16 +75,17 @@ public class DialogControl : MonoBehaviour
         if (option.doClearDialog) ClearDialog();
         dialogTitle.text = DialogLibrary.GetDialogOptionResponse(option.ID);
         option.DoEffect();
-        foreach (ulong oID in option.optionIDsResulting)
+        foreach (int oID in option.optionIDsResulting)
         {
             DialogOption optNew = DialogLibrary.getDialogOptionByID(oID);
             if (optNew != null) AddOption(optNew);
         }
     }
 
-    public void Initialize(DialogOption initialOption, string dialogRespondentName)
+    public void Initialize(DialogOption initialOption, string dialogRespondentName, NPCBehaviour responder)
     {
         ClearDialog();
+        this.responder = responder;
         dialogName.text = dialogRespondentName;
         UseOption(initialOption);
     }

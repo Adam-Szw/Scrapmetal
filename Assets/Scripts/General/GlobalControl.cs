@@ -74,7 +74,7 @@ public class GlobalControl : MonoBehaviour
         }
         // Load active scene
         if (loadOnLaunch) LoadGame(saveIndex);
-        if (showStartingPopup) UIControl.ShowPopup(2, 0.2f);
+        if (showStartingPopup && !decisions.welcomeShown) UIControl.ShowPopup(2, 0.2f, () => { decisions.welcomeShown = true; });
     }
 
     private void Update()
@@ -152,7 +152,7 @@ public class GlobalControl : MonoBehaviour
         save.decisions = decisions;
 
         // Save current scene
-        SceneData data = new SceneData(sceneCurr, cameraControl.Save(), SaveEntities(sceneCurr), SaveCells(sceneCurr), SaveTriggers(sceneCurr));
+        SceneData data = new SceneData(sceneCurr, cameraControl.Save(), SaveEntities(), SaveCells(), SaveTriggers());
         save.scenes[sceneCurr] = data;
 
         // Record info in settings
@@ -204,7 +204,7 @@ public class GlobalControl : MonoBehaviour
         if (scene != null)
         {
             // Destroy entities in current scene
-            DestroyEntities(sceneCurr);
+            DestroyEntities();
 
             // Load scene data
             LoadEntities(scene.entities);
@@ -242,7 +242,7 @@ public class GlobalControl : MonoBehaviour
         UnpauseGame();
     }
 
-    private static List<EntityData> SaveEntities(string sceneName)
+    private static List<EntityData> SaveEntities()
     {
         // First - tell cells to enable all objects so they can be saved
         Dictionary<int, CellBehaviour> cells = HelpFunc.GetCells();
@@ -254,12 +254,11 @@ public class GlobalControl : MonoBehaviour
 
         // Get all entities in scene
         List<EntityData> entities = new List<EntityData>();
-        Scene scene = SceneManager.GetSceneByName(sceneName);
-        List<GameObject> objects = scene.GetRootGameObjects().ToList();
+        List<GameObject> objects = HelpFunc.GetAllObjectsInScene();
         foreach (GameObject obj in objects)
         {
             EntityBehaviour b = obj.GetComponent<EntityBehaviour>();
-            if (b)
+            if (b && (!b.dontSave))
             {
                 // Save each entity
                 MethodInfo saveMethod = b.GetType().GetMethod("Save");
@@ -274,11 +273,10 @@ public class GlobalControl : MonoBehaviour
         return entities;
     }
 
-    private static List<CellData> SaveCells(string sceneName)
+    private static List<CellData> SaveCells()
     {
         List<CellData> cells = new List<CellData>();
-        Scene scene = SceneManager.GetSceneByName(sceneName);
-        List<GameObject> objects = scene.GetRootGameObjects().ToList();
+        List<GameObject> objects = HelpFunc.GetAllObjectsInScene();
         foreach (GameObject obj in objects)
         {
             CellBehaviour b = obj.GetComponent<CellBehaviour>();
@@ -291,11 +289,10 @@ public class GlobalControl : MonoBehaviour
         return cells;
     }
 
-    private static List<TriggerData> SaveTriggers(string sceneName)
+    private static List<TriggerData> SaveTriggers()
     {
         List<TriggerData> triggers = new List<TriggerData>();
-        Scene scene = SceneManager.GetSceneByName(sceneName);
-        List<GameObject> objects = scene.GetRootGameObjects().ToList();
+        List<GameObject> objects = HelpFunc.GetAllObjectsInScene();
         foreach (GameObject obj in objects)
         {
             TriggerBehaviour b = obj.GetComponent<TriggerBehaviour>();
@@ -340,9 +337,9 @@ public class GlobalControl : MonoBehaviour
 
     /* Destroy all entities in a given scene
      */
-    private static void DestroyEntities(string scene)
+    private static void DestroyEntities()
     {
-        List<GameObject> objects = SceneManager.GetSceneByName(scene).GetRootGameObjects().ToList();
+        List<GameObject> objects = HelpFunc.GetAllObjectsInScene();
         foreach (GameObject obj in objects)
         {
             EntityBehaviour eB = obj.GetComponent<EntityBehaviour>();

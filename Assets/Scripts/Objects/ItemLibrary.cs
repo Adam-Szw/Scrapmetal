@@ -12,7 +12,7 @@ public static class ItemLibrary
     [Serializable]
     public class ItemLocalData
     {
-        public ulong id;
+        public int id;
         public string text;
     }
 
@@ -22,7 +22,7 @@ public static class ItemLibrary
         public List<ItemLocalData> itemLocalData;
     }
 
-    public static Dictionary<ulong, string> itemLocalization = new Dictionary<ulong, string>();
+    public static Dictionary<int, string> itemLocalization = new Dictionary<int, string>();
     public static string ITEM_PREFABS_PATH = "Prefabs/Items/";
     // to fill
     public static string[] ITEM_RESOURCES = new string[] { "FixKit", "Scrap", "Ammo/RivetAmmo", "Ammo/CapacitorCharge",

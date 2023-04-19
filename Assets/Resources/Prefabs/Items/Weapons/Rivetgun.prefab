@@ -221,7 +221,7 @@ MonoBehaviour:
   ownerFaction: 1
   tier: 0
   inventoryIconLink: Icons/Icon_RivetGun
-  descriptionTextLinkID: 1
+  descriptionTextLinkID: 22
   value: 20
   pickable: 1
   removeOnPick: 0

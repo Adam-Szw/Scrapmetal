@@ -57,8 +57,8 @@ MonoBehaviour:
   pickable: 1
   removeOnPick: 0
   ownerID: 0
-  hpIncrease: 0
-  speedMultiplierBonus: 0
+  hpIncrease: 75
+  speedMultiplierBonus: -0.3
   buffsScrapGeneration: 0
   buffsLootGeneration: 0
   buffsChestOpening: 0

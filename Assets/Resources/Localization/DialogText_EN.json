@@ -2,13 +2,213 @@
     "dialogData": [
         {
             "id": 1,
-            "text": "This is the text for dialog ID 1.",
-            "response": "This is response for ID: 1."
+            "text": "",
+            "response": "Hello! Your paint looks fresh and you didn't start shooting so I'll assume you just came off the line."
         },
         {
             "id": 2,
-            "text": "This is the text for dialog ID 2.",
-            "response": "This is response for ID: 2.\ntest new line"
+            "text": "What line are you talking about? Where am I?",
+            "response": "As I said, your paint looks fresh meaning you were just built. Robots like us come from various factory ports all around. Nobdy is sure why we are built so we setup this camp to look for stragglers like yourself."
+        },
+        {
+            "id": 3,
+            "text": "What line were you talking about earlier?",
+            "response": "I meant that you were probably just built. None of use knows why the robots are being built, but we are trying to figure it out."
+        },
+        {
+            "id": 4,
+            "text": "Why would I shoot at you?",
+            "response": "Well there are other groups of robots here who believe in violence to get parts needed to get by. You can learn more about them from others inside."
+        },
+        {
+            "id": 5,
+            "text": "And who are you and 'others' exactly?",
+            "response": "My name is C-320, at least that's what was scratched on the back of my head when I got built. Some other robots here prefer to get new names but this one sounded snappy to me. We are a community of stragglers trying to get by and this is our village."
+        },
+        {
+            "id": 6,
+            "text": "Can I enter?",
+            "response": "Sure, you don't look very dangerous. Good luck out there!"
+        },
+        {
+            "id": 7,
+            "text": "What is your role here?",
+            "response": "I'm a lookout, if baddies come knocking I'll be the one to let others know. But they typically stay away from this area."
+        },
+        {
+            "id": 8,
+            "text": "Where are hostile robots?",
+            "response": "Well there is two types of them. One is a group in the north who thinks that might makes right. They try to scrap us for parts to upgrade themselfes. Then there are what we call 'bots' that infest the rest of the area. You are lucky that we found you first."
+        },
+        {
+            "id": 9,
+            "text": "What about those bots? Where do they come from?",
+            "response": "The thing with them is that they are kinda weird. At the same time they shoot at us but also they are the ones depositing useful parts and items everywhere. South if full of them so be careful if you go scavenging. There is a shopkeeper in town who can help you get equipped."
+        },
+        {
+            "id": 10,
+            "text": "Thanks for information, goodbye.",
+            "response": "Bye! Be careful outside the village."
+        },
+        {
+            "id": 11,
+            "text": "",
+            "response": "Hello again, I hope you're staying clear of trouble."
+        },
+        {
+            "id": 12,
+            "text": "I have to go, goodbye.",
+            "response": "Alright, see you later."
+        },
+        {
+            "id": 13,
+            "text": "(Leave)",
+            "response": ""
+        },
+        {
+            "id": 14,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 15,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 16,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 17,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 18,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 19,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 20,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 21,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 22,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 23,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 24,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 25,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 26,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 27,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 28,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 29,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 30,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 31,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 32,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 33,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 34,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 35,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 36,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 37,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 38,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 39,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 40,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 41,
+            "text": "",
+            "response": ""
+        },
+        {
+            "id": 42,
+            "text": "",
+            "response": ""
         }
     ]
 }

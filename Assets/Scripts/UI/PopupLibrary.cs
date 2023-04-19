@@ -11,7 +11,7 @@ public static class PopupLibrary
     [Serializable]
     private class PopupData
     {
-        public ulong id;
+        public int id;
         public string text;
     }
 
@@ -21,7 +21,7 @@ public static class PopupLibrary
         public List<PopupData> popupData;
     }
 
-    public static Dictionary<ulong, string> popupLocalization = new Dictionary<ulong, string>();
+    public static Dictionary<int, string> popupLocalization = new Dictionary<int, string>();
 
     public static void LoadPopupLocalization(string filename)
     {

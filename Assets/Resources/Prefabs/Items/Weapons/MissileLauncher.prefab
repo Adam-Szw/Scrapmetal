@@ -221,7 +221,7 @@ MonoBehaviour:
   ownerFaction: 1
   tier: 2
   inventoryIconLink: Icons/Icon_MissileLauncher
-  descriptionTextLinkID: 1
+  descriptionTextLinkID: 21
   value: 20
   pickable: 1
   removeOnPick: 0

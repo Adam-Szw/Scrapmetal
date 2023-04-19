@@ -128,11 +128,10 @@ public class MainMenuControl : MonoBehaviour
 
     private void SetSaveOptions()
     {
-        Settings settings = Settings.GetSettings();
-
+        Settings settings = GetSettings();
         foreach (KeyValuePair<int, SaveInfo> pair in settings.saves)
         {
-            if (pair.Key >= saveButtons.Length) return;
+            if (pair.Key >= saveButtons.Length) continue;
             string text = "Date: " + pair.Value.date;
             text += " Location: " + pair.Value.location;
             SetupSlotButton(true, saveButtons[pair.Key], pair.Key, text, true);
@@ -142,10 +141,10 @@ public class MainMenuControl : MonoBehaviour
 
     private void SetLoadOptions()
     {
-        Settings settings = Settings.GetSettings();
+        Settings settings = GetSettings();
         foreach (KeyValuePair<int, SaveInfo> pair in settings.saves)
         {
-            if (pair.Key >= loadButtons.Length) return;
+            if (pair.Key >= loadButtons.Length) continue;
             string text = "Date: " + pair.Value.date;
             text += " Location: " + pair.Value.location;
             SetupSlotButton(true, loadButtons[pair.Key], pair.Key, text, false);
@@ -160,10 +159,7 @@ public class MainMenuControl : MonoBehaviour
         if (active) button.onClick.AddListener(() =>
         {
             indexSelected = index;
-            if (forSaving)
-            {
-                savConfirmBtn.gameObject.SetActive(true);
-            }
+            if (forSaving) savConfirmBtn.gameObject.SetActive(true);
             if (!forSaving) lodConfirmBtn.gameObject.SetActive(true);
         });
     }

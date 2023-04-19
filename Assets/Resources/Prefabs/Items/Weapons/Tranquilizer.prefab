@@ -221,7 +221,7 @@ MonoBehaviour:
   ownerFaction: 1
   tier: 3
   inventoryIconLink: Icons/Icon_Tranquilizer
-  descriptionTextLinkID: 1
+  descriptionTextLinkID: 24
   value: 20
   pickable: 1
   removeOnPick: 0

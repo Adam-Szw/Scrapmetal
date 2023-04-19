@@ -690,11 +690,6 @@ MonoBehaviour:
       m_Sprite: {fileID: 1707261035, guid: 16f0dc64999526641a927445021383c3, type: 3}
       m_FromMain: 0
       m_SpriteOverride: {fileID: 1707261035, guid: 16f0dc64999526641a927445021383c3, type: 3}
-    - m_Name: Body4_12
-      m_Hash: 48281934
-      m_Sprite: {fileID: 1144094546, guid: 05a94bfbac1967a4e99034c34b8c7fd7, type: 3}
-      m_FromMain: 0
-      m_SpriteOverride: {fileID: 1144094546, guid: 05a94bfbac1967a4e99034c34b8c7fd7, type: 3}
     - m_Name: Body5_12
       m_Hash: -1168318933
       m_Sprite: {fileID: 1144094546, guid: 05a94bfbac1967a4e99034c34b8c7fd7, type: 3}
@@ -720,6 +715,11 @@ MonoBehaviour:
       m_Sprite: {fileID: 820478555, guid: 9a998ff1b798a994d83e5405593f4367, type: 3}
       m_FromMain: 0
       m_SpriteOverride: {fileID: 820478555, guid: 9a998ff1b798a994d83e5405593f4367, type: 3}
+    - m_Name: Body4_12
+      m_Hash: 48281934
+      m_Sprite: {fileID: 2004700359, guid: 0860d39ffc97da044a709fff91ec7d98, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 2004700359, guid: 0860d39ffc97da044a709fff91ec7d98, type: 3}
     m_FromMain: 0
     m_EntryOverrideCount: 9
   - m_Name: Foot_L

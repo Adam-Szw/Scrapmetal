@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 4.5064513e-29
+  m_SpriteKey: 2.4523156e+13
 --- !u!114 &608733348965007479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,7 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 0
+  m_SpriteKey: -7.8182656e-20
 --- !u!114 &6799900385674299996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,7 +643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -7.697871e+26
+  m_SpriteKey: -1.4774787e+15
 --- !u!114 &2342978373812104212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,6 +955,7 @@ MonoBehaviour:
   targetBone: {fileID: 3900115423345690400}
   interactAttachment: {fileID: 8978408460839306871}
   ID: 0
+  dontSave: 0
   healthbar: {fileID: 0}
   tier: 6
   faction: 0
@@ -976,8 +977,6 @@ MonoBehaviour:
   hasScrapGeneration: 0
   hasLootGeneration: 0
   hasChestOpening: 0
-  weapons: []
-  armors: []
 --- !u!50 &8151393122861713825
 Rigidbody2D:
   serializedVersion: 4
@@ -1191,7 +1190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -7.0936367e-23
+  m_SpriteKey: -2.5320906e-35
 --- !u!114 &4291425014169255677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1425,7 +1424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 2.1798534e-20
+  m_SpriteKey: -3.7739185e+9
 --- !u!114 &3828083896043638538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1644,7 +1643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 0
+  m_SpriteKey: -2.7465904e+19
 --- !u!114 &2068605372927883227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1895,7 +1894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 1.4861391e+34
+  m_SpriteKey: -445810080
 --- !u!114 &8414732001205391276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2033,7 +2032,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 0
+  m_SpriteKey: 1.065815e-31
 --- !u!114 &4289724615435944915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2319,7 +2318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -2.582709e+24
+  m_SpriteKey: -2.5306033e-29
 --- !u!114 &6037597590707217902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2467,9 +2466,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -1.4}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 0.6
 --- !u!1 &5840699099318710249
 GameObject:
   m_ObjectHideFlags: 0
@@ -3018,7 +3017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 3.7503946e-25
+  m_SpriteKey: 61.447906
 --- !u!1 &6765719799264739089
 GameObject:
   m_ObjectHideFlags: 0
@@ -3562,7 +3561,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 4.754051e-26
+  m_SpriteKey: -1.1602134e+11
 --- !u!114 &1196333595250407360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3798,7 +3797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: -3.1353452e+31
+  m_SpriteKey: 0.000007835657
 --- !u!114 &1331598519391297255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4000,7 +3999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryHash: 0
   m_labelHash: 0
-  m_SpriteKey: 1.8349016e-14
+  m_SpriteKey: 0.0002222671
 --- !u!114 &3077551419673420581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4099,7 +4098,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8978408460839306871}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.07, z: 0}
+  m_LocalPosition: {x: 0, y: 1.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
