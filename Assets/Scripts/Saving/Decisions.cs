@@ -16,6 +16,6 @@ public class Decisions
     public bool causedVillageTrouble = false;
     public bool gyroGreetingDone = false;
     public bool gyroShopInventoryLoaded = false;
-    public bool jesseGreetingDone = false;
-    public bool jesseShopInventoryLoaded = false;
+    public bool o25GreetingDone = false;
+    public bool o25ShopInventoryLoaded = false;
 }

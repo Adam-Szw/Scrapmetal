@@ -114,7 +114,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         bool add = ShouldAggro(behaviour.faction, b.faction);
         if (add)
         {
-            entities.Add(entity, (entity.transform.position - transform.position).magnitude);
+            entities[entity] = (entity.transform.position - transform.position).magnitude;
         }
     }
 

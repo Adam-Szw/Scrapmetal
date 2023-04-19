@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 /* This class contains some useful tools not built-in Unity
  */
@@ -255,6 +256,26 @@ public static class HelpFunc
                 }
             }
         }
+    }
+
+    public static Vector2 GetRandomPointInPolygonCollider(PolygonCollider2D collider)
+    {
+        Vector2 randomPoint = Vector2.zero;
+        Bounds bounds = collider.bounds;
+        float minX = bounds.min.x;
+        float maxX = bounds.max.x;
+        float minY = bounds.min.y;
+        float maxY = bounds.max.y;
+        bool pointFound = false;
+        while (!pointFound)
+        {
+            randomPoint = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+            if (collider.OverlapPoint(randomPoint))
+            {
+                pointFound = true;
+            }
+        }
+        return randomPoint;
     }
 
     public static T DeepCopy<T>(T source)

@@ -919,14 +919,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 285faec29b1e86240841d5dc8caecf85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabPath: Prefabs/Creatures/NPC
+  prefabPath: Prefabs/Creatures/NPC_Enemy_Easy
   targetBone: {fileID: 3900115423345690400}
   interactAttachment: {fileID: 4398082579037113846}
   ID: 0
   dontSave: 0
   healthbar: {fileID: 2184009108772949476}
   tier: 3
-  faction: 2
+  faction: 6
   aiControl: {fileID: 6062211383785325316}
   moveSpeed: 3
   weaponAttachmentBones:
@@ -938,10 +938,11 @@ MonoBehaviour:
   loot: []
   weaponAttachmentOffset: {x: 0, y: 0}
   itemActiveSortLayer: 14
-  randomizeParts: 0
+  randomizeParts: 1
   backwardSpeedMultiplier: 0.5
-  interactible: 1
+  interactible: 0
   dialogStartID: 1
+  NPCname: No Name
 --- !u!114 &6062211383785325316
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -72,7 +72,7 @@ public static class DialogLibrary
         if (initialID == 14 && dec.elderGreetingDone && dec.elderQuestAccepted && !dec.causedVillageTrouble) return 29;
         if (initialID == 14 && dec.elderGreetingDone && dec.causedVillageTrouble) return 32;
         if (initialID == 14 && dec.elderQuestCompleted) return 35;
-        if (initialID == 45 && dec.jesseGreetingDone) return 52;
+        if (initialID == 45 && dec.o25GreetingDone) return 52;
         return initialID;
     }
 
@@ -202,7 +202,7 @@ public static class DialogLibrary
             UIControl.ShowInventory(trader.GetInventory());
         });
         options.Add(o);
-        // Dialog with Jesse
+        // Dialog with O25
         o = new DialogOption(45, new List<int>() { 46, 47, 48 });
         options.Add(o);
         o = new DialogOption(46, new List<int>() { 49, 50, 51, 56 });
@@ -217,7 +217,7 @@ public static class DialogLibrary
         options.Add(o);
         o = new DialogOption(51, new List<int>() { 53, 55, 56 });
         o.effects.Add(() => {
-            dec.jesseGreetingDone = true;
+            dec.o25GreetingDone = true;
         });
         options.Add(o);
         o = new DialogOption(52, new List<int>() { 53, 55, 56 });
@@ -228,8 +228,8 @@ public static class DialogLibrary
         o = new DialogOption(54, new List<int>() );
         o.effects.Add(() => {
             NPCBehaviour trader = UIControl.dialog.GetComponent<DialogControl>().responder;
-            if (!dec.jesseShopInventoryLoaded) trader.SetInventory(ItemLibrary.GetDefaultShopJesse());
-            dec.jesseShopInventoryLoaded = true;
+            if (!dec.o25ShopInventoryLoaded) trader.SetInventory(ItemLibrary.GetDefaultShopJesse());
+            dec.o25ShopInventoryLoaded = true;
             UIControl.DestroyDialog();
             UIControl.ShowInventory(trader.GetInventory());
         });

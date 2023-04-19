@@ -10,7 +10,7 @@ public class CreatureLibrary
 {
 
     public static string CREATURES_PREFAB_PATH = "Prefabs/Creatures/";
-    public static string[] CREATURE_RESOURCES = new string[] { "NPC", "NPC_Enemy_Easy", "Player", "Spiderbot", "Tankbot", "Zapper" };
+    public static string[] CREATURE_RESOURCES = new string[] { "NPC", "NPC_Enemy_Easy", "NPC_Enemy_Medium", "NPC_Enemy_Hard", "Player", "Spiderbot", "Tankbot", "Zapper" };
 
     public static Dictionary<CreatureTier, List<string>> tierDictionary = new Dictionary<CreatureTier, List<string>>();
 

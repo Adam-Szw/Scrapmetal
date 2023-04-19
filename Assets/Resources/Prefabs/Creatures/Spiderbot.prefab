@@ -2178,7 +2178,7 @@ MonoBehaviour:
   dontSave: 0
   healthbar: {fileID: 4699295782675156808}
   tier: 2
-  faction: 5
+  faction: 4
   aiControl: {fileID: 5291230762624573668}
   moveSpeed: 3.5
   weaponAttachmentBones:

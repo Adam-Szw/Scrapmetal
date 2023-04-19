@@ -36,7 +36,7 @@ public class CellBehaviour : MonoBehaviour, Saveable<CellData>
         if (!b) return;
         ActivateEntitiesInCell();
         isHoldingEntities = true;
-        if (!triggered) TriggerEffects();
+        TriggerEffects();
     }
 
 
@@ -85,14 +85,14 @@ public class CellBehaviour : MonoBehaviour, Saveable<CellData>
 
     private void TriggerEffects()
     {
-        triggered = true;
         // Spawn randomly generated content
-        if (content) content.Trigger();
+        if (content && !triggered) content.Trigger();
+        triggered = true;
     }
 
     private IEnumerator InitRoutine()
     {
-        // Wait 2 frames for objects to settle in and call their start()
+        // Wait 2 frames for objects to settle in with their physics and call their start()
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
         if (disableEntitiesByDefault) DeactivateEntitiesInCell();
@@ -112,6 +112,7 @@ public class CellBehaviour : MonoBehaviour, Saveable<CellData>
 
     public void Load(CellData data, bool loadTransform = true)
     {
+        print("trigger update");
         triggered = data.triggered;
     }
 }

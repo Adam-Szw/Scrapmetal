@@ -36,8 +36,7 @@ public class ContentGenerator : MonoBehaviour
         massive // Lots of cash and some most powerful items
     }
 
-    public GameObject spawnLocation;    // Location of enemy spawn
-    public float spawnRadius;           // How far away from center enemies can be spawned
+    public PolygonCollider2D spawnCollider;    // Enemies will be spawned only inside this collider
 
     [Serializable]
     public class SpawnData
@@ -54,7 +53,7 @@ public class ContentGenerator : MonoBehaviour
 
     public void Trigger()
     {
-        foreach(SpawnData spawn in spawns)
+        foreach (SpawnData spawn in spawns)
         {
             int spawnCountMin = spawn.minSpawn;
             int spawnCountMax = spawn.maxSpawn;
@@ -69,8 +68,9 @@ public class ContentGenerator : MonoBehaviour
                 if (creatureAssets != null)
                 {
                     // Spawn enemy. If couldnt spawn enemy, go to next iteration
-                    Vector3 position = spawnLocation.transform.position;
-                    GameObject enemy = SpawnEnemy(enemyTier, position, spawnRadius);
+                    // Randomize point inside collider, with more central bias
+                    Vector3 position = HelpFunc.GetRandomPointInPolygonCollider(spawnCollider);
+                    GameObject enemy = SpawnEnemy(enemyTier, position);
                     if (!enemy) continue;
                     List<ItemData> loot = new List<ItemData>();
                     // If enemy is of humanoid type, give it a weapon and make it lootable
@@ -120,7 +120,7 @@ public class ContentGenerator : MonoBehaviour
         }
     }
 
-    private static GameObject SpawnEnemy(CreatureTier tier, Vector3 position, float radius)
+    private static GameObject SpawnEnemy(CreatureTier tier, Vector3 position)
     {
         // Get enemies at this tier
         List<string> creatureAssets;
@@ -130,9 +130,6 @@ public class ContentGenerator : MonoBehaviour
         {
             // Randomize enemy from given tier
             int i = Random.Range(0, creatureAssets.Count - 1);
-            // Randomize location
-            position.x += radius * ((Random.value * 2) - 1);
-            position.y += radius * ((Random.value * 2) - 1);
             GameObject enemy = Instantiate(Resources.Load<GameObject>(CreatureLibrary.CREATURES_PREFAB_PATH + creatureAssets[i]), position, Quaternion.identity);
             return enemy;
 
@@ -165,6 +162,7 @@ public class ContentGenerator : MonoBehaviour
     private void GiveWeapon(WeaponData weapon, GameObject receiver)
     {
         weapon.unlimitedAmmo = true;
+        weapon.pickable = false;
         receiver.GetComponent<HumanoidBehaviour>().SetItemActive(weapon);
     }
 
