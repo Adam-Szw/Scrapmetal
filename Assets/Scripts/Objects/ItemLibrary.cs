@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using static ContentGenerator;
 using static ItemLibrary;
-using static UnityEditor.Progress;
 
 public static class ItemLibrary
 {
