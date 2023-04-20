@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4309774460093036444}
   - component: {fileID: 2123385013767443871}
   - component: {fileID: 4204339932415728036}
+  - component: {fileID: 3795676296640887621}
   m_Layer: 3
   m_Name: Rivetgun_Sprite
   m_TagString: Untagged
@@ -137,6 +138,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!210 &3795676296640887621
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960301571262056655}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &3484931087228209276
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +173,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3484931087228209276}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.679, y: 0.118, z: 0}
+  m_LocalPosition: {x: 0.588, y: 0.126, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

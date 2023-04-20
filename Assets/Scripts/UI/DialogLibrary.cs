@@ -68,10 +68,11 @@ public static class DialogLibrary
     {
         Decisions dec = GlobalControl.decisions;
         if (initialID == 1 && dec.c320GreetingDone) return 11;
-        if (initialID == 14 && dec.elderGreetingDone && !dec.elderQuestAccepted && !dec.causedVillageTrouble) return 31;
-        if (initialID == 14 && dec.elderGreetingDone && dec.elderQuestAccepted && !dec.causedVillageTrouble) return 29;
-        if (initialID == 14 && dec.elderGreetingDone && dec.causedVillageTrouble) return 32;
         if (initialID == 14 && dec.elderQuestCompleted) return 35;
+        if (initialID == 14 && dec.elderQuestFulfilled && !dec.elderQuestCompleted) return 34;
+        if (initialID == 14 && dec.causedVillageTrouble && !dec.elderQuestFulfilled) return 32;
+        if (initialID == 14 && dec.elderGreetingDone && !dec.elderQuestAccepted && !dec.elderQuestFulfilled && !dec.elderQuestCompleted) return 31;
+        if (initialID == 14 && dec.elderGreetingDone && dec.elderQuestAccepted && !dec.elderQuestFulfilled && !dec.elderQuestCompleted) return 29;
         if (initialID == 45 && dec.o25GreetingDone) return 52;
         return initialID;
     }
@@ -79,7 +80,6 @@ public static class DialogLibrary
     // All of dialog logic is contained here. This logic could also be moved to a file if I had more time.
     public static void LoadDialogOptions()
     {
-        Decisions dec = GlobalControl.decisions;
         // C-320 Dialog
         DialogOption o;
         o = new DialogOption(1, new List<int>() { 2, 4 });
@@ -97,7 +97,7 @@ public static class DialogLibrary
         // Set new welcome from C-320
         o = new DialogOption(10, new List<int>() { 13 });
         o.effects.Add(() => {
-            dec.c320GreetingDone = true;
+            GlobalControl.decisions.c320GreetingDone = true;
         });
         options.Add(o);
         o = new DialogOption(11, new List<int>() { 7, 8, 12 });
@@ -127,7 +127,7 @@ public static class DialogLibrary
         // Introduction done
         o = new DialogOption(18, new List<int>() { 19, 17 });
         o.effects.Add(() => {
-            dec.elderGreetingDone = true;
+            GlobalControl.decisions.elderGreetingDone = true;
         });
         options.Add(o);
         o = new DialogOption(19, new List<int>() { 20, 21, 22 });
@@ -149,7 +149,8 @@ public static class DialogLibrary
         // Start quest for the Elder
         o = new DialogOption(27, new List<int>() { 17 });
         o.effects.Add(() => {
-            dec.elderQuestAccepted = true;
+            GlobalControl.decisions.elderGreetingDone = true;
+            GlobalControl.decisions.elderQuestAccepted = true;
         });
         options.Add(o);
         o = new DialogOption(28, new List<int>() { 24, 25, 26, 19, 17 });
@@ -167,7 +168,9 @@ public static class DialogLibrary
         // Complete Elder quest
         o = new DialogOption(34, new List<int>() { 13 });
         o.effects.Add(() => {
-            dec.elderQuestCompleted = true;
+            GlobalControl.decisions.elderGreetingDone = true;
+            GlobalControl.decisions.elderQuestFulfilled = true;
+            GlobalControl.decisions.elderQuestCompleted = true;
             ArmorData reward = Resources.Load<GameObject>(ItemLibrary.ITEM_PREFABS_PATH + "Armors/ArmorArmsSensoric").GetComponent<ArmorBehaviour>().Save();
             reward.pickable = false;
             if (GlobalControl.GetPlayer()) GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().GiveItem(reward);
@@ -190,7 +193,7 @@ public static class DialogLibrary
         options.Add(o);
         o = new DialogOption(41, new List<int>() { 13 });
         o.effects.Add(() => {
-            dec.gyroGreetingDone = true;
+            GlobalControl.decisions.gyroGreetingDone = true;
         });
         options.Add(o);
         o = new DialogOption(42, new List<int>() { 44 });
@@ -199,8 +202,8 @@ public static class DialogLibrary
         o = new DialogOption(44, new List<int>());
         o.effects.Add(() => {
             NPCBehaviour trader = UIControl.dialog.GetComponent<DialogControl>().responder;
-            if (!dec.gyroShopInventoryLoaded) trader.SetInventory(ItemLibrary.GetDefaultShopGyro());
-            dec.gyroShopInventoryLoaded = true;
+            if (!GlobalControl.decisions.gyroShopInventoryLoaded) trader.SetInventory(ItemLibrary.GetDefaultShopGyro());
+            GlobalControl.decisions.gyroShopInventoryLoaded = true;
             UIControl.DestroyDialog();
             UIControl.ShowInventory(trader.GetInventory());
         });
@@ -220,7 +223,7 @@ public static class DialogLibrary
         options.Add(o);
         o = new DialogOption(51, new List<int>() { 53, 55, 56 });
         o.effects.Add(() => {
-            dec.o25GreetingDone = true;
+            GlobalControl.decisions.o25GreetingDone = true;
         });
         options.Add(o);
         o = new DialogOption(52, new List<int>() { 53, 55, 56 });
@@ -231,8 +234,8 @@ public static class DialogLibrary
         o = new DialogOption(54, new List<int>() );
         o.effects.Add(() => {
             NPCBehaviour trader = UIControl.dialog.GetComponent<DialogControl>().responder;
-            if (!dec.o25ShopInventoryLoaded) trader.SetInventory(ItemLibrary.GetDefaultShopJesse());
-            dec.o25ShopInventoryLoaded = true;
+            if (!GlobalControl.decisions.o25ShopInventoryLoaded) trader.SetInventory(ItemLibrary.GetDefaultShopO25());
+            GlobalControl.decisions.o25ShopInventoryLoaded = true;
             UIControl.DestroyDialog();
             UIControl.ShowInventory(trader.GetInventory());
         });

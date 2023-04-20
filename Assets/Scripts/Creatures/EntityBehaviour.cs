@@ -28,6 +28,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     [HideInInspector] public InteractionEffect interactionUseEffect = null;
     protected GameObject aura = null;
     protected GameObject hText = null;
+    protected GameObject interactionColliderObj = null;
 
     protected void Update()
     {
@@ -52,13 +53,13 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
     // Adds collider for interactible detection by the player, essentially making this object detectable for interactions
     public void AddInteractionCollider()
     {
-        GameObject interaction = new GameObject("InteractionCollider");
-        interaction.transform.parent = transform;
-        interaction.transform.localPosition = Vector3.zero;
-        interaction.layer = 11;
-        InteractibleTrigger trigger = interaction.AddComponent<InteractibleTrigger>();
+        interactionColliderObj = new GameObject("InteractionCollider");
+        interactionColliderObj.transform.parent = transform;
+        interactionColliderObj.transform.localPosition = Vector3.zero;
+        interactionColliderObj.layer = 11;
+        InteractibleTrigger trigger = interactionColliderObj.AddComponent<InteractibleTrigger>();
         trigger.owner = gameObject;
-        CircleCollider2D collider = interaction.AddComponent<CircleCollider2D>();
+        CircleCollider2D collider = interactionColliderObj.AddComponent<CircleCollider2D>();
         collider.isTrigger = true;
         collider.radius = 0.1f;
     }

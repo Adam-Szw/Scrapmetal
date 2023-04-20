@@ -80,6 +80,7 @@ MonoBehaviour:
   targetBone: {fileID: 8289283381652960123}
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
+  dontSave: 0
   ownerFaction: 1
   tier: 3
   inventoryIconLink: 
@@ -94,7 +95,7 @@ MonoBehaviour:
   cooldown: 1
   reloadCooldown: 0
   spread: 0
-  snapMaxAngle: 20
+  snapMaxAngle: 45
   animationType: 0
   ammoLink: 0
   unlimitedAmmo: 0

@@ -164,7 +164,7 @@ public class InventoryControl : MonoBehaviour
         else if (!isShopOpen && status == ItemStatus.inventory && (item is WeaponData || item is ArmorData))
             descriptionText.text += "\nClick to equip the item";
         else if (status == ItemStatus.shop) descriptionText.text += "\nClick to purchase the item.\nPrice: " + item.value * ((item is AmmoData) ? ((AmmoData)item).quantity : 1f);
-        else if (isShopOpen && status == ItemStatus.inventory) descriptionText.text += "\nClick to sell the item.\nPrice: " + item.value * (int)Mathf.Round(((item is AmmoData) ? ((AmmoData)item).quantity : 1f) / 2);
+        else if (isShopOpen && status == ItemStatus.inventory) descriptionText.text += "\nClick to sell the item.\nPrice: " + (int)Mathf.Round(item.value * ((item is AmmoData) ? ((AmmoData)item).quantity : 1f) / 2);
         else if (!isShopOpen && (item is UsableData)) descriptionText.text += "\nClick to use the item";
     }
 

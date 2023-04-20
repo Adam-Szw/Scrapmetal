@@ -75,6 +75,9 @@ public class ContainerBehaviour : EntityBehaviour, Saveable<ContainerData>, Spaw
         foreach (ItemData itemLost in itemsLost) loot.Remove(itemLost);
         if (loot.Count <= 0) isAvailable = false;
         interacting = false;
+        // Stop this object from being picked up by item radar
+        if (!isAvailable && interactionColliderObj) Destroy(interactionColliderObj);
+
     }
 
     private void InteractionEnter(CreatureBehaviour user)

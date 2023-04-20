@@ -24,7 +24,7 @@ public class NPCBehaviour : HumanoidBehaviour, Saveable<NPCData>, Spawnable<NPCD
     private void InteractionUse()
     {
         // Open dialog
-        UIControl.showDialog(DialogLibrary.GetDialogConditionedID(dialogStartID), gameObject.name, this);
+        UIControl.showDialog(DialogLibrary.GetDialogConditionedID(dialogStartID), NPCname, this);
     }
 
     private void InteractionEnter(CreatureBehaviour user)

@@ -173,7 +173,7 @@ Transform:
   m_GameObject: {fileID: 8289283381652960123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3004302323234367113}
@@ -217,6 +217,7 @@ MonoBehaviour:
   targetBone: {fileID: 8289283381652960123}
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
+  dontSave: 0
   ownerFaction: 1
   tier: 3
   inventoryIconLink: 
@@ -227,7 +228,7 @@ MonoBehaviour:
   ownerID: 0
   spriteObject: {fileID: 3122470777355908165}
   speedInitial: 1
-  acceleration: 20
+  acceleration: 10
   lifespan: 4
   lifeRemaining: 4
   damage: 45
@@ -236,5 +237,5 @@ MonoBehaviour:
   guidanceTargetID: 0
   guidanceTarget: {fileID: 0}
   sendTargetBerserk: 0
-  explosionRadius: 1
+  explosionRadius: 2
   guideOnPointer: 1

@@ -14,7 +14,7 @@ public class StructureVisibilityAreaTrigger : MonoBehaviour
     {
         PlayerBehaviour b = other.gameObject.GetComponent<PlayerBehaviour>();
         if (b) structure.EnableMasks();
-        structure.SetHideObject(other.gameObject, true);
+        if (!b) structure.SetHideObject(other.gameObject, true);
     }
 
     private void OnTriggerExit2D(Collider2D other)

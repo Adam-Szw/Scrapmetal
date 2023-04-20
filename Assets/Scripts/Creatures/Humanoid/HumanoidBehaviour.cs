@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor.Presets;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.U2D.Animation;
 using static CreatureLibrary;
 using static HumanoidAnimations;
@@ -58,7 +59,6 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
     }
 
     /* Spawns an item in selected bone for character. Null can be provided to indicate that no items should be selected.
-     * Returns data of the item that is to be unequipped.
      */
     public void SetItemActive(ItemData item)
     {
@@ -90,7 +90,7 @@ public class HumanoidBehaviour : CreatureBehaviour, Saveable<HumanoidData>, Spaw
             animations.SetStateHands(behaviour.animationType);
         }
         else obj.GetComponent<ItemBehaviour>().Load(item);
-        obj.GetComponentInChildren<SpriteRenderer>().sortingOrder = itemActiveSortLayer;
+        obj.GetComponentInChildren<SortingGroup>().sortingOrder = itemActiveSortLayer;
         Rigidbody2D objRB = obj.GetComponentInChildren<Rigidbody2D>();
         Destroy(objRB);
         Collider2D objCollider = obj.GetComponentInChildren<Collider2D>();

@@ -711,8 +711,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.17185402}
-  m_Size: {x: 4.9741573, y: 5.438258}
+  m_Offset: {x: 0, y: -0.20985174}
+  m_Size: {x: 4.603039, y: 5.3622627}
   m_Direction: 0
 --- !u!114 &3063313197199173033
 MonoBehaviour:
@@ -964,8 +964,8 @@ MonoBehaviour:
   weaponAttachmentBones:
   - {fileID: 4415601639827162915}
   groundReferenceObject: {fileID: 8155264429366595155}
-  maxHealth: 250
-  health: 250
+  maxHealth: 300
+  health: 300
   visionCollider: {fileID: 0}
   loot: []
   weaponAttachmentOffset: {x: 0, y: 0}

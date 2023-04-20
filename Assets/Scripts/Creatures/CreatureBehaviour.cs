@@ -74,6 +74,8 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     // Handle collision with projectiles
     public void OnTriggerEnter2D(Collider2D other)
     {
+        // Do nothing if im dead
+        if (!GetAlive()) return;
         // Do nothing if its a collision with something else than projectile
         if (other.gameObject.layer != 6) return;
         ProjectileTrigger t = other.gameObject.GetComponent<ProjectileTrigger>();

@@ -217,6 +217,7 @@ MonoBehaviour:
   targetBone: {fileID: 8289283381652960123}
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
+  dontSave: 0
   ownerFaction: 1
   tier: 3
   inventoryIconLink: 
@@ -230,7 +231,7 @@ MonoBehaviour:
   acceleration: 0
   lifespan: 0.1
   lifeRemaining: 0.1
-  damage: 25
+  damage: 30
   piercing: 1
   guidanceStep: 0
   guidanceTargetID: 0

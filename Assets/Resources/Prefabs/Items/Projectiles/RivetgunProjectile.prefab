@@ -173,7 +173,7 @@ Transform:
   m_GameObject: {fileID: 8289283381652960123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3004302323234367113}
@@ -217,6 +217,7 @@ MonoBehaviour:
   targetBone: {fileID: 8289283381652960123}
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
+  dontSave: 0
   ownerFaction: 1
   tier: 3
   inventoryIconLink: 
@@ -230,7 +231,7 @@ MonoBehaviour:
   acceleration: -1
   lifespan: 1
   lifeRemaining: 1
-  damage: 3
+  damage: 5
   piercing: 0
   guidanceStep: 0
   guidanceTargetID: 0

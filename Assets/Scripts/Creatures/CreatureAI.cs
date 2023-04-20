@@ -160,6 +160,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         {
             behaviour.loot.Add(HelpFunc.DeepCopy(weapon));
             weapon.unlimitedAmmo = true;
+            weapon.pickable = false;
             behaviour.SetItemActive(weapon);
         }
         // Add entity to be scanned

@@ -96,12 +96,20 @@ public static class ItemLibrary
             items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
             items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
             items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RivetAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
+            items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
+            items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
             items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
             items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
             items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
             items.Add(GetItemDataFromStr("Ammo/CapacitorCharge"));
             items.Add(GetItemDataFromStr("Ammo/GrenadeAmmo"));
             items.Add(GetItemDataFromStr("Ammo/GrenadeAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/GrenadeAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/GrenadeAmmo"));
+            items.Add(GetItemDataFromStr("Ammo/RocketsAmmo"));
             items.Add(GetItemDataFromStr("Ammo/RocketsAmmo"));
             items.Add(GetItemDataFromStr("Ammo/RocketsAmmo"));
             items.Add(GetItemDataFromStr("Ammo/TranquilizerDartAmmo"));
@@ -112,7 +120,7 @@ public static class ItemLibrary
         return items;
     }
 
-    public static List<ItemData> GetDefaultShopJesse()
+    public static List<ItemData> GetDefaultShopO25()
     {
         List<ItemData> items = new List<ItemData>();
         try
@@ -121,7 +129,7 @@ public static class ItemLibrary
         }
         catch
         {
-            Debug.Log("Inventory failed to load for Jesse");
+            Debug.Log("Inventory failed to load for O25");
         }
         return items;
     }
@@ -131,11 +139,16 @@ public static class ItemLibrary
         try
         {
             GameObject obj = Resources.Load<GameObject>(ITEM_PREFABS_PATH + path);
-            if (obj.GetComponent<WeaponBehaviour>() != null) return obj.GetComponent<WeaponBehaviour>().Save();
-            if (obj.GetComponent<ArmorBehaviour>() != null) return obj.GetComponent<ArmorBehaviour>().Save();
-            if (obj.GetComponent<AmmoBehaviour>() != null) return obj.GetComponent<AmmoBehaviour>().Save();
-            if (obj.GetComponent<UsableBehaviour>() != null) return obj.GetComponent<UsableBehaviour>().Save();
-            if (obj.GetComponent<ItemBehaviour>() != null) return obj.GetComponent<ItemBehaviour>().Save();
+            ItemData data = null;
+            if (obj.GetComponent<WeaponBehaviour>() != null) data = obj.GetComponent<WeaponBehaviour>().Save();
+            else if (obj.GetComponent<ArmorBehaviour>() != null) data = obj.GetComponent<ArmorBehaviour>().Save();
+            else if (obj.GetComponent<AmmoBehaviour>() != null) data = obj.GetComponent<AmmoBehaviour>().Save();
+            else if (obj.GetComponent<UsableBehaviour>() != null) data = obj.GetComponent<UsableBehaviour>().Save();
+            else data = obj.GetComponent<ItemBehaviour>().Save();
+            data.ID = ++GlobalControl.nextID;
+            data.pickable = false;
+            if (data is AmmoData) ((AmmoData)data).quantity = ((AmmoData)data).maxStack;
+            return data;
         }
         catch
         {

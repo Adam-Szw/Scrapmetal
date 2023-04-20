@@ -217,6 +217,7 @@ MonoBehaviour:
   targetBone: {fileID: 8289283381652960123}
   interactAttachment: {fileID: 8289283381652960123}
   ID: 0
+  dontSave: 0
   ownerFaction: 1
   tier: 3
   inventoryIconLink: 
@@ -226,8 +227,8 @@ MonoBehaviour:
   removeOnPick: 0
   ownerID: 0
   spriteObject: {fileID: 3122470777355908165}
-  speedInitial: 17
-  acceleration: -1
+  speedInitial: 24
+  acceleration: -2
   lifespan: 0.8
   lifeRemaining: 0.8
   damage: 2

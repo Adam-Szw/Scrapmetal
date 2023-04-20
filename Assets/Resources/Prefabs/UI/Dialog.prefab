@@ -636,6 +636,7 @@ MonoBehaviour:
   - {fileID: 6845565774709106735}
   dialogTitle: {fileID: 5710135245327675385}
   dialogName: {fileID: 2578572403793004773}
+  responder: {fileID: 0}
 --- !u!1 &3393197584472462528
 GameObject:
   m_ObjectHideFlags: 0
@@ -1928,7 +1929,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -332.64957, y: -80.64431}
+  m_AnchoredPosition: {x: -308.5, y: -11.6}
   m_SizeDelta: {x: -677.1005, y: -187.6822}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6824308117740278458

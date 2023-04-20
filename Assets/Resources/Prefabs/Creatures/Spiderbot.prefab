@@ -2207,8 +2207,8 @@ MonoBehaviour:
   accuracyAllowance: 60
   preferredFightDistance: 7
   cautionTime: 0.7
-  searchTime: 8
-  chaseTime: 6
+  searchTime: 4
+  chaseTime: 4
   idleRoutine: []
   distanceMaxOffset: 2
   locationMaxOffset: 0.5
