@@ -278,14 +278,4 @@ public static class HelpFunc
         return randomPoint;
     }
 
-    public static T DeepCopy<T>(T source)
-    {
-        BinaryFormatter formatter = new BinaryFormatter();
-        MemoryStream stream = new MemoryStream();
-        formatter.Serialize(stream, source);
-        stream.Seek(0, SeekOrigin.Begin);
-        T copy = (T)formatter.Deserialize(stream);
-        stream.Close();
-        return copy;
-    }
 }

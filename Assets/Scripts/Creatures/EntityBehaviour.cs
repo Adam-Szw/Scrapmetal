@@ -13,19 +13,20 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
 {
     public delegate void InteractionEffect(CreatureBehaviour user);
 
-    public string prefabPath;
+    public string prefabPath;                       // Path to the prefab for this entity. Used frequently when spawning things
     public GameObject targetBone = null;            // Object at which enemy weapons will be targeted
     public GameObject interactAttachment = null;    // Interaction and floating texts will reference position of this object
 
     [HideInInspector] public ulong ID = 0;
     [HideInInspector] public bool dontSave = false;
-    private float speed = 0.0f;
+    private float speed = 0.0f;                     // This stuff is for rigidbody velocity calculation
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
     // Effect to be triggered when this entity enters interaction field
     [HideInInspector] public InteractionEffect interactionEnterEffect = null;
     // Effect to be triggered when this entity is interacted with
     [HideInInspector] public InteractionEffect interactionUseEffect = null;
+    // Texts and miscelaneous attached to this object
     protected GameObject aura = null;
     protected GameObject hText = null;
     protected GameObject interactionColliderObj = null;
@@ -38,6 +39,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
 
     protected void Awake()
     {
+        // Setup ID and RB
         rb = this.gameObject.GetComponent<Rigidbody2D>();
         ID = ++GlobalControl.nextID;
         HelpFunc.DisableInternalCollision(transform);
@@ -45,6 +47,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
 
     protected void OnDestroy()
     {
+        // Destroy texts attached
         if (aura) Destroy(aura);
         if (hText) Destroy(hText);
         StopAllCoroutines();
@@ -95,6 +98,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         if (rb.bodyType != RigidbodyType2D.Static) rb.velocity = moveVector * speed;
     }
 
+    // Spawn a text in interaction area for a given amount of time
     public void SpawnFloatingText(Color color, string text, float time)
     {
         GameObject floatingText = Instantiate(Resources.Load<GameObject>("Prefabs/UI/TextObjectLight"));
@@ -104,7 +108,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         floatingText.GetComponent<TextBehaviour>().Initiate(time, gameObject);
     }
 
-    // Spawn a text in interaction area for a given amount of time
+    // Coroutine causes the text to float a distance over time
     protected IEnumerator SpawnInteractionTextCoroutine(string text, float time, float yOffset)
     {
         hText = Instantiate(Resources.Load<GameObject>("Prefabs/UI/TextObject"));
@@ -115,7 +119,7 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         hText = null;
     }
 
-    // Envelop entity in aura for given time
+    // Envelop entity in aura for given time - used in interactions
     protected IEnumerator HighlightEntityCoroutine(float time)
     {
         aura = Instantiate(Resources.Load<GameObject>("Prefabs/UI/HighlightAura"));
@@ -124,18 +128,6 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         yield return new WaitForSeconds(time);
         Destroy(aura);
         aura = null;
-    }
-
-    public static GameObject Spawn(string prefabPath, Vector2 position, Quaternion rotation, Transform parent)
-    {
-        GameObject obj = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation, parent);
-        return obj;
-    }
-
-    public static GameObject Spawn(string prefabPath, Vector2 position, Quaternion rotation)
-    {
-        GameObject obj = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
-        return obj;
     }
 
     public EntityData Save()
@@ -165,6 +157,19 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         ID = data.ID;
         speed = data.speed;
         gameObject.SetActive(data.active);
+    }
+
+
+    public static GameObject Spawn(string prefabPath, Vector2 position, Quaternion rotation, Transform parent)
+    {
+        GameObject obj = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation, parent);
+        return obj;
+    }
+
+    public static GameObject Spawn(string prefabPath, Vector2 position, Quaternion rotation)
+    {
+        GameObject obj = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+        return obj;
     }
 
     public static GameObject Spawn(EntityData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)

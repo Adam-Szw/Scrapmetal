@@ -80,7 +80,7 @@ public class ContentGenerator : MonoBehaviour
                         WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.weak });
                         if (weapon != null)
                         {
-                            loot.Add(HelpFunc.DeepCopy(weapon));
+                            loot.Add(FabricateWeapon(weapon));
                             GiveWeapon(weapon, enemy);
                         }
                     }
@@ -89,7 +89,7 @@ public class ContentGenerator : MonoBehaviour
                         WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.weak, ItemTier.medium });
                         if (weapon != null)
                         {
-                            loot.Add(HelpFunc.DeepCopy(weapon));
+                            loot.Add(FabricateWeapon(weapon));
                             GiveWeapon(weapon, enemy);
                         }
                     }
@@ -98,7 +98,7 @@ public class ContentGenerator : MonoBehaviour
                         WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.medium, ItemTier.strong });
                         if (weapon != null)
                         {
-                            loot.Add(HelpFunc.DeepCopy(weapon));
+                            loot.Add(FabricateWeapon(weapon));
                             GiveWeapon(weapon, enemy);
                         }
                     }
@@ -118,6 +118,14 @@ public class ContentGenerator : MonoBehaviour
                 }
             }
         }
+    }
+
+    public static WeaponData FabricateWeapon(WeaponData weapon)
+    {
+        GameObject obj = WeaponBehaviour.Spawn(weapon);
+        WeaponData data = obj.GetComponent<WeaponBehaviour>().Save();
+        Destroy(obj);
+        return data;
     }
 
     private static GameObject SpawnEnemy(CreatureTier tier, Vector3 position)

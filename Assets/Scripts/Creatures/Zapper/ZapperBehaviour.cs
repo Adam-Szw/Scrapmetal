@@ -81,6 +81,7 @@ public class ZapperData : CreatureData
         maxHealth = data.maxHealth;
         health = data.health;
         inventory = data.inventory;
+        loot = data.loot;
         AIweaponsData = data.AIweaponsData;
     }
 

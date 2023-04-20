@@ -124,6 +124,7 @@ public class ItemBehaviour : EntityBehaviour, Saveable<ItemData>, Spawnable<Item
         if (data is WeaponData) obj = WeaponBehaviour.Spawn((WeaponData)data, parent);
         else if (data is ArmorData) obj = ArmorBehaviour.Spawn((ArmorData)data, parent);
         else obj = Spawn(data, parent);
+        obj.GetComponent<ItemBehaviour>().ID = ++GlobalControl.nextID;
         return obj;
     }
 }

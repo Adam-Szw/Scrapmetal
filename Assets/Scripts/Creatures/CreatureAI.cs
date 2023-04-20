@@ -158,7 +158,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.medium, ItemTier.strong });
         if (weapon != null)
         {
-            behaviour.loot.Add(HelpFunc.DeepCopy(weapon));
+            behaviour.loot.Add(ContentGenerator.FabricateWeapon(weapon));
             weapon.unlimitedAmmo = true;
             weapon.pickable = false;
             behaviour.SetItemActive(weapon);

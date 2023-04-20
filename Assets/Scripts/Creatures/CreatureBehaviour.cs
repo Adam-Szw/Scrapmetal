@@ -335,6 +335,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         data.maxHealth = GetMaxHealth();
         data.health = GetHealth();
         data.inventory = inventory;
+        data.loot = loot;
         data.AIweaponsData = SaveAIWeapons();
         return data;
     }
@@ -350,6 +351,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         SetMaxHealth(data.maxHealth);
         SetHealth(data.health);
         inventory = data.inventory;
+        loot = data.loot;
         loadOnWeaponSpawn = data.AIweaponsData;
     }
 
@@ -394,4 +396,5 @@ public class CreatureData : EntityData
     public float health;
     public List<ItemData> inventory;
     public List<WeaponData> AIweaponsData;
+    public List<ItemData> loot;
 }

@@ -236,6 +236,7 @@ public class HumanoidData : CreatureData
         maxHealth = data.maxHealth;
         health = data.health;
         inventory = data.inventory;
+        loot = data.loot;
         AIweaponsData = data.AIweaponsData;
     }
 

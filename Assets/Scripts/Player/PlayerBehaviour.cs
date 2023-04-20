@@ -7,6 +7,7 @@ using static AmmoBehaviour;
 using static ArmorBehaviour;
 using static ArmorBehaviour.ArmorSlot;
 using static PlayerBehaviour;
+using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 /* Everything that is unique to the player and not other humanoid NPCs goes here
