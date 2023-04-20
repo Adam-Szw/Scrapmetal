@@ -294,6 +294,11 @@
             "id": 59,
             "text": "I'm ready. (Currently equipped armour will be painted in random colours)",
             "response": ""
+        },
+		{
+            "id": 60,
+            "text": "You're welcome. Now, if you'd excuse me, I need some rest. (leave)",
+            "response": ""
         }
     ]
 }

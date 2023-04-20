@@ -43,6 +43,10 @@
 		{
             "id": 11,
             "text": "This area is not yet implemented. Perhaps one day you can venture further in this direction? For now, please turn around and enjoy demo area to the north and south."
+        },
+		{
+            "id": 12,
+            "text": "This is the end of official demo. That being said, feel free to explore the rest of the map and play around with game features. You can talk again to the Elder for directions to explore, and with your new arms module you can now open locked chests in the world. Perhaps one day the adventure to find the Machinist will continue...?\n\nThank you for playing!\nFrom: Adam"
         }
     ]
 }

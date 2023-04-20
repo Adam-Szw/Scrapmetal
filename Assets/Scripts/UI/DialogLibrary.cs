@@ -166,7 +166,7 @@ public static class DialogLibrary
         o = new DialogOption(33, new List<int>() { 13 });
         options.Add(o);
         // Complete Elder quest
-        o = new DialogOption(34, new List<int>() { 13 });
+        o = new DialogOption(34, new List<int>() { 60 });
         o.effects.Add(() => {
             GlobalControl.decisions.elderGreetingDone = true;
             GlobalControl.decisions.elderQuestFulfilled = true;
@@ -258,6 +258,12 @@ public static class DialogLibrary
             if (GlobalControl.GetPlayer()) GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().PaintArmors();
             if (GlobalControl.GetPlayer()) GlobalControl.GetPlayer().GetComponent<PlayerBehaviour>().RefreshPlayerLimbs();
             UIControl.DestroyDialog();
+        });
+        options.Add(o);
+        o = new DialogOption(60, new List<int>());
+        o.effects.Add(() => {
+            UIControl.DestroyDialog();
+            UIControl.ShowPopup(12, 0.1f);
         });
         options.Add(o);
     }
