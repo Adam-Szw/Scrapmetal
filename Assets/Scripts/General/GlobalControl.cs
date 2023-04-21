@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 using static PopupControl;
 using Scene = UnityEngine.SceneManagement.Scene;
 
-/* This class is in charge of global variables and functionality such as pausing the game
+/* This class is in charge of global variables and functionality such as pausing, saving or loading the game
  */
 public class GlobalControl : MonoBehaviour
 {

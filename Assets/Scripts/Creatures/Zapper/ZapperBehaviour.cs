@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 
-// This class is very similar to spiderbot - but separation is on purpose so in the future these 2 enemies can be more distinct
 public class ZapperBehaviour : CreatureBehaviour, Saveable<ZapperData>, Spawnable<ZapperData>
 {
-    public ZapperAnimations animations;
+    private ZapperAnimations animations;
 
     public static string[] BODYPARTS = new string[] { "Sensor", "Turret" };
 
     protected void Start()
     {
+        // Spawn zapper weapon
         SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/ZapperWeapon");
         if (loadOnWeaponSpawn != null) LoadAIWeapons(loadOnWeaponSpawn);
     }
@@ -20,6 +20,7 @@ public class ZapperBehaviour : CreatureBehaviour, Saveable<ZapperData>, Spawnabl
     new protected void Awake()
     {
         base.Awake();
+        // Setup animations
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
         GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Turret_Parent");
         animations = new ZapperAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, aimBone);

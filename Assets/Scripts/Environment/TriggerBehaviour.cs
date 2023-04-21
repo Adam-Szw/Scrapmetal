@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+/* Class responsible for triggers - areas that can show a popup or do some effect when entered by the player
+ */
 public class TriggerBehaviour : MonoBehaviour, Saveable<TriggerData>
 {
     public int id = 0;

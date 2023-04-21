@@ -10,39 +10,43 @@ using static CreatureBehaviour;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 
+/* This large class is responsible for all of AI in the game currently.
+ * This should be split up into a smaller class structure that encompasses each enemy separately but I couldn't do it due to
+ * time constraints.
+ */
 public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
 {
-    public CreatureBehaviour behaviour;
+    public CreatureBehaviour behaviour; // Link to behaviour so we can control this creature
 
-    [SerializeField] private Vector2? locationGoal = null;
-    [SerializeField] private float detectionRange = 0.0f;
-    [SerializeField] private float detectionRangeCaution = 0.0f;
-    [SerializeField] private float attackDistance = 0.0f;
-    [SerializeField] private float accuracyAllowance = 0.0f;
-    [SerializeField] private float preferredFightDistance = 0.0f;
-    [SerializeField] private float cautionTime = 0.0f;
-    [SerializeField] private float searchTime = 0.0f;
-    [SerializeField] private float chaseTime = 0.0f;
-    [SerializeField] private List<Vector2> idleRoutine = new List<Vector2>();
-    [SerializeField] private float distanceMaxOffset = 2.0f;
-    [SerializeField] private float locationMaxOffset = 0.5f;
-    [SerializeField] private Vector2 defaultFacing = Vector2.right;
+    [SerializeField] private Vector2? locationGoal = null;                      // If empty - indicates that we dont want to move. Otherwise location to which we want to go
+    [SerializeField] private float detectionRange = 0.0f;                       // How far to scan for enemies when idle
+    [SerializeField] private float detectionRangeCaution = 0.0f;                // How far to scan for enemies when in hightened attention states
+    [SerializeField] private float attackDistance = 0.0f;                       // How far away this creature can start attacking
+    [SerializeField] private float accuracyAllowance = 0.0f;                    // How many angles of deviation can there be from desired and current weapon aim for us to start shooting
+    [SerializeField] private float preferredFightDistance = 0.0f;               // AI will attempt to maintain this distance when fighting
+    [SerializeField] private float cautionTime = 0.0f;                          // Length in seconds of caution phase
+    [SerializeField] private float searchTime = 0.0f;                           // Length in seconds of search phase
+    [SerializeField] private float chaseTime = 0.0f;                            // Length in seconds of chase phase
+    [SerializeField] private List<Vector2> idleRoutine = new List<Vector2>();   // Add points to this to make AI patrol a certain area
+    [SerializeField] private float distanceMaxOffset = 2.0f;                    // How far away from preferred distance can enemy be before we start moving
+    [SerializeField] private float locationMaxOffset = 0.5f;                    // How far away from location goal is considered to still be goal achieved
+    [SerializeField] private Vector2 defaultFacing = Vector2.right;             // When idle and standing, the creature will default to this facing angle
 
     // Handled by detection system
-    [HideInInspector] public ulong targetID = 0;
-    private GameObject target = null;
-    private Vector2? targetLastPos = null;
+    [HideInInspector] public ulong targetID = 0;    // If 0 - it means no target
+    private GameObject target = null;               // Target game object
+    private Vector2? targetLastPos = null;          // Last position of target - or null if no target
 
-    private aiState state = aiState.idle;
-    private int routineIndex = 0;
+    private aiState state = aiState.idle;           // All actions are determined by current state
+    private int routineIndex = 0;                   // Current index in routine array to go to
 
     private Coroutine timer = null;
     private float countdown = 0.0f;
 
     private CircleCollider2D detectorCollider;
-    private Dictionary<GameObject, float> entities = new Dictionary<GameObject, float>();
-    private List<GameObject> entitiesSorted = null;
-    private float detectionRangeCurrent = 0.0f;
+    private Dictionary<GameObject, float> entities = new Dictionary<GameObject, float>();   // Entities in range to detect. They will still be scanned for line of sight
+    private List<GameObject> entitiesSorted = null;                                         // List of objects from above dictionary, to be sorted by distance and line of sight
+    private float detectionRangeCurrent = 0.0f;                                             // Detection range differs on which state we are in currently
 
     private bool coroutinesRunning = false;
 
@@ -60,16 +64,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
 
     public void Awake()
     {
-        // Create detector
-        GameObject detector = new GameObject("Detector");
-        detector.transform.parent = transform;
-        detector.transform.localPosition = Vector3.zero;
-        detector.layer = 8;
-        Detection detection = detector.AddComponent<Detection>();
-        detection.behaviour = behaviour;
-        detectorCollider = detector.AddComponent<CircleCollider2D>();
-        detectorCollider.radius = detectionRange;
-        detectorCollider.isTrigger = true;
+        SpawnDetectorObject();
     }
 
     public void Start()
@@ -79,6 +74,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
 
     private void OnDestroy()
     {
+        // Dont stop all coroutines - AI might be disabled separately from behaviour
         StopCoroutine(UpdateMovement());
         StopCoroutine(UpdateFacing());
         StopCoroutine(AIUpdate());
@@ -107,6 +103,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         if (target) targetLastPos = target.transform.position;
     }
 
+    // Run this if entity can be scanned for line of sight
     public void AddEntityDetected(GameObject entity)
     {
         CreatureBehaviour b = entity.GetComponent<CreatureBehaviour>();
@@ -123,7 +120,8 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         entities.Remove(entity);
     }
 
-    public void NotifyTakingDamage(ulong aggressorID, FactionAllegiance fromFaction = FactionAllegiance.berserk)
+    // Notifies the AI that its being attacked
+    public void NotifyTakingDamage(ulong aggressorID, FactionAllegiance fromFaction)
     {
         // Raise caution level
         if (state == aiState.idle)
@@ -151,6 +149,21 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         if (owner != null) entities[owner] = (owner.transform.position - transform.position).magnitude;
     }
 
+    // Create detector game object with correct detection range and attach it to this entity
+    private void SpawnDetectorObject()
+    {
+        GameObject detector = new GameObject("Detector");
+        detector.transform.parent = transform;
+        detector.transform.localPosition = Vector3.zero;
+        detector.layer = 8;
+        Detection detection = detector.AddComponent<Detection>();
+        detection.behaviour = behaviour;
+        detectorCollider = detector.AddComponent<CircleCollider2D>();
+        detectorCollider.radius = detectionRange;
+        detectorCollider.isTrigger = true;
+    }
+
+    // Updates friendly NPC to become aggressive and arm them with weapon
     private void SetNPCAggressive(ulong aggressorID, NPCBehaviour behaviour)
     {
         behaviour.faction = FactionAllegiance.NPCaggressive;
@@ -194,10 +207,14 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         entitiesSorted = entities.OrderBy(x => x.Value).Select(x => x.Key).ToList();
     }
 
+    /* Causes entity to start moving towards target or stop entirely. This system should be upgraded using a proper pathfinding algorithm.
+     * Currently the entities will simply move in straight line to target.
+     */
     private IEnumerator UpdateMovement()
     {
         while (true)
         {
+            // If there is a goal - start moving towards it
             if (GlobalControl.paused) yield return new WaitForSeconds(.1f);
             if (LocationGoalAchieved()) locationGoal = null;
             if (locationGoal != null)
@@ -206,6 +223,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                 behaviour.SetSpeed(behaviour.moveSpeed);
                 behaviour.SetMoveVector(desiredDirection);
             }
+            // Stop if no goal
             else
             {
                 behaviour.SetSpeed(0);
@@ -224,6 +242,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     {
         while (true)
         {
+            // We have a target - look at it
             if (GlobalControl.paused) yield return new WaitForSeconds(.1f);
             if (locationGoal.HasValue)
             {
@@ -231,11 +250,13 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                 behaviour.SetFacingVector(desiredDirection);
                 behaviour.SetAimingLocation((Vector2)transform.position + desiredDirection);
             }
+            // Not target but we are moving. Look at desired location
             else if (targetID == 0)
             {
                 behaviour.SetFacingVector(defaultFacing);
                 behaviour.SetAimingLocation((Vector2)transform.position + defaultFacing);
             }
+            // Default facing
             else
             {
                 Vector2 desiredDirection = targetLastPos.Value - (Vector2)transform.position;
@@ -246,6 +267,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         }
     }
 
+    // Causes actions to happen depending on current state
     private IEnumerator AIUpdate()
     {
         while (true)
@@ -259,10 +281,12 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
                 enabled = false;
                 break;
             }
+            // Search for current target line of sight
             if (HaveTarget())
             {
                 ScanEntities(new List<GameObject>() { target });
             }
+            // Search for a new target
             else
             {
                 UpdateEntitiesDistance();
@@ -273,9 +297,9 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         }
     }
 
+    // Scan each potential enemy for line of sight starting with closest
     private void ScanEntities(List<GameObject> entityList)
     {
-        // Scan each potential enemy for line of sight starting with closest
         bool targetKept = false;
         foreach (GameObject entity in entityList)
         {
@@ -299,6 +323,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         }
     }
 
+    // Update detector object to have radius matching to current detection radius
     private void UpdateDetectionRadius()
     {
         detectorCollider.radius = 0f;
@@ -324,6 +349,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         }
     }
 
+    // Primary function of AI class. AI state logic is setup here
     private void UpdateAIState()
     {
         switch (state)
@@ -462,6 +488,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         }
     }
 
+    // True if location is in accepted bounds
     private bool LocationGoalAchieved()
     {
         if (locationGoal == null) return true;
@@ -475,6 +502,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
         return xMatching && yMatching;
     }
 
+    // Send a raycast on Vision layer to check for line of sight blocks
     private RaycastHit2D RaycastEntity(GameObject entity)
     {
         CreatureBehaviour b = entity.GetComponent<CreatureBehaviour>();

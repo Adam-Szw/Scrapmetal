@@ -11,7 +11,7 @@ using static CreatureBehaviour;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
 
-/* This class controls information for characters and enemies in the game
+/* Base class that controls information for characters and enemies in the game
  */
 public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawnable<CreatureData>
 {
@@ -25,14 +25,14 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         berserk,    // Attacks everything including in own faction
         enemy       // Enemy faction, attack player only but not NPCs etc.
     }
-    public GameObject healthbar = null;
-    public CreatureTier tier = CreatureTier.hostileEasy;
+    public GameObject healthbar = null;                             // Linked healthbar object, set it up in prefab
+    public CreatureTier tier = CreatureTier.hostileEasy;            // Random generation tier
     public FactionAllegiance faction = FactionAllegiance.neutral;
-    public CreatureAI aiControl = null;
+    public CreatureAI aiControl = null;                             // Insert in prefab to have this creature be controlled by AI
 
-    public float moveSpeed = 0.0f;
-    public List<GameObject> weaponAttachmentBones = new List<GameObject>();
-    public GameObject groundReferenceObject = null;
+    public float moveSpeed = 0.0f;                                              // Creature movement speed
+    public List<GameObject> weaponAttachmentBones = new List<GameObject>();     // Elements from this list will be used to attach weapons
+    public GameObject groundReferenceObject = null;                             // Weapons require to calculate distance from shooting location and character's feet for structure collision
     [SerializeField] private float maxHealth = 100.0f;
     [SerializeField] private float health = 100.0f;
     private bool alive = true;
@@ -40,10 +40,11 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     [HideInInspector] public CircleCollider2D visionCollider;
     [HideInInspector] public static int inventoryLimit = 40;
-    [HideInInspector] public List<ItemData> loot;
+    [HideInInspector] public List<ItemData> loot;                   // Random loot that will be dropped when creature is killed
 
     private HealthbarBehaviour healthbarBehaviour = null;
-    private int lastHit = -1;
+
+    private int lastHit = -1;           // Flags to prevent getting hit by same projectile more than once
     private int lastFrameHit = -1;
 
     // Populate this list to have AI use it

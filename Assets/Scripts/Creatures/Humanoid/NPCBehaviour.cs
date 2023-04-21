@@ -3,16 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Class for dealing with NPCs - both hostile and friendly
+ */
 public class NPCBehaviour : HumanoidBehaviour, Saveable<NPCData>, Spawnable<NPCData>
 {
 
-    public bool interactible = false;
-    public int dialogStartID = 0;
-    public string NPCname = "No Name";
+    public bool interactible = false;   // Interactible NPCs can be talked to
+    public int dialogStartID = 0;       // ID of dialog that will be open on interaction
+    public string NPCname = "No Name";  // Name that will show up in dialog
 
     protected new void Start()
     {
         base.Start();
+        // Spawn interaction collider
         if (interactible)
         {
             AddInteractionCollider();

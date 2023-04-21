@@ -29,6 +29,19 @@ public class WeaponBehaviour : ItemBehaviour, Saveable<WeaponData>, Spawnable<We
     [HideInInspector] public GameObject guidanceTarget = null;
     [HideInInspector] public GameObject groundReferenceObject = null;
 
+    [Serializable]
+    public struct WeaponSlot
+    {
+        public WeaponData weapon;
+        public int index;
+
+        public WeaponSlot(WeaponData weapon, int index)
+        {
+            this.weapon = weapon;
+            this.index = index;
+        }
+    }
+
     private float cooldownCurrent = 0.0f;
     private Animator animator;
     private GameObject projectileAttachment;

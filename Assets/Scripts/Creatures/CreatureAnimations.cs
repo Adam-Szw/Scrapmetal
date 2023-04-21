@@ -23,7 +23,7 @@ public class CreatureAnimations : Saveable<CreatureAnimationData>
     public GameObject aimingReferenceBone;
 
     protected Transform transform;
-    protected List<Animator> animators;
+    protected List<Animator> animators;     // All animators in this creature
 
     /* Joints that can be controlled by scripts. they get a suffix _Parent
      * The reasoning here is that we have separate joints for animation frames and for script control
@@ -61,6 +61,7 @@ public class CreatureAnimations : Saveable<CreatureAnimationData>
     private bool movingBackward = false;        // these 2 are not the same. backwards refers only to horizontal
     private bool movingAgainstFacing = false;   // misalignment of running and facing direction
 
+    // bodypartNames is used to control joints through script. aimingBone is used as reference location to determine aiming vector
     public CreatureAnimations(Transform transform, List<Animator> animators, string[] bodypartNames, GameObject aimingBone)
     {
         this.transform = transform;

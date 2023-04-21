@@ -6,12 +6,13 @@ using UnityEngine.U2D.Animation;
 
 public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Spawnable<SpiderbotData>
 {
-    public SpiderbotAnimations animations;
+    private SpiderbotAnimations animations;
 
     public static string[] BODYPARTS = new string[] { "Sensor", "Turret" };
 
     protected void Start()
     {
+        // Spawn spiderbot weapon
         SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/MissileLauncherSpiderbot");
         if (loadOnWeaponSpawn != null) LoadAIWeapons(loadOnWeaponSpawn);
     }
@@ -19,6 +20,7 @@ public class SpiderbotBehaviour : CreatureBehaviour, Saveable<SpiderbotData>, Sp
     new protected void Awake()
     {
         base.Awake();
+        // Setup animations
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
         GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Turret_Parent");
         animations = new SpiderbotAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, aimBone);

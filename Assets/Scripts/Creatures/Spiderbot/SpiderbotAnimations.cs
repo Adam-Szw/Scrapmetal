@@ -13,8 +13,7 @@ public class SpiderbotAnimations : CreatureAnimations, Saveable<SpiderbotAnimati
     private Joint sensor;
     private Joint turret;
 
-    /* Animators should come in order: body, arms, legs
-     */
+    // There should be only one animator - for body
     public SpiderbotAnimations(Transform transform, List<Animator> animators, string[] jointNames, GameObject aimingBone) :
         base(transform, animators, jointNames, aimingBone)
     {
@@ -23,7 +22,6 @@ public class SpiderbotAnimations : CreatureAnimations, Saveable<SpiderbotAnimati
         turret = GetJointByName("Turret_Parent").GetValueOrDefault();
     }
 
-    // Increments progress of joint rotations. Should be called on update in owner object
     public override void UpdateRotations()
     {
         // Bend turret to look at target
@@ -32,7 +30,6 @@ public class SpiderbotAnimations : CreatureAnimations, Saveable<SpiderbotAnimati
         if (sensor.obj) UpdateSensorAngle();
     }
 
-    // Plays flinching animation once
     public override void PlayFlinch()
     {
         bodyAnimator.Play("Body_Flinch");

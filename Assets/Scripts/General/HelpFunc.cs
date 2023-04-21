@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-/* This class contains some useful tools not built-in Unity
+/* This class contains some useful tools not built-in (to my knowledge) in Unity
  */
 public static class HelpFunc
 {

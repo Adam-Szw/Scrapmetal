@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using static ArmorBehaviour;
 using static ArmorBehaviour.ArmorSlot;
 using static PlayerBehaviour;
+using static WeaponBehaviour;
 
 public class InventoryControl : MonoBehaviour
 {

@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 
-// This class is very similar to spiderbot - but separation is on purpose so in the future these 2 enemies can be more distinct
 public class TankbotBehaviour : CreatureBehaviour, Saveable<TankbotData>, Spawnable<TankbotData>
 {
-    public TankbotAnimations animations;
+    private TankbotAnimations animations;
 
     public static string[] BODYPARTS = new string[] { "Sensor", "Turret" };
 
     protected void Start()
     {
+        // Spawn tankbot weapons in both attachment points
         SpawnAIWeapon(weaponAttachmentBones[0], "Prefabs/Items/Weapons/RifleTankbot");
         SpawnAIWeapon(weaponAttachmentBones[1], "Prefabs/Items/Weapons/RifleTankbot");
         if (loadOnWeaponSpawn != null) LoadAIWeapons(loadOnWeaponSpawn);
@@ -21,6 +21,7 @@ public class TankbotBehaviour : CreatureBehaviour, Saveable<TankbotData>, Spawna
     new protected void Awake()
     {
         base.Awake();
+        // Setup animations
         Animator bodyAnimator = HelpFunc.RecursiveFindChild(this.gameObject, "Body").GetComponent<Animator>();
         GameObject aimBone = HelpFunc.RecursiveFindChild(this.gameObject, "Turret_Parent");
         animations = new TankbotAnimations(transform, new List<Animator>() { bodyAnimator }, BODYPARTS, aimBone);

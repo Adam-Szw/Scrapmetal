@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Behaviour for detection collider
 public class Detection : MonoBehaviour
 {
     public CreatureBehaviour behaviour;

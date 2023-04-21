@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/* This class allows us to make custom bindings to the keys
+/* This class allows us to make custom bindings to the keys in the settings
+ * This was not finished but could be expanded to make settings system
  */
 public class PlayerInput : MonoBehaviour
 {

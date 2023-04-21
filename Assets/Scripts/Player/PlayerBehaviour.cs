@@ -3,30 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static AmmoBehaviour;
 using static ArmorBehaviour;
 using static ArmorBehaviour.ArmorSlot;
-using static PlayerBehaviour;
-using static UnityEditor.Progress;
+using static WeaponBehaviour;
 using Random = UnityEngine.Random;
 
 /* Everything that is unique to the player and not other humanoid NPCs goes here
  */
 public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnable<PlayerData>
 {
-    public GameObject visionMask;
+    public GameObject visionMask;   // Object with vision collider. To be setup in prefab
 
-    // Default stats and player look. Used when changing looks using armor
+    // Default stats and player look. Used when changing looks using armor or to reset player stats
     public static float PLAYER_BASE_MAX_HP = 100f;
     public static float PLAYER_BASE_SPEED = 5f;
     public static float[] PLAYER_BASE_COLOR_RGBA = new float[] { 1f, 1f, 1f, 1f };
 
-    [HideInInspector] public int currencyCount = 0;
+    [HideInInspector] public int currencyCount = 0;     // Money!
 
-    private int weaponSelected = -1;
-    private Dictionary<GameObject, float> interactibles = new Dictionary<GameObject, float>();
-    private GameObject selectedInteractible = null;
+    private int weaponSelected = -1;    // Selected weapon index. -1 means no weapon
+    private Dictionary<GameObject, float> interactibles = new Dictionary<GameObject, float>();  // Interactible objects in range together with distance to them
+    private GameObject selectedInteractible = null; // Which object is currently highlighted to be interacted with
 
+    // Extra stats
     [HideInInspector] public bool hasScrapGeneration = false;
     [HideInInspector] public bool hasLootGeneration = false;
     [HideInInspector] public bool hasChestOpening = false;
@@ -35,19 +34,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     private float bonusSpeedMult = 0f;
     private float reloadTimer = 0f;
 
-    [Serializable]
-    public struct WeaponSlot
-    {
-        public WeaponData weapon;
-        public int index;
-
-        public WeaponSlot(WeaponData weapon, int index)
-        {
-            this.weapon = weapon;
-            this.index = index;
-        }
-    }
-
+    // Equipped items
     [HideInInspector] private List<WeaponSlot> weapons = new List<WeaponSlot>();
     [HideInInspector] private List<ArmorSlot> armors = new List<ArmorSlot>();
 
@@ -110,6 +97,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         interactibles.Remove(obj);
     }
 
+    // Remove weapon from weapon slot at given index and put it in inventory
     public void UnequipWeapon(int index)
     {
         WeaponSlot? toRemove = null;
@@ -126,6 +114,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         SetWeaponFromSlot(weaponSelected);
     }
 
+    // Remove armor from armor slot at given index and put it in inventory
     public void UnequipArmor(Slot aSlot)
     {
         ArmorSlot? toRemove = null;
@@ -143,6 +132,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         RefreshPlayerLimbs();
     }
 
+    // Make weapon from this slot be the active item for the player
     public void EquipWeapon(WeaponSlot wSlot)
     {
         UnequipWeapon(wSlot.index);
@@ -162,7 +152,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
 
     public int? GetCurrWeaponAmmo()
     {
-        ItemBehaviour b = activeItemBehaviour;
+        ItemBehaviour b = activeItem;
         if (!b) return null;
         if (b is WeaponBehaviour) return ((WeaponBehaviour)b).currAmmo;
         return null;
@@ -194,7 +184,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
 
     public int? GetCurrWeaponMaxAmmo()
     {
-        ItemBehaviour b = activeItemBehaviour;
+        ItemBehaviour b = activeItem;
         if (!b) return null;
         if (b is WeaponBehaviour) return ((WeaponBehaviour)b).maxAmmo;
         return null;
@@ -240,6 +230,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         b.interactionUseEffect?.Invoke(this);
     }
 
+    // Weapon stored in slot at selected index will be equipped for the player to be used in-game
     private void SetWeaponFromSlot(int index)
     {
         ItemData toStore = SaveItemActive();
@@ -290,14 +281,14 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         }
 
         // If we dont have weapon do nothing
-        if (!activeItemBehaviour || activeItemBehaviour is not WeaponBehaviour)
+        if (!activeItem || activeItem is not WeaponBehaviour)
         {
             SpawnFloatingText(Color.blue, "No weapon", 0.3f);
             return;
         }
 
         // Get currently active weapon
-        WeaponBehaviour weapon = (WeaponBehaviour)activeItemBehaviour;
+        WeaponBehaviour weapon = (WeaponBehaviour)activeItem;
         // Search inventory to find ammo
         List<ItemData> toRemove = new List<ItemData>();
         bool reloadWasNeeded = false;
@@ -305,10 +296,12 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
         {
             // Break if ammo satisfied
             if (weapon.currAmmo >= weapon.maxAmmo) break;
+
             // Do nothing if not ammo or wrong link
             if (item is not AmmoData) continue;
             AmmoData ammo = (AmmoData)item;
             if (ammo.link != weapon.ammoLink) continue;
+
             // Drain as much ammo as possible
             reloadWasNeeded = true;
             int ammoNeeded = Mathf.Max(weapon.maxAmmo - weapon.currAmmo, 0);
@@ -316,6 +309,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
             int ammoDrained = Mathf.Min(ammoNeeded, ammoReceivedMax);
             weapon.currAmmo = weapon.currAmmo + ammoDrained;
             ammo.quantity -= ammoDrained;
+
             // Remove ammo item if fully drained
             if (ammo.quantity <= 0) toRemove.Add(item);
         }
@@ -339,12 +333,14 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     {
         // Record current health ratio
         float hpRatio = GetHealth() / GetMaxHealth();
+
         // Reset to base stats
         bonusHP = 0f;
         bonusSpeedMult = 1f;
         hasScrapGeneration = false;
         hasLootGeneration = false;
         hasChestOpening = false;
+
         // Get armor buffs
         foreach (ArmorSlot aSlot in armors)
         {
@@ -355,16 +351,19 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
             bonusHP += armor.hpIncrease;
             bonusSpeedMult += armor.speedMultiplierBonus;
         }
+
         // Apply new stats
         SetMaxHealth(PLAYER_BASE_MAX_HP + bonusHP);
         moveSpeed = PLAYER_BASE_SPEED * bonusSpeedMult;
         SetHealth(GetMaxHealth() * hpRatio);
     }
 
+    // Updates player's look based on equipped armors
     public void RefreshPlayerLimbs()
     {
         // Reset player graphics
         for (int i = 1; i < BODYPARTS.Length; i++) SetBodypart(i, 1, PLAYER_BASE_COLOR_RGBA);
+
         // Apply armor parts
         foreach (ArmorSlot armor in armors)
         {

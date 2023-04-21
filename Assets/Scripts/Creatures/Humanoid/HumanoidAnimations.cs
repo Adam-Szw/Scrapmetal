@@ -7,8 +7,8 @@ using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 using static CreatureAnimations;
 using static HumanoidAnimations;
-using static UnityEngine.GraphicsBuffer;
 
+// Humanoid characters require extra animations for hands etc. This class deals with it
 public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimationData>
 {
 
@@ -30,8 +30,7 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
     private Joint arm_low_l;
     private Joint hand_r;
 
-    /* Animators should come in order: body, arms, legs
-     */
+    // Animators have to come in order: body, arms, legs
     public HumanoidAnimations(Transform transform, List<Animator> animators, string[] jointNames, GameObject aimingBone) :
         base(transform, animators, jointNames, aimingBone)
     {
@@ -51,7 +50,6 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
         hand_r = GetJointByName("Hand_R_Parent").GetValueOrDefault();
     }
 
-    // Increments progress of joint rotations. Should be called on update in owner object
     public override void UpdateRotations()
     {
         // Bend head to look at the target
@@ -74,7 +72,6 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
 
     public handsState GetStateHands() { return stateHands; }
 
-    // Plays flinching animation once
     public override void PlayFlinch()
     {
         bodyAnimator.Play("Body_Flinch");
@@ -124,6 +121,7 @@ public class HumanoidAnimations : CreatureAnimations, Saveable<HumanoidAnimation
         RotateJoint(arm_low_r, (ARM_LOW_R_BEND_MAX_ANGLE * angleFraction) + ARM_LOW_R_BEND_OFFSET_ANGLE, ARM_LOW_R_BEND_STEP);
     }
 
+    // 2-handed weapons require special animation for left arm too
     private void UpdateLeftArmBend()
     {
         Vector2 aimingVector = GetAimingVector();

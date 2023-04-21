@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+/* Code for the cells that are responsible for disabling/enabling entities outside of visual range of the player.
+ * All levels should be divided up by cells. Cells can additianlly be triggered to generate content.
+ */
 public class CellBehaviour : MonoBehaviour, Saveable<CellData>
 {
     public Collider2D collider2d = null;            // Collider might be needed before Awake so set it up manually

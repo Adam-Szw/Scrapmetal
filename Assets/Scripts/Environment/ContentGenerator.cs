@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+/* Class responsible for generating enemies and loot in the game.
+ */
 public class ContentGenerator : MonoBehaviour
 {
     public enum CreatureTier
@@ -234,6 +236,9 @@ public class ContentGenerator : MonoBehaviour
         List<ItemData> toRemove = new List<ItemData>();
         foreach (ItemData item in loot) if (item == null) toRemove.Add(item);
         foreach (ItemData item in toRemove) loot.Remove(item);
+
+        // We need to assign IDs to newly created items
+        foreach (ItemData item in loot) item.ID = ++GlobalControl.nextID;
         return loot;
     }
 
