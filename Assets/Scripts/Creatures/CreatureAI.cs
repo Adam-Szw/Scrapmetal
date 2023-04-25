@@ -168,6 +168,7 @@ public class CreatureAI : MonoBehaviour, Saveable<CreatureAIData>
     {
         behaviour.faction = FactionAllegiance.NPCaggressive;
         behaviour.interactible = false;
+        behaviour.RemoveInteractionCollider();
         WeaponData weapon = GetRandomWeapon(new List<ItemTier>() { ItemTier.medium, ItemTier.strong });
         if (weapon != null)
         {

@@ -67,6 +67,11 @@ public class EntityBehaviour : MonoBehaviour, Saveable<EntityData>, Spawnable<En
         collider.radius = 0.1f;
     }
 
+    public void RemoveInteractionCollider()
+    {
+        if (interactionColliderObj != null) Destroy(interactionColliderObj);
+    }
+
     public void SetSpeed(float speed)
     {
         this.speed = speed;
