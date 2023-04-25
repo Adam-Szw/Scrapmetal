@@ -13,5 +13,5 @@ How to setup for development or viewing in Unity:
 How to play the game:
 1. Follow steps 1-6 from above instruction
 1. Enter 'Build' folder
-2. Run 'GameProject.exe'
+2. Run 'ScrapMetal.exe'
 3. Optionally create a shortcut on your desktop for the game
