@@ -11,7 +11,7 @@ How to setup for development or viewing in Unity:
 10. Wait for the Unity to finish importing files
 
 How to play the game:
-1. Follow steps 1-6 from above instruction
+1. Follow steps 1-6 from above instruction, except step 2
 1. Enter 'Build' folder
 2. Run 'ScrapMetal.exe'
 3. Optionally create a shortcut on your desktop for the game
