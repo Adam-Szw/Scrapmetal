@@ -251,6 +251,7 @@ public class HumanoidData : CreatureData
         inventory = data.inventory;
         loot = data.loot;
         AIweaponsData = data.AIweaponsData;
+        deathOccured = data.deathOccured;
     }
 
     public ItemData itemActive;

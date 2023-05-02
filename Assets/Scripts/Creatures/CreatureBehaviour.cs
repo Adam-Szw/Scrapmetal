@@ -51,6 +51,8 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
     protected List<WeaponBehaviour> AIweapons = new List<WeaponBehaviour>();
     protected List<WeaponData> loadOnWeaponSpawn = null;
 
+    private bool deathOccured = false;
+
     new protected void Update()
     {
         base.Update();
@@ -285,6 +287,8 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
 
     private void RunDeathActions()
     {
+        if (deathOccured) return;
+        deathOccured = true;
         base.SetSpeed(0.0f);
         StartCoroutine(DestroyInTime(5));
         foreach (ItemData item in loot)
@@ -338,6 +342,7 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         data.inventory = inventory;
         data.loot = loot;
         data.AIweaponsData = SaveAIWeapons();
+        data.deathOccured = deathOccured;
         return data;
     }
 
@@ -354,6 +359,9 @@ public class CreatureBehaviour : EntityBehaviour, Saveable<CreatureData>, Spawna
         inventory = data.inventory;
         loot = data.loot;
         loadOnWeaponSpawn = data.AIweaponsData;
+        deathOccured = data.deathOccured;
+        // This creature already died - clean up the body
+        if (deathOccured) Destroy(gameObject);
     }
 
     public static GameObject Spawn(CreatureData data, Vector2 position, Quaternion rotation, Vector2 scale, Transform parent = null)
@@ -398,4 +406,5 @@ public class CreatureData : EntityData
     public List<ItemData> inventory;
     public List<WeaponData> AIweaponsData;
     public List<ItemData> loot;
+    public bool deathOccured;
 }
