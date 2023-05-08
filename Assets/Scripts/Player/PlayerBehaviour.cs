@@ -320,7 +320,7 @@ public class PlayerBehaviour : HumanoidBehaviour, Saveable<PlayerData>, Spawnabl
     private IEnumerator ReloadTimerCoroutine(float time)
     {
         reloadTimer = Mathf.Max(time, 0f);
-        if (time > 0) SpawnFloatingText(Color.blue, "Reloading: " + Mathf.Round(time * 10f) / 10f + "s", time);
+        if (time > 0) SpawnFloatingText(Color.blue, "Reloading: " + Mathf.Round(time * 10f) / 10f + "s", 0.3f);
         while (reloadTimer > 0)
         {
             yield return new WaitForSeconds(.2f);
