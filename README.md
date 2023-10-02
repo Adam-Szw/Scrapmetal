@@ -4,7 +4,7 @@ How to setup for development or viewing in Unity:
 3. Create an empty folder to store the project in
 4. Open command line (On Windows type in 'cmd' in search bar)
 5. Navigate to the new folder
-6. Type 'git clone https://campus.cs.le.ac.uk/gitlab/ug_project/22-23/aks60.git Scrapmetal' (without quotes)
+6. Type 'git clone https://github.com/Adam-Szw/Scrapmetal.git Scrapmetal' (without quotes)
 7. Once the files are downloaded close the command line
 8. Open Unity Hub and select 'Open' button
 9. Navigate to the folder where we cloned the repository and select it
