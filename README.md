@@ -1,3 +1,5 @@
+IMPORTANT - If you'd like to review code, it's located primarily in Assets/Scripts directory
+
 How to setup for development or viewing in Unity:
 1. Install git and set it up
 2. Install Unity. Make sure that you have the 2D games package
