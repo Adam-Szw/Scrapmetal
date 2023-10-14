@@ -17,3 +17,10 @@ How to play the game:
 1. Enter 'Build' folder
 2. Run 'ScrapMetal.exe'
 3. Optionally create a shortcut on your desktop for the game
+
+
+Here are a few screenshots of the game if you don't feel like downloading:
+![spiderbot](https://github.com/Adam-Szw/Scrapmetal/assets/60976405/d14b1b43-39df-4abf-a05c-056baaa7fc99)
+![me and the boys](https://github.com/Adam-Szw/Scrapmetal/assets/60976405/d7ddbbfa-18da-48d5-935e-f3cc906b1c86)
+![dialog](https://github.com/Adam-Szw/Scrapmetal/assets/60976405/6ac2847b-13be-4da2-932e-590146d64622)
+![inventory](https://github.com/Adam-Szw/Scrapmetal/assets/60976405/a25bb218-c814-455a-88f4-01a809feeff1)
